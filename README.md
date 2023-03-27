@@ -62,8 +62,15 @@ This will create all necessary database tables using the initial migrations in t
 
 ### Login UI
 
+Users can log onto the system using this login form
+
 ![Screenshot](screenshots/login.png)
 
+### Sign up UI
+
+Users can create an account using this form
+
+![Screenshot](screenshots/signup.png)
 
 ## License 
 

@@ -54,8 +54,8 @@ This will create all necessary database tables using the initial migrations in t
   <img src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" width="50px" height="50px"/>
   <img src="https://www.dropbox.com/s/i83q23mj6li239j/download%20%281%29.png?raw=1" width="50px" height="50px"/>
   <img src="https://www.dropbox.com/s/wo7otvjrdobsqp6/download.png?raw=1" width="50px" height="50px"/>
-  <img src="https://www.dropbox.com/s/zghpe3q6cvdswy7/microsoft-sql-server-logo-svgrepo-com.png?raw=1" width="50px" height="50px"/>/>
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7gmv65nxUV9rPmaJRuu4GL77Czoqvh9Qv0g&usqp=CAU" width="50px" height="50px"/>/>
+  <img src="https://www.dropbox.com/s/zghpe3q6cvdswy7/microsoft-sql-server-logo-svgrepo-com.png?raw=1" width="50px" height="50px"/>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7gmv65nxUV9rPmaJRuu4GL77Czoqvh9Qv0g&usqp=CAU" width="50px" height="50px"/>
 </div>
 
 ## UI Screenshots

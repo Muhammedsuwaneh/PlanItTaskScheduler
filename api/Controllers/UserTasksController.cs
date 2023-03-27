@@ -24,7 +24,7 @@ namespace UserTaskManagerAPI.Controllers
         }
 
 
-        [HttpGet("usertasks")]
+        [HttpGet]
         [Produces("application/json")]
         public IActionResult GetUserTasks()
         {
@@ -41,6 +41,8 @@ namespace UserTaskManagerAPI.Controllers
                     var id = userId.ToInt32();
 
                     var tasks = _context.UserTasks.Where(t => t.user == id).ToList();
+
+                    tasks.Reverse();
 
                     return Ok(new ApiResponse<List<UserTask>>
                     {
@@ -95,8 +97,8 @@ namespace UserTaskManagerAPI.Controllers
                     {
                         Title = task.Title,
                         Description = task.Description,
-                        DateAdded = task.DateAdded,
-                        Priority = task.Priority,
+                        DateAdded = DateTime.Now.ToString(),
+                        Status = "Pending",
                         user = id,
                     };
 

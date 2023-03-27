@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Main from '@/components/Main/Main'
 
-import { setCookie } from "cookies-next"
+import { getCookie, deleteCookie, setCookie } from "cookies-next"
 
 import { useRouter } from 'next/router';
 
@@ -50,3 +50,24 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps = ({ req, res }) => {
+
+  const option = { req, res};
+  const token = getCookie("USER_AUTH_TOKEN", option);
+
+  if(token != undefined && token !== "" && token != null) {
+       return {
+         redirect: {
+           permanent: false,
+           destination: "/dashboard",
+         },
+         props:{},
+       }
+  }
+
+  return {
+     props: {
+     }
+  }
+};

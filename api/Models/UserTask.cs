@@ -19,7 +19,7 @@ namespace UserTaskManagerAPI.Models
         public string DateAdded { get; set; }
 
         [Required]
-        public string Priority { get; set; }
+        public string Status { get; set; }
 
         [Required]
         public int user { get; set; }

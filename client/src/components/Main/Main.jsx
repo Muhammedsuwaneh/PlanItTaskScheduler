@@ -45,9 +45,9 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
             height: "100%", width: "30%", borderTopLeftRadius: "2rem", boxShadow: "1px 1px 2px #333", borderBottomLeftRadius: "2rem" }}>
         </Box>
         <Box sx={{ background: "#fff", height: "100%", width: "50%", padding: "3rem", boxShadow: "1px 1px 2px #333"}}>
-            <Divider textAlign="left" sx={{ fontSize: "1.3rem", paddingBottom: "2rem", color: "#9E9EA7"}}>
-              Venus Task Manager
-            </Divider>
+            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
+                VENUS <span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>Memo</span> 
+            </Typography>
             <Typography variant="p">
               Manage your daily, weekly or monthly task in a user-friendly interface
             </Typography>

@@ -39,7 +39,7 @@ export default function SideBar() {
   const logoutHandler = () => {
 
       deleteCookie("USER_AUTH_TOKEN");
-      deleteCookie("USER_AUTH_ROLE");
+      deleteCookie("USER_AUTH_USERNAME");
 
       router.push("/");
   };
@@ -54,7 +54,7 @@ export default function SideBar() {
             <ListItemIcon>
               <DashboardIcon sx={{ color: "#fff"}}/>
             </ListItemIcon>
-              <Link href={`/dashboard`} sx={{ textDecoration: "none", color: "#fff" }}>
+              <Link href={`/dashboard`} sx={{ textDecoration: "none", color: "#fff", margin: "1.2rem 0" }}>
                   Dashboard
               </Link>
           </ListItemButton>
@@ -64,7 +64,7 @@ export default function SideBar() {
             <ListItemIcon>
               <ListAltIcon sx={{ color: "#fff"}}/>
             </ListItemIcon>
-              <Link href={`/tasks`} sx={{ textDecoration: "none", color: "#fff" }}>
+              <Link href={`/tasks`} sx={{ textDecoration: "none", color: "#fff", margin: "1.2rem 0" }}>
                   Tasks
               </Link>
           </ListItemButton>
@@ -74,7 +74,7 @@ export default function SideBar() {
             <ListItemIcon>
               <AccountCircleIcon sx={{ color: "#fff"}}/>
             </ListItemIcon>
-              <Link href={`/profile`} sx={{ textDecoration: "none", color: "#fff" }}>
+              <Link href={`/profile`} sx={{ textDecoration: "none", color: "#fff", margin: "1.2rem 0" }}>
                   Profile
               </Link>
           </ListItemButton>

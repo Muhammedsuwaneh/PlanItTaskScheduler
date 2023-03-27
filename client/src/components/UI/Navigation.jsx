@@ -1,0 +1,96 @@
+import React, { useState, useEffect } from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Link from '@mui/material/Link';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+import Box from '@mui/material/Box';
+import { styled } from "@mui/material/styles";
+
+import { getCookie, deleteCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { Typography } from '@mui/material';
+
+const SideBarTheme = styled(Box)(({ theme }) => ({
+  backgroundColor: '#0D0C22',
+  color:"#fff",
+  padding: "1rem 3rem",
+  textAlign: 'center',
+  height:"100%",
+  width: "300px",
+  display:"flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  color: theme.palette.text.secondary,
+  position: "fixed",
+  top: "0",
+  left: "0",
+}));
+
+export default function SideBar() {
+
+  const router = useRouter();
+
+  const logoutHandler = () => {
+
+      deleteCookie("USER_AUTH_TOKEN");
+      deleteCookie("USER_AUTH_ROLE");
+
+      router.push("/");
+  };
+
+  return (
+    <SideBarTheme>
+        <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
+            VENUS <span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>Memo</span> 
+        </Typography>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <DashboardIcon sx={{ color: "#fff"}}/>
+            </ListItemIcon>
+              <Link href={`/dashboard`} sx={{ textDecoration: "none", color: "#fff" }}>
+                  Dashboard
+              </Link>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <ListAltIcon sx={{ color: "#fff"}}/>
+            </ListItemIcon>
+              <Link href={`/tasks`} sx={{ textDecoration: "none", color: "#fff" }}>
+                  Tasks
+              </Link>
+          </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <AccountCircleIcon sx={{ color: "#fff"}}/>
+            </ListItemIcon>
+              <Link href={`/profile`} sx={{ textDecoration: "none", color: "#fff" }}>
+                  Profile
+              </Link>
+          </ListItemButton>
+        </ListItem>
+      <List sx={{ marginTop: "80%" }}>
+        <ListItem disablePadding onClick={logoutHandler} sx={{ marginTop: "1rem", '&:hover': { opacity: ".9"}}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LogoutIcon sx={{ color: "red" }} />
+            </ListItemIcon>
+              <Link sx={{textDecoration: "none", color: "red" }}>
+                  Logout
+              </Link>
+          </ListItemButton>
+        </ListItem>
+        </List>
+    </SideBarTheme>
+  )
+}

@@ -3866,11 +3866,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\usertaskmanagerapi\\UserTaskManagerAPI.csproj",
+      "projectUniqueName": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\api\\UserTaskManagerAPI.csproj",
       "projectName": "UserTaskManagerAPI",
-      "projectPath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\usertaskmanagerapi\\UserTaskManagerAPI.csproj",
+      "projectPath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\api\\UserTaskManagerAPI.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\usertaskmanagerapi\\obj\\",
+      "outputPath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",

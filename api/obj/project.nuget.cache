@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZKr3tv0k5kz+wmPrmVW1vy8/HtX0aEflz7+vEGgFKOvfatKIe6oph4qT/np1Qh59gdqxyJn5sWvzh7X548+WyQ==",
+  "dgSpecHash": "lDCZqifQyZnJTjTPzN4yYAC88M+ViQ6vGP6WQN58VJ3oQ5I2/oWAHf5YxfX8CPjA+voeXW1L0wv2AZ50SnPF6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\usertaskmanagerapi\\UserTaskManagerAPI.csproj",
+  "projectFilePath": "C:\\Users\\LENOVO\\Documents\\.Net\\ASP.NET_CORE\\Projects\\Pending\\VenusMemoApp\\api\\UserTaskManagerAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO\\.nuget\\packages\\aelcrypto\\1.0.0\\aelcrypto.1.0.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",

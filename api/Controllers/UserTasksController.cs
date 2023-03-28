@@ -193,5 +193,61 @@ namespace UserTaskManagerAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("statistics")]
+        [Produces("application/json")]
+        public IActionResult GetStatistics()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                try
+                {
+                    var userClaims = identity.Claims;
+
+                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
+                    var id = userId.ToInt32();
+
+
+                    // users's count tasks base on status
+                    var userTasks = _context.UserTasks.Where(t => t.user == id).ToList();
+
+                    Dictionary<string, int> taskCounts = userTasks.GroupBy(t => t.Status)
+                        .Select(g => new { Status = g.Key, Count = g.Count() })
+                        .ToDictionary(x => x.Status, x => x.Count);
+
+                    return Ok(new ApiResponse<Dictionary<string, int>>
+                    {
+                        ResponseObject = taskCounts,
+                        message = "request successful",
+                        token = null,
+                        status = 200
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = null,
+                        message = "oops something went wrong: " + ex.Message,
+                        token = null,
+                        status = 500
+                    });
+                }
+            }
+
+            else
+            {
+                return BadRequest(new ApiResponse<UserTask>
+                {
+                    ResponseObject = null,
+                    message = "request rejected",
+                    token = null,
+                    status = 401
+                });
+            }
+        }
     }
 }

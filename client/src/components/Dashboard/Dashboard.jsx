@@ -7,7 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
-const Dashboard = ({ user, userTasks }) => {
+const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
   const [open, setOpen] = useState(false);
   const [tasks, setTasks] = useState(userTasks);
@@ -61,9 +61,9 @@ const Dashboard = ({ user, userTasks }) => {
   else {
     content = tasks.map(task => {
         return (
-            <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #333", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
+            <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #F87D01", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
                 <Box sx={{ display: "flex"}}>
-                    <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff" }} aria-label="add">
+                    <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
                        {getTaskIconHandler(task.status)}
                     </Fab>
                     <Stack sx={{ margin: ".5rem 1rem"}}>
@@ -115,20 +115,27 @@ const Dashboard = ({ user, userTasks }) => {
                 </Stack>
             </Grid>
             <Grid item xs={4} sx={{ padding: "1rem", background: "#fff", margin: "0 0 0 4.2rem", borderRadius: "1rem"}}>
-            <Box sx={{ background: `${getTaskStatusColor("Completed")}`, borderRadius: "1rem", padding: ".5rem", 
-            margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                <Box sx={{ display: "flex", padding: "1rem"}}>
-                <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
-                       {getTaskIconHandler("Completed")}
-                    </Fab>
-                </Box>
-                <Box sx={{ display: "flex", color: "#fff" }}>                  
-                    <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
-                        <Typography>Completed Task</Typography>
-                        <Typography sx={{ fontSize: "2rem"}}>500</Typography>
-                    </Stack>
-                </Box>
-            </Box>
+                <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
+                    Tasks Statistics
+                </Typography>
+            {userStatisticsEntries.map(entry => {
+                    return (
+                    <Box sx={{ background: `${getTaskStatusColor(entry[0])}`, borderRadius: "1rem", padding: ".5rem", 
+                            margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        <Box sx={{ display: "flex", padding: "1rem"}}>
+                            <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
+                                    {getTaskIconHandler(entry[0])}
+                            </Fab>
+                        </Box>
+                        <Box sx={{ display: "flex", color: "#fff" }}>                  
+                                <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
+                                    <Typography>{entry[0]} Task</Typography>
+                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{entry[1]}</Typography>
+                                </Stack>
+                        </Box>
+                    </Box>
+                )
+            })}
             </Grid>
         </Grid>
         </Box>

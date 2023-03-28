@@ -115,10 +115,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                 </Stack>
             </Grid>
             <Grid item xs={4} sx={{ padding: "1rem", background: "#fff", margin: "0 0 0 4.2rem", borderRadius: "1rem"}}>
-                <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
-                    Tasks Statistics
-                </Typography>
-            {userStatisticsEntries.map(entry => {
+                    <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
+                        Tasks Statistics
+                    </Typography>
+                    {userStatisticsEntries.map(entry => {
                     return (
                     <Box sx={{ background: `${getTaskStatusColor(entry[0])}`, borderRadius: "1rem", padding: ".5rem", 
                             margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>

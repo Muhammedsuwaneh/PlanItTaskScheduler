@@ -1,4 +1,4 @@
-## Portfolio Website
+## PlanIt User Task Manager
 
 ## About Project
 
@@ -58,7 +58,7 @@ This will create all necessary database tables using the initial migrations in t
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7gmv65nxUV9rPmaJRuu4GL77Czoqvh9Qv0g&usqp=CAU" width="50px" height="50px"/>
 </div>
 
-## UI Screenshots
+## Features
 
 ### Login UI
 

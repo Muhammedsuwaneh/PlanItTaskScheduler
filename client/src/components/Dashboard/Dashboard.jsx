@@ -3,9 +3,12 @@ import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { CChart } from "@coreui/react-chartjs";
 
 const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
@@ -52,6 +55,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         handleClose();
   };
 
+  const copyToClipBoardHandler = (task) => {
+    navigator.clipboard.writeText(task);
+  }
+
   let content = "";
 
   if(userTasks.length <= 0) {
@@ -66,12 +73,14 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
                        {getTaskIconHandler(task.status)}
                     </Fab>
-                    <Stack sx={{ margin: ".5rem 1rem"}}>
+                    <Stack sx={{ margin: ".5rem 0 .5rem .7rem"}}>
                         <Typography>{task.title}</Typography>
                         <Typography>{task.dateAdded}</Typography>
                     </Stack>
                 </Box>
                 <Box sx={{ display: "flex", padding: "1rem"}}>
+                    <EditIcon sx={{ fontSize: "2rem", color: "#F87D01", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
+                    <ContentCopyIcon onClick={() => copyToClipBoardHandler(task.title)} sx={{ fontSize: "2rem", color: "#333", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
                     <VisibilityIcon sx={{ fontSize: "2rem", color: "#333", margin: "0 .5rem", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
                     <DeleteForeverIcon sx={{ fontSize: "2rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
                 </Box>
@@ -105,49 +114,66 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             </Link>
             </Box>
         </Box>
-        <Grid container sx={{ margin: "2rem 0"}}>
-            <Grid item xs={7} sx={{ padding:"2rem", background: "#fff", height: "auto", margin: "0 1rem 0 0", borderRadius: "1rem"}}>
+        <Box sx={{ display: "flex", margin: "2rem 0", height: "auto"}}>
+            <Stack sx={{ width: "70%", padding:"2rem", background: "#fff", height: "auto", margin: "0 1rem 0 0", borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                     Upcoming Task
                 </Typography>
                 <Stack sx={{ margin: "1rem 0"}}>
                     {content}                    
                 </Stack>
-            </Grid>
-            <Grid item xs={4} sx={{ padding: "1rem", background: "#fff", margin: "0 0 0 4.2rem", borderRadius: "1rem"}}>
-                    <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
+            </Stack>
+            <Stack sx={{ width: "30%", padding: "0 2rem 0 0", margin: "0" }}>
+                    <Stack sx={{ padding: "1rem", background: "#fff", margin: "0 0 0 2rem", borderRadius: "1rem", width: "100%"}}>
+                        <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
-                    </Typography>
-                    <Box sx={{ background: `${getTaskStatusColor("Pending")}`, borderRadius: "1rem", padding: ".5rem", 
-                            margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <Box sx={{ display: "flex", padding: "1rem"}}>
-                            <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
-                                    {getTaskIconHandler("Pending")}
-                            </Fab>
+                        </Typography>
+                        <Box sx={{ background: `${getTaskStatusColor("Pending")}`, borderRadius: "1rem", padding: ".5rem", 
+                                margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                            <Box sx={{ display: "flex", padding: "1rem"}}>
+                                <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
+                                        {getTaskIconHandler("Pending")}
+                                </Fab>
+                            </Box>
+                            <Box sx={{ display: "flex", color: "#fff" }}>                  
+                                    <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
+                                        <Typography>Pending</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
+                                    </Stack>
+                            </Box>
                         </Box>
-                        <Box sx={{ display: "flex", color: "#fff" }}>                  
-                                <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
-                                    <Typography>Pending</Typography>
-                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
-                                </Stack>
+                        <Box sx={{ background: `${getTaskStatusColor("Completed")}`, borderRadius: "1rem", padding: ".5rem", 
+                                margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                            <Box sx={{ display: "flex", padding: "1rem"}}>
+                                <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
+                                        {getTaskIconHandler("Completed")}
+                                </Fab>
+                            </Box>
+                            <Box sx={{ display: "flex", color: "#fff" }}>                  
+                                    <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
+                                        <Typography>Completed</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Completed}</Typography>
+                                    </Stack>
+                            </Box>
                         </Box>
+                    </Stack>
+                    <Box sx={{ padding: "1.4rem", background: "#fff", margin: "1rem 0 0 2rem", borderRadius: "1rem", width: "100%"}}>
+                        <CChart
+                            type="doughnut"
+                            data={{
+                                labels: ['Pending', 'Completed'],
+                                datasets: [
+                                {
+                                    data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
+                                    backgroundColor: [`${getTaskStatusColor("Pending")}`,  
+                                    `${getTaskStatusColor("Completed")}`],
+                                },
+                                ],
+                            }}
+                        />
                     </Box>
-                    <Box sx={{ background: `${getTaskStatusColor("Completed")}`, borderRadius: "1rem", padding: ".5rem", 
-                            margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <Box sx={{ display: "flex", padding: "1rem"}}>
-                            <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
-                                    {getTaskIconHandler("Completed")}
-                            </Fab>
-                        </Box>
-                        <Box sx={{ display: "flex", color: "#fff" }}>                  
-                                <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
-                                    <Typography>Completed</Typography>
-                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{(userStatisticsEntries.Completed !== 0) ? userStatisticsEntries.Completed : 0}</Typography>
-                                </Stack>
-                        </Box>
-                    </Box>
-            </Grid>
-        </Grid>
+            </Stack>
+        </Box>
         </Box>
      </>
   )

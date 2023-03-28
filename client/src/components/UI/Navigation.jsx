@@ -7,6 +7,7 @@ import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Box from '@mui/material/Box';
@@ -66,6 +67,16 @@ export default function SideBar() {
             </ListItemIcon>
               <Link href={`/tasks`} sx={{ textDecoration: "none", color: "#fff", margin: "1.2rem 0" }}>
                   Tasks
+              </Link>
+          </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+          <ListItemButton>
+            <ListItemIcon>
+              <CalendarMonthIcon sx={{ color: "#fff"}}/>
+            </ListItemIcon>
+              <Link href={`/calender`} sx={{ textDecoration: "none", color: "#fff", margin: "1.2rem 0" }}>
+                  Calender
               </Link>
           </ListItemButton>
       </ListItem>

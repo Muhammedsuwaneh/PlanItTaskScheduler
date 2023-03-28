@@ -79,9 +79,10 @@ export default function TaskForm({ onModalClose, onNewTaskAdd }) {
         <form onSubmit={formSubmissionHandler}>
             <Stack>
             <TextField required id="standard-basic" label="Title" sx={{ margin: ".5rem 0"}} variant="standard"
-                inputProps={{ maxLength: 50 }} 
+                inputProps={{ maxLength: 35 }} 
                 onChange={(event) => { setTitle(event.target.value)}}
             />
+            <Typography sx={{ color: "#333"}}>max characters (35)</Typography>
             <FormControl required sx={{ margin: "1rem 0" }}>
             <TextField
             id="outlined-multiline-flexible"

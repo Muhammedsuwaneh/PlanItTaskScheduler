@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardLayout from '../layout';
 import Dashboard from '@/components/Dashboard/Dashboard';
 import { getCookie } from 'cookies-next'
@@ -12,12 +12,9 @@ export default function DashboardPage({ user, userTasks, userStatistics }) {
     filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 3);
   }
 
-  // convert statistics to an array of objects
-  const userStatisticsEntries = Object.entries(userStatistics);
-
   return (
     <DashboardLayout>
-        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userStatisticsEntries}/>
+        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userStatistics}/>
     </DashboardLayout>
   )
 }
@@ -42,6 +39,7 @@ export const getServerSideProps = async({ req, res }) => {
    // get user task
    let userTasks = [];
    let userStatistics = [];
+   let userTaskStatistics = {};
 
    await getUserTask({ token })
    .then(res => {
@@ -51,13 +49,15 @@ export const getServerSideProps = async({ req, res }) => {
    await getUserTaskStatistics({ token })
    .then(res => {
       userStatistics = res;
+      userTaskStatistics = { "Pending": (userStatistics.Pending == undefined) ? 0 : userStatistics.Pending, 
+      "Completed": (userStatistics.Completed == undefined) ? 0 : userStatistics.Completed};
    });
 
    return {
       props: {
         user: username,
         userTasks: userTasks,
-        userStatistics: userStatistics,
+        userStatistics: userTaskStatistics,
       }
    }
 };

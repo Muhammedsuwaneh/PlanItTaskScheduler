@@ -118,24 +118,34 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
                     </Typography>
-                    {userStatisticsEntries.map(entry => {
-                    return (
-                    <Box sx={{ background: `${getTaskStatusColor(entry[0])}`, borderRadius: "1rem", padding: ".5rem", 
+                    <Box sx={{ background: `${getTaskStatusColor("Pending")}`, borderRadius: "1rem", padding: ".5rem", 
                             margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                         <Box sx={{ display: "flex", padding: "1rem"}}>
                             <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
-                                    {getTaskIconHandler(entry[0])}
+                                    {getTaskIconHandler("Pending")}
                             </Fab>
                         </Box>
                         <Box sx={{ display: "flex", color: "#fff" }}>                  
                                 <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
-                                    <Typography>{entry[0]} Task</Typography>
-                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{entry[1]}</Typography>
+                                    <Typography>Pending</Typography>
+                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
                                 </Stack>
                         </Box>
                     </Box>
-                )
-            })}
+                    <Box sx={{ background: `${getTaskStatusColor("Completed")}`, borderRadius: "1rem", padding: ".5rem", 
+                            margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        <Box sx={{ display: "flex", padding: "1rem"}}>
+                            <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
+                                    {getTaskIconHandler("Completed")}
+                            </Fab>
+                        </Box>
+                        <Box sx={{ display: "flex", color: "#fff" }}>                  
+                                <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
+                                    <Typography>Completed</Typography>
+                                    <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{(userStatisticsEntries.Completed !== 0) ? userStatisticsEntries.Completed : 0}</Typography>
+                                </Stack>
+                        </Box>
+                    </Box>
             </Grid>
         </Grid>
         </Box>

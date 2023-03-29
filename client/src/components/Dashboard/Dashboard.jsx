@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
@@ -9,11 +9,15 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { CChart } from "@coreui/react-chartjs";
+import { getCookie } from "cookies-next"
+
+import { getUserTask, getUserTaskStatistics } from '@/pages/api/userTaskApi';
 
 const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
   const [open, setOpen] = useState(false);
-  const [tasks, setTasks] = useState(userTasks);
+  const [tasks, setTasks] = useState([]);
+  const [statistics, setStatistics] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -35,17 +39,26 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
     }
   };
 
-  const newAddedTaskHandler = ({ responseObject }) => {
+  const newAddedTaskHandler = async ({ responseObject }) => {
 
         if(tasks.length >= 3) {
             tasks.pop();
             setTasks((prevTasks) => [responseObject, ...prevTasks]);
         }
 
-        else if(tasks.length <= 0) {
-            const arr = [];
-            arr.push(responseObject);
-            setTasks(arr);
+        else if(tasks.length == 0) {
+
+            const token = getCookie("USER_AUTH_TOKEN");
+
+            await getUserTask({ token })
+            .then(res => {
+                setTasks(res);
+            });
+
+            await getUserTaskStatistics({ token })
+            .then(res => {
+                setStatistics(res);
+            });
         }
 
         else {
@@ -58,6 +71,11 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   const copyToClipBoardHandler = (task) => {
     navigator.clipboard.writeText(task);
   }
+
+  useEffect(() => {
+    setTasks(userTasks);
+    setStatistics(userStatisticsEntries);
+  }, [userTasks, userStatisticsEntries]);
 
   let content = "";
 
@@ -114,8 +132,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             </Link>
             </Box>
         </Box>
-        <Box sx={{ display: "flex", margin: "2rem 0", height: "auto"}}>
-            <Stack sx={{ width: "70%", padding:"2rem", background: "#fff", height: "auto", margin: "0 1rem 0 0", borderRadius: "1rem"}}>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, margin: { xs: "0", sm: "2rem 0" }, height: "auto"}}>
+            <Stack sx={{ width: { sm: "70%", xs: "100%"}, padding: "2rem", background: "#fff", height: "auto", margin: { sm: "0 1rem 0 0", xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                     Upcoming Task
                 </Typography>
@@ -123,8 +141,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     {content}                    
                 </Stack>
             </Stack>
-            <Stack sx={{ width: "30%", padding: "0 2rem 0 0", margin: "0" }}>
-                    <Stack sx={{ padding: "1rem", background: "#fff", margin: "0 0 0 2rem", borderRadius: "1rem", width: "100%"}}>
+            <Stack sx={{ width: { sm: "30%", xs: "100%"}, padding: { sm: "0 2rem 0 0", xs: "0"}, margin: "0" }}>
+                    <Stack sx={{ padding: "1rem", background: "#fff", margin: { sm: "0 0 0 2rem", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
                         <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
                         </Typography>
@@ -138,7 +156,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
                                         <Typography>Pending</Typography>
-                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{statistics.Pending}</Typography>
                                     </Stack>
                             </Box>
                         </Box>
@@ -152,25 +170,25 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
                                         <Typography>Completed</Typography>
-                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Completed}</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{statistics.Completed}</Typography>
                                     </Stack>
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ padding: "1.4rem", background: "#fff", margin: "1rem 0 0 2rem", borderRadius: "1rem", width: "100%"}}>
-                        <CChart
+                    <Box sx={{ height:"auto", padding: "1.4rem", background: "#fff", margin: { sm: "1rem 0 0 2rem", xs: "1rem 0"}, borderRadius: "1rem", width: "100%"}}>
+                        {(userTasks.length == 0) || <CChart
                             type="doughnut"
                             data={{
                                 labels: ['Pending', 'Completed'],
                                 datasets: [
                                 {
-                                    data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
+                                    data: [statistics.Pending, statistics.Completed],
                                     backgroundColor: [`${getTaskStatusColor("Pending")}`,  
                                     `${getTaskStatusColor("Completed")}`],
                                 },
                                 ],
                             }}
-                        />
+                        />}
                     </Box>
             </Stack>
         </Box>

@@ -46,7 +46,7 @@ export default function SideBar() {
   };
 
   return (
-    <SideBarTheme>
+    <SideBarTheme sx={{ display: { xs: "none", sm: "block"}}}>
         <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
             PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
         </Typography>

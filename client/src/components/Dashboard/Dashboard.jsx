@@ -14,10 +14,8 @@ import { getUserTask, getUserTaskStatistics } from '@/pages/api/userTaskApi';
 const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
   const [open, setOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
   const [content, setContent] = useState();
   const [isLoadingTasks, setIsLoadingTasks] = useState(false);
-  const [statistics, setStatistics] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -41,38 +39,24 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 
   const newAddedTaskHandler = async ({ responseObject }) => {
 
-        if(tasks.length >= 3) {
-            tasks.pop();
-            setTasks((prevTasks) => [responseObject, ...prevTasks]);
-            console.log("max reached .. remove one and add on top");
-        }
+        userStatisticsEntries.Pending += 1;
+        userTasks.unshift(responseObject);
 
-        else if(tasks.length == 0) {
-   
-            console.log("new addition");
-            setTasks([responseObject, ...tasks]);
-            console.log(tasks);
-        }
+        if(userTasks.length > 3)
+            userTasks.pop();
 
-        else {
-            console.log("add on top");
-            setTasks((prevTasks) => [responseObject, ...prevTasks]);
-        }
-
+        initDataHandler();
         handleClose();
   };
 
   const initDataHandler = () => {
-
-    setTasks(userTasks);
-    setStatistics(userStatisticsEntries);
 
     if(userTasks.length <= 0) {
         setContent(<Typography sx={{ fontSize: "2rem", marginTop: "7rem", textAlign: "center"}}>No task available 😳</Typography>);
     }
     
     else {
-        setContent(tasks.map(task => {
+        setContent(userTasks.map(task => {
             return (
                 <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #F87D01", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
                     <Box sx={{ display: "flex"}}>
@@ -96,7 +80,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 
   useEffect(() => {
     initDataHandler();
-  }, [userTasks, userStatisticsEntries, content, tasks]);
+  }, [userTasks, userStatisticsEntries, setContent]);
 
   return (
      <>
@@ -147,7 +131,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
                                         <Typography>Pending</Typography>
-                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{statistics.Pending}</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
                                     </Stack>
                             </Box>
                         </Box>
@@ -161,7 +145,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
                                         <Typography>Completed</Typography>
-                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{statistics.Completed}</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Completed}</Typography>
                                     </Stack>
                             </Box>
                         </Box>
@@ -173,7 +157,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                                 labels: ['Pending', 'Completed'],
                                 datasets: [
                                 {
-                                    data: [statistics.Pending, statistics.Completed],
+                                    data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
                                     backgroundColor: [`${getTaskStatusColor("Pending")}`,  
                                     `${getTaskStatusColor("Completed")}`],
                                 },

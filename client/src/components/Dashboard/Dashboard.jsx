@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { CChart } from "@coreui/react-chartjs";
 import { getCookie } from "cookies-next"
@@ -17,6 +15,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
   const [open, setOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [content, setContent] = useState();
+  const [isLoadingTasks, setIsLoadingTasks] = useState(false);
   const [statistics, setStatistics] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -44,68 +44,59 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         if(tasks.length >= 3) {
             tasks.pop();
             setTasks((prevTasks) => [responseObject, ...prevTasks]);
+            console.log("max reached .. remove one and add on top");
         }
 
         else if(tasks.length == 0) {
-
-            const token = getCookie("USER_AUTH_TOKEN");
-
-            await getUserTask({ token })
-            .then(res => {
-                setTasks(res);
-            });
-
-            await getUserTaskStatistics({ token })
-            .then(res => {
-                setStatistics(res);
-            });
+   
+            console.log("new addition");
+            setTasks([responseObject, ...tasks]);
+            console.log(tasks);
         }
 
         else {
+            console.log("add on top");
             setTasks((prevTasks) => [responseObject, ...prevTasks]);
         }
 
         handleClose();
   };
 
-  const copyToClipBoardHandler = (task) => {
-    navigator.clipboard.writeText(task);
+  const initDataHandler = () => {
+
+    setTasks(userTasks);
+    setStatistics(userStatisticsEntries);
+
+    if(userTasks.length <= 0) {
+        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "7rem", textAlign: "center"}}>No task available 😳</Typography>);
+    }
+    
+    else {
+        setContent(tasks.map(task => {
+            return (
+                <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #F87D01", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
+                    <Box sx={{ display: "flex"}}>
+                        <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
+                           {getTaskIconHandler(task.status)}
+                        </Fab>
+                        <Stack sx={{ margin: ".5rem 0 .5rem .7rem"}}>
+                            <Typography>{task.title}</Typography>
+                            <Typography>{task.dateAdded}</Typography>
+                        </Stack>
+                    </Box>
+                    <Box sx={{ display: "flex", padding: "1rem"}}>
+                        <VisibilityIcon sx={{ fontSize: "2rem", color: "#333", margin: "0 .5rem", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
+                        <DeleteForeverIcon sx={{ fontSize: "2rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
+                    </Box>
+                </Box>
+            )
+        }));
+      }
   }
 
   useEffect(() => {
-    setTasks(userTasks);
-    setStatistics(userStatisticsEntries);
-  }, [userTasks, userStatisticsEntries]);
-
-  let content = "";
-
-  if(userTasks.length <= 0) {
-    content = <Typography sx={{ fontSize: "2rem", marginTop: "7rem", textAlign: "center"}}>No task available 😳</Typography>
-  }
-
-  else {
-    content = tasks.map(task => {
-        return (
-            <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #F87D01", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
-                <Box sx={{ display: "flex"}}>
-                    <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
-                       {getTaskIconHandler(task.status)}
-                    </Fab>
-                    <Stack sx={{ margin: ".5rem 0 .5rem .7rem"}}>
-                        <Typography>{task.title}</Typography>
-                        <Typography>{task.dateAdded}</Typography>
-                    </Stack>
-                </Box>
-                <Box sx={{ display: "flex", padding: "1rem"}}>
-                    <EditIcon sx={{ fontSize: "2rem", color: "#F87D01", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
-                    <ContentCopyIcon onClick={() => copyToClipBoardHandler(task.title)} sx={{ fontSize: "2rem", color: "#333", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
-                    <VisibilityIcon sx={{ fontSize: "2rem", color: "#333", margin: "0 .5rem", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                    <DeleteForeverIcon sx={{ fontSize: "2rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
-                </Box>
-            </Box>
-        )
-    })
-  }
+    initDataHandler();
+  }, [userTasks, userStatisticsEntries, content, tasks]);
 
   return (
      <>

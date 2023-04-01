@@ -49,7 +49,7 @@ function MobileNavigation({ onLogoutClick, window }) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: { sm: 'none', xs: 'flex'}}}>
+    <Box sx={{ display: {  sm: 'flex', md: 'flex', xs: 'flex', lg: 'none'}}}>
       <CssBaseline />
       <AppBar component="nav">
         <NavigationTheme container>
@@ -62,7 +62,7 @@ function MobileNavigation({ onLogoutClick, window }) {
           >
           <MenuIcon />
           </IconButton>
-          <Grid item xs={9} sx={{ display: { sm: 'none', xs: 'none', md: 'none', lg: 'block' }}}>
+          <Grid item xs={9}>
                 <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", textAlign: "right"}}>
                     PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
                 </Typography>

@@ -50,7 +50,7 @@ export default function Tasks({ userTasks, userStatistics }) {
                 </Fab>
             </Link>
         </PageTitle>
-        <Box>
+        <Box sx={{ background: "#fff", padding: "1.3rem", margin: "1rem 0", borderRadius: "1rem"}}>
             {content}
         </Box>
     </Stack>

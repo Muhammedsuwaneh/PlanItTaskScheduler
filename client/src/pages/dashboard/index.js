@@ -8,8 +8,8 @@ export default function DashboardPage({ user, userTasks, userStatistics }) {
 
   let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Pending");
 
-  if(filteredTasksBasedOnStatus.length >= 3) {
-    filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 3);
+  if(filteredTasksBasedOnStatus.length >= 4) {
+    filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 4);
   }
 
   return (

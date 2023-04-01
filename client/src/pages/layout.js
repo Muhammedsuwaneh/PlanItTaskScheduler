@@ -18,7 +18,7 @@ const PagesLayoutTheme = styled(Grid)(({ theme}) => ({
 
 export default function DashboardLayout({ children }) {
    return (
-      <LayoutTheme sx={{ flexDirection: { xs: "none", sm: "row"} }}>
+      <LayoutTheme sx={{ flexDirection: { lg: "row", xs: "none", sm: "none", md: "none"} }}>
         <Grid item xs={1} sx={{ position: "relative", height: "100vh"}}>
             <SideBar />
         </Grid>

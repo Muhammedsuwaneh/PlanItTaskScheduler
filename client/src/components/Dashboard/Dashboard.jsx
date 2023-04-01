@@ -36,7 +36,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
     }
     
     else {
-        setContent(<TaskList userTasks={userTasks} />);
+        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" />);
       }
   }
 

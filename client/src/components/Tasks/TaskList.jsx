@@ -3,11 +3,29 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
+import { Box, Grid, Typography, Modal, Link, Fab, Stack, TextField } from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
+import { getCookie } from "cookies-next";
+
+import DeleteContent from '../UI/DeleteContent';
+import TaskForm from '../UI/TaskForm';
+import TaskListContent from './TaskListContent';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 export const getTaskStatusColor = (status) => {
     switch(status) {
@@ -31,59 +49,105 @@ export default function TaskList({ userTasks, currentPage }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
+  const [open, setOpen] = React.useState(false);
+  const [modalContent, setModalContent] = React.useState();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  const handleChange = (event) => {
-    setStatus(event.target.value);
+  const handleChangeFilter = (event, action) => {
+     if(action == "filter") {
+        setStatus(event.target.value);
 
-    if(event.target.value == "All") {
-        setTaskList(userTasks);
+        if(event.target.value == "All") {
+            setTaskList(userTasks);
+        }
+        else {
+            const newtaskList = userTasks.filter((task) => task.status == event.target.value);
+            setTaskList(newtaskList);
+        }
+     }
+     else if(action == "search") {
+        const filterStrTrimmed = event.target.value.trim().toLowerCase();
+        const items2Display = tasksList.filter((item)=>{
+            if (filterStrTrimmed === "") return true;
+            else if (item.title.toLowerCase().indexOf(filterStrTrimmed) >= 0) return true;
+            else return false;
+        });
+        
+        setTaskList(items2Display);
+     }
+  };
+
+  const deleteTaskHandler = (id) => {
+    if(id != "" && id != 0 && id != null && id != undefined) {
+        const token = getCookie("USER_AUTH_TOKEN");
+        // send a delete request
     }
-    else {
-        const newtaskList = userTasks.filter((task) => task.status == event.target.value);
-        setTaskList(newtaskList);
+  };
+
+  const updateTaskHandler = ({ task }) => {
+
+  };
+
+  const actionButtonHandler = (action, itemObject = { id, title, description, status, dateAdded }) => {
+    // modal content based on action
+    if(action == "delete") {
+        setModalContent(<DeleteContent onConfirmDelete={() => deleteTaskHandler(id)} noDelete={handleClose}/>);
     }
+
+    else if(action == "update") {
+        setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action="update"/>)
+    }
+
+    // open modal 
+    handleOpen();
   };
 
   return (
     <>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+               {modalContent}
+            </Box>
+        </Modal>
         {(currentPage == "dashboard") || <Box>
-            <Box sx={{ minWidth: 120, display: "flex" }}>
-                <FormControl fullWidth>
+            <Box sx={{ minWidth: 120, display: "flex", justifyContent: "space-between" }}>
+                <Box sx={{ display: "flex", alignItems: "center"}}>
+                    <Typography sx={{ margin: "0 1rem"}}>Filter:</Typography>
+                    <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={status}
                     label="Status"
-                    onChange={handleChange}
+                    onChange={(event) => handleChangeFilter(event, "filter")}
+                    sx={{ width: 150 }}
                     >
                     <MenuItem value="All">All</MenuItem>
                     <MenuItem value="Pending">Pending</MenuItem>
                     <MenuItem value="Completed">Completed</MenuItem>
                     </Select>
                 </FormControl>
+                </Box>
+                <Box>
+                <TextField
+                    id="standard-search"
+                    label="Search"
+                    type="search"
+                    variant="standard"
+                    onChange={(event) => handleChangeFilter(event, "search")}
+                    />
+                </Box>
             </Box>
         </Box>}
         <Box>
-            {tasksList.map(task => {
-                return (
-                    <Box key={task.id} sx={{ borderRadius: "1rem", border: `1px solid ${getTaskStatusColor(task.status)}`, padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
-                        <Box sx={{ display: "flex"}}>
-                            <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
-                            {getTaskIconHandler(task.status)}
-                            </Fab>
-                            <Stack sx={{ margin: ".5rem 0 .5rem .7rem"}}>
-                                <Typography>{task.title}</Typography>
-                                <Typography>{task.dateAdded}</Typography>
-                            </Stack>
-                        </Box>
-                        <Box sx={{ display: "flex", padding: "1rem"}}>
-                            <VisibilityIcon sx={{ fontSize: "2rem", color: "#333", margin: "0 .5rem", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                            <DeleteForeverIcon sx={{ fontSize: "2rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
-                        </Box>
-                    </Box>
-                )
-            })}
+           <TaskListContent onActionFired={actionButtonHandler} tasksList={tasksList}/>
         </Box>
     </>
   )

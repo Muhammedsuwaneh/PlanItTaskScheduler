@@ -52,7 +52,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <Box>
-                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler}/>
+                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler} action="new" 
+                itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
             </Box>
         </Modal>
         <Box sx={{ padding: "2rem" }}>

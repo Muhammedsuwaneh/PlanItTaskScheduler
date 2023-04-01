@@ -13,7 +13,7 @@ export default function Tasks({ userTasks, userStatistics }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);  
 
-  const newAddedTaskHandler = () => {
+  const newAddedTaskHandler = ({ responseObject }) => {
 
   };
 
@@ -33,16 +33,18 @@ export default function Tasks({ userTasks, userStatistics }) {
   }, [userTasks, userStatistics, setContent]);
     
   return (
-    <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"} }}>
+    <>
         <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <Box>
-                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler}/>
+                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler} 
+                itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}} action="new"/>
             </Box>
         </Modal>
+        <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"} }}>
         <PageTitle title="Tasks">
             <Link onClick={handleOpen}>
                 <Fab color="primary" aria-label="add" sx={{ padding: ".5rem"}}>
@@ -54,5 +56,6 @@ export default function Tasks({ userTasks, userStatistics }) {
             {content}
         </Box>
     </Stack>
+    </>
   )
 }

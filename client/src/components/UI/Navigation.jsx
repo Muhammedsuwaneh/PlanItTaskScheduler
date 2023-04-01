@@ -9,6 +9,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MobileNavigation from './MobileNavigation';
 
 import Box from '@mui/material/Box';
 import { styled } from "@mui/material/styles";
@@ -46,7 +47,9 @@ export default function SideBar() {
   };
 
   return (
-    <SideBarTheme sx={{ display: { xs: "none", sm: "block"}}}>
+    <>
+        <MobileNavigation onLogoutClick={logoutHandler}/>
+        <SideBarTheme sx={{ display: { xs: "none", sm: "block"}}}>
         <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
             PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
         </Typography>
@@ -102,6 +105,7 @@ export default function SideBar() {
           </ListItemButton>
         </ListItem>
         </List>
-    </SideBarTheme>
+        </SideBarTheme>
+    </>
   )
 }

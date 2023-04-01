@@ -22,8 +22,8 @@ export default function DashboardLayout({ children }) {
         <Grid item xs={1} sx={{ position: "relative", height: "100vh"}}>
             <SideBar />
         </Grid>
-        <PagesLayoutTheme item xs={10} sx={{ padding: { sm: "1rem 1rem 0 310px", xs: "0"}}}>
-            <MobileNavigation />
+        <PagesLayoutTheme item xs={10} sx={{ padding: { lg: "1rem 1rem 0 310px", xs: "0", sm: "0", md: "0"}, 
+        margin: { lg: "0", sm: "5rem 0 0 0", md: "5rem 0 0 0", xs: "5rem 0 0 0"}}}>
             {children}
         </PagesLayoutTheme>
       </LayoutTheme>

@@ -20,8 +20,7 @@ const NavigationTheme = styled(Grid)(({ theme }) => ({
 const drawerWidth = 240;
 const navItems = ['Dashboard', 'Tasks', 'Calender', 'Profile'];
 
-function MobileNavigation(props) {
-  const { window } = props;
+function MobileNavigation({ onLogoutClick, window }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -40,6 +39,9 @@ function MobileNavigation(props) {
                 </Link>
             )   
           })}
+          <Link sx={{textDecoration: "none", color: "red", cursor: "pointer" }} onClick={() => onLogoutClick()}>
+              Logout
+          </Link>
       </Stack>
     </Box>
   );
@@ -56,11 +58,11 @@ function MobileNavigation(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' }, margin: "0 1rem" }}
+            sx={{ mr: 2, display: { lg: 'none', sm: 'block', md: 'block', xs: 'block' }, margin: "0 1rem" }}
           >
           <MenuIcon />
           </IconButton>
-          <Grid item xs={9} sx={{ display: { sm: 'none', xs: 'block' }}}>
+          <Grid item xs={9} sx={{ display: { sm: 'none', xs: 'none', md: 'none', lg: 'block' }}}>
                 <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", textAlign: "right"}}>
                     PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
                 </Typography>
@@ -77,7 +79,7 @@ function MobileNavigation(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            display: { xs: 'block', sm: 'block', md: 'block', lg: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
         >

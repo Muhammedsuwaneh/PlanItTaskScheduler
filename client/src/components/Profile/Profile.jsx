@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box, Stack, Typography, Grid } from "@mui/material";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PageTitle from '../UI/PageTitle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function Calender() {
+export default function Profile() {
   return (
     <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}}}>
-          <PageTitle title="Calender">
-            <CalendarMonthIcon sx={{ color: "#0F4AC7" }} />
+          <PageTitle title="Profile">
+            <AccountCircleIcon sx={{ color: "#0F4AC7" }} />
         </PageTitle>
     </Stack>
   )

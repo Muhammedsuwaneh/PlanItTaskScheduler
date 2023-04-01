@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { CChart } from "@coreui/react-chartjs";
 import { getCookie } from "cookies-next"
 
-import { getUserTask, getUserTaskStatistics } from '@/pages/api/userTaskApi';
+import { getTaskIconHandler, getTaskStatusColor } from '../Tasks/TaskList';
+import TaskList from '../Tasks/TaskList';
 
 const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
       
@@ -18,24 +16,6 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   const [isLoadingTasks, setIsLoadingTasks] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const getTaskStatusColor = (status) => {
-    switch(status) {
-        case "Pending": 
-            return "#F87D01";
-        case "Completed":
-            return "#1976D2";
-    }
-  };
-
-  const getTaskIconHandler = (status) => {
-    switch(status) {
-        case "Pending": 
-            return <HourglassBottomIcon />;
-        case "Completed":
-            return <TaskAltIcon />;
-    }
-  };
 
   const newAddedTaskHandler = async ({ responseObject }) => {
 
@@ -56,25 +36,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
     }
     
     else {
-        setContent(userTasks.map(task => {
-            return (
-                <Box key={task.id} sx={{ borderRadius: "1rem", border: "1px solid #F87D01", padding: "1rem", margin: "1rem 0", display: "flex", justifyContent: "space-between"}}>
-                    <Box sx={{ display: "flex"}}>
-                        <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
-                           {getTaskIconHandler(task.status)}
-                        </Fab>
-                        <Stack sx={{ margin: ".5rem 0 .5rem .7rem"}}>
-                            <Typography>{task.title}</Typography>
-                            <Typography>{task.dateAdded}</Typography>
-                        </Stack>
-                    </Box>
-                    <Box sx={{ display: "flex", padding: "1rem"}}>
-                        <VisibilityIcon sx={{ fontSize: "2rem", color: "#333", margin: "0 .5rem", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                        <DeleteForeverIcon sx={{ fontSize: "2rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
-                    </Box>
-                </Box>
-            )
-        }));
+        setContent(<TaskList userTasks={userTasks} />);
       }
   }
 

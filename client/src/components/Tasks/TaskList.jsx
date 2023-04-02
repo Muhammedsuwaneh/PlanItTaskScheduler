@@ -11,6 +11,8 @@ import Select from '@mui/material/Select';
 
 import { getCookie } from "cookies-next";
 
+import { deleteUserTaskRequest } from '@/pages/api/userTaskApi';
+
 import DeleteContent from '../UI/DeleteContent';
 import TaskForm from '../UI/TaskForm';
 import TaskListContent from './TaskListContent';
@@ -45,7 +47,7 @@ export const getTaskIconHandler = (status) => {
     }
 };
 
-export default function TaskList({ userTasks, currentPage }) {
+export default function TaskList({ userTasks, currentPage, onDeleteSuccessful }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
@@ -78,10 +80,23 @@ export default function TaskList({ userTasks, currentPage }) {
      }
   };
 
-  const deleteTaskHandler = (id) => {
+  const deleteTaskHandler = async (id) => {
     if(id != "" && id != 0 && id != null && id != undefined) {
         const token = getCookie("USER_AUTH_TOKEN");
         // send a delete request
+        await deleteUserTaskRequest({ token, id })
+        .then(res => {
+            const { responseObject } = res;
+            if(responseObject != null && responseObject != undefined && responseObject != "") {
+                // remove task from list
+                const newTasks = userTasks.filter((task) => task.id !== id);
+                setTaskList(newTasks);
+                let listIsEmpty = false; 
+                if(newTasks.length <= 0) listIsEmpty = true;
+                onDeleteSuccessful(listIsEmpty);
+            }
+        });
+        handleClose();
     }
   };
 
@@ -89,10 +104,10 @@ export default function TaskList({ userTasks, currentPage }) {
 
   };
 
-  const actionButtonHandler = (action, itemObject = { id, title, description, status, dateAdded }) => {
+  const actionButtonHandler = (action, itemObject) => {
     // modal content based on action
     if(action == "delete") {
-        setModalContent(<DeleteContent onConfirmDelete={() => deleteTaskHandler(id)} noDelete={handleClose}/>);
+        setModalContent(<DeleteContent onConfirmDelete={() => deleteTaskHandler(itemObject.id)} noDelete={handleClose}/>);
     }
 
     else if(action == "update") {

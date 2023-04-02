@@ -14,7 +14,9 @@ export default function Tasks({ userTasks, userStatistics }) {
   const handleClose = () => setOpen(false);  
 
   const newAddedTaskHandler = ({ responseObject }) => {
-
+        userTasks.unshift(responseObject);
+        initDataHandler();
+        handleClose();
   };
 
   const initDataHandler = () => {
@@ -40,7 +42,7 @@ export default function Tasks({ userTasks, userStatistics }) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <Box>
-                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler} 
+                <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}} action="new"/>
             </Box>
         </Modal>

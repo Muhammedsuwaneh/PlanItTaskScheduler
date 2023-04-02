@@ -161,9 +161,9 @@ namespace UserTaskManagerAPI.Controllers
 
                     _context.SaveChanges();
 
-                    return Ok(new ApiResponse<UserTask>
+                    return Ok(new ApiResponse<int>
                     {
-                        ResponseObject = null,
+                        ResponseObject = id,
                         message = "task removed",
                         token = null,
                         status = 200

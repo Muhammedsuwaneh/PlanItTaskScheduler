@@ -29,6 +29,14 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         handleClose();
   };
 
+  const deleteHandler = (listIsEmpty) => {
+        userStatisticsEntries.Pending -= 1;
+        if(listIsEmpty === true) {
+            userTasks = [];
+        }
+        initDataHandler();
+  };
+
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) {
@@ -36,7 +44,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
     }
     
     else {
-        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" />);
+        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler}/>);
       }
   }
 
@@ -52,7 +60,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <Box>
-                <TaskForm onModalClose={handleClose} onNewTaskAdd={newAddedTaskHandler} action="new" 
+                <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
             </Box>
         </Modal>
@@ -70,8 +78,9 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             </Link>
             </Box>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, margin: { xs: "0", sm: "2rem 0" }, height: "auto"}}>
-            <Stack sx={{ width: { sm: "70%", xs: "100%"}, padding: "2rem", background: "#fff", height: "auto", margin: { sm: "0 1rem 0 0", xs: "1rem 0"}, borderRadius: "1rem"}}>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
+            <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, padding: "2rem", background: "#fff", height: "auto", 
+            margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                     Upcoming Task
                 </Typography>
@@ -79,8 +88,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     {content}                    
                 </Stack>
             </Stack>
-            <Stack sx={{ width: { sm: "30%", xs: "100%"}, padding: { sm: "0 2rem 0 0", xs: "0"}, margin: "0" }}>
-                    <Stack sx={{ padding: "1rem", background: "#fff", margin: { sm: "0 0 0 2rem", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
+            <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 2rem 0 0", sm: "0", md: "0", xs: "0"}, margin: "0" }}>
+                    <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 2rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
                         <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
                         </Typography>
@@ -113,7 +122,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ height:"auto", padding: "1.4rem", background: "#fff", margin: { sm: "1rem 0 0 2rem", xs: "1rem 0"}, borderRadius: "1rem", width: "100%"}}>
+                    <Box sx={{ height:"auto", padding: "1.4rem", background: "#fff", 
+                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%"}}>
                         {(userTasks.length == 0) || <CChart
                             type="doughnut"
                             data={{

@@ -46,16 +46,16 @@ export default function Register({ onUserRegisterationRequest }) {
                             variant="standard" 
                             required
                             onChange={(element) => { setUsername(element.target.value)}}
-                            sx={{ margin: "1rem 0", width: "400px"}}
+                            sx={{ margin: ".6rem 0", width: "400px"}}
                     />
                      <TextField id="standard-basic" 
                             label="Email" 
                             variant="standard" 
                             required
                             onChange={(element) => { setEmail(element.target.value)}}
-                            sx={{ margin: "1rem 0", width: "400px"}}
+                            sx={{ margin: ".5rem 0", width: "400px"}}
                     />
-                   <FormControl variant="standard" sx={{ width: "400px"}}>
+                   <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "400px"}}>
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input
                       id="standard-adornment-password"
@@ -75,7 +75,7 @@ export default function Register({ onUserRegisterationRequest }) {
                       }
                     />
                    </FormControl>
-                    <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: "2rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign up</Button>
+                    <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: ".7rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign up</Button>
               </form>
        </Box>
     </Box>

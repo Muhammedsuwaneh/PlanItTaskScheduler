@@ -74,7 +74,7 @@ export default function Login({ onUserAuthRequest }) {
                       }
                     />
                    </FormControl>
-                   <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: "2rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign in</Button>
+                   <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: "1.4rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign in</Button>
               </form>
               <LinearProgress sx={{ display: `${sendingRequest}`}}/>
        </Box>

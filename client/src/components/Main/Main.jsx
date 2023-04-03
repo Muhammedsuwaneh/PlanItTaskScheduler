@@ -54,7 +54,7 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
             <Box sx={{ display: `${hideLoginPage}`}}>
                 <Login onUserAuthRequest={UserAuthRequestHandler}/>
                  <Box>
-                  <Typography sx={{marginTop: "1rem"}}>
+                  <Typography sx={{marginTop: ".5rem"}}>
                   Don't have an account ?  <Button variant="text" onClick={hideLoginPageHandler}>Sign Up Now !</Button>
                   </Typography>
                 </Box>
@@ -66,7 +66,7 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
             <Box sx={{ display: `${hideRegisterPage}`}}>
               <Register onUserRegisterationRequest={UserRegisterationRequestHandler} />
                   <Box>
-                  <Typography sx={{marginTop: "1rem"}}>
+                  <Typography sx={{marginTop: ".5rem"}}>
                     Already have an account ?  <Button variant="text" onClick={hideRegisterPageHandler}>Sign in !</Button>
                   </Typography>
                 </Box>

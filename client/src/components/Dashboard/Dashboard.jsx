@@ -3,6 +3,7 @@ import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import Backdrop from '@mui/material/Backdrop';
 import { CChart } from "@coreui/react-chartjs";
 import { getCookie } from "cookies-next"
 
@@ -57,8 +58,15 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         <Modal
             open={open}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+              backdrop: {
+                timeout: 500,
+              },
+            }}>
             <Box>
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>

@@ -19,6 +19,13 @@ export default function Tasks({ userTasks, userStatistics }) {
         handleClose();
   };
 
+  const successfullyDeletedTaskHandler = (listIsEmpty) => {
+        if(listIsEmpty === true) {
+            userTasks = [];
+        }
+        initDataHandler();
+  };
+
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) {
@@ -26,7 +33,7 @@ export default function Tasks({ userTasks, userStatistics }) {
     }
     
     else {
-        setContent(<TaskList userTasks={userTasks} />);
+        setContent(<TaskList userTasks={userTasks} onDeleteSuccessful={successfullyDeletedTaskHandler}/>);
       }
   }
 

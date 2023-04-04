@@ -20,11 +20,11 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 
   const newAddedTaskHandler = async ({ responseObject }) => {
 
+        if(userTasks.length == 4)
+            userTasks.pop();
+
         userStatisticsEntries.Pending += 1;
         userTasks.unshift(responseObject);
-
-        if(userTasks.length > 3)
-            userTasks.pop();
 
         initDataHandler();
         handleClose();

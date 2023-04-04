@@ -51,6 +51,26 @@ export const deleteUserTaskRequest = async ({ token, id }) => {
     return req.json();
 };
 
+export const updateUserTaskRequest = async ({ token, updatedTask, taskId }) => {
+    const req = await fetch(`https://localhost:7136/api/usertasks/update/${+taskId}`,
+    {
+        method: "PUT",
+        mode: 'cors',
+        body: JSON.stringify(updatedTask),
+        withCredentials: true,
+        credentials: 'same-origin',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });  
+
+    return req.json();
+};
+
 export const getUserTaskStatistics = async ({ token }) => {
     const response = await axios.get("https://localhost:7136/api/usertasks/statistics",
     {

@@ -28,7 +28,6 @@ export const getServerSideProps = async({ req, res }) => {
        }
   }
 
-
   // get user task
   let userTasks = [];
   let userStatistics = [];

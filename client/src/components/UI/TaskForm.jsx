@@ -9,6 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { getCookie } from "cookies-next";
 
+import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
+
 
 import axios from "axios";
 
@@ -29,7 +31,8 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   const [taskId, setTaskId] = useState(itemObject.id);
   const [title, setTitle] = useState(itemObject.title);
   const [description, setDescription] = useState(itemObject.description);
-  const [date, setDate] = useState(itemObject.dateAdded);
+  const [status, setStatus] = useState(itemObject.status);
+  const [dateAdded, setDateAdded] = useState(itemObject.dateAdded);
 
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
@@ -74,6 +77,21 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     else if(action == "update") {
 
         // send a update request
+        const updatedTask = {
+            id: taskId,
+            title: title,
+            status: status,
+            description: description,
+            dateAdded: dateAdded,
+        };  
+
+        updateUserTaskRequest({ token, updatedTask, taskId })
+        .then(res => {
+            if(res != undefined && res != null && res != {} && res != '') {
+                const { responseObject } = res;
+                onUpdateTask({ responseObject });
+            }
+        });
     }
 
   };

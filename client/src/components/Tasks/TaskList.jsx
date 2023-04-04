@@ -71,7 +71,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful })
      else if(action == "search") {
         const filterStrTrimmed = event.target.value.trim().toLowerCase();
         const items2Display = tasksList.filter((item)=>{
-            if (filterStrTrimmed === "") return true;
+            if (filterStrTrimmed == "") return true;
             else if (item.title.toLowerCase().indexOf(filterStrTrimmed) >= 0) return true;
             else return false;
         });
@@ -100,8 +100,16 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful })
     }
   };
 
-  const updateTaskHandler = ({ task }) => {
-
+  const updateTaskHandler = ({ responseObject }) => {
+    console.log("updated");
+    const newTaskList = tasksList.map(task => {
+        if(task.id == responseObject.id) {
+            task = responseObject;
+        }
+        return task;
+    });
+    setTaskList(newTaskList);
+    handleClose();
   };
 
   const actionButtonHandler = (action, itemObject) => {

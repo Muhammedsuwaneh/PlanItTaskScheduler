@@ -9,13 +9,18 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { updateUserInfoRequest } from '@/pages/api/auth/userAuth';
+import { getCookie, deleteCookie, setCookie } from 'cookies-next';
+
 export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
 
   const [showPassword, setShowPassword] = useState(false);    
   
+  const [userId, setUserId] = useState(userInfo.id);
   const [userEmail, setUserEmail] = useState(userInfo.email);
   const [username, setUsername] = useState(userInfo.username);
   const [password, setPassword] = useState(userInfo.password);
+  const [dateJoined, setDateJoined] = useState(userInfo.dateJoined);
   
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -26,7 +31,35 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
   const userRegisterHandler = (event) => {
       event.preventDefault();  
 
-      // onUserProfileUpdate({ response })
+      const token = getCookie("USER_AUTH_TOKEN");
+      const updatedUser = {
+        id: userId,
+        email: userEmail,
+        username: username,
+        password: password,
+        dateJoined: dateJoined,
+      };
+
+      updateUserInfoRequest({ updatedUser, token})
+      .then(res => {
+            if(res != null && res != "" && res != undefined) {
+                console.log("updated");
+                const { responseObject } = res;
+                console.log(responseObject);
+                onUserProfileUpdate(true);
+                deleteCookie("USER_AUTH_USERNAME");
+                setCookie("USER_AUTH_USERNAME", username)
+            }
+            else {
+                onUserProfileUpdate(false);
+            }
+       });
+  };
+
+  const restoredChangesHandler = () => {
+    setUserEmail(userInfo.email);
+    setUsername(userInfo.username);
+    setPassword(userInfo.password);
   };
 
   return (
@@ -68,13 +101,13 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
       }
     />
    </FormControl>
-    <Box sx={{ display: "flex", marginTop: "5rem", justifyContent: "right" }}>
-        <Button type='submit' variant="contained" 
-        sx={{ margin: "0 0 1rem 0", borderRadius: ".5rem", background: "red"}}>
+    <Box sx={{ display: "flex", marginTop: "1rem", justifyContent: "right" }}>
+        <Button variant="contained" onClick={restoredChangesHandler}
+        sx={{ margin: "1rem 1rem", borderRadius: ".5rem", background: "#333"}}>
             Discard
         </Button>
         <Button type='submit' variant="contained" 
-        sx={{ margin: "0 3rem 1rem 1rem", borderRadius: ".5rem", background: "#F87D01"}}>
+        sx={{ margin: "1rem 0", borderRadius: ".5rem", background: "#F87D01"}}>
             Save Changes
         </Button>
     </Box>

@@ -56,23 +56,16 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   return (
      <>
         <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-              backdrop: {
-                timeout: 500,
-              },
-            }}>
+             open={open}
+             onClose={handleClose}
+             aria-labelledby="modal-modal-title"
+             aria-describedby="modal-modal-description">
             <Box>
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
             </Box>
         </Modal>
-        <Box sx={{ padding: "2rem" }}>
+        <Stack sx={{ padding: "2rem" }}>
         <Box sx={{ background: "#fff", padding: "1rem", borderRadius: "1rem", display: "flex", justifyContent: "space-between"}}>
             <Box sx={{ padding: "1rem"}}>
                     <Typography sx={{ fontSize: "2rem"}}>Welcome - <span style={{ color: "#1976D2"}}>{user} </span> 😊</Typography>
@@ -148,7 +141,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     </Box>
             </Stack>
         </Box>
-        </Box>
+        </Stack>
      </>
   )
 }

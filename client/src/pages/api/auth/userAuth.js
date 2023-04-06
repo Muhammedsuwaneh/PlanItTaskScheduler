@@ -36,6 +36,30 @@ export const userRegisterationHandler = async ({ username, email, password }) =>
     }
 };
 
+export const updateUserInfoRequest = async ({ updatedUser, token }) => {
+    try {
+        const response = await fetch("https://localhost:7136/api/applicationuser/update", { 
+            httpsAgent: agent,
+            method: "PUT",
+            mode: 'cors',
+            body: JSON.stringify(updatedUser),
+            withCredentials: true,
+            credentials: 'same-origin',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Methods': '*',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+         });
+
+         return response.json(); 
+    } catch (error) {
+        return "oops something went wrong: " + error;
+    }
+};
+
 export const getUserInfoHandler = async ({ token }) => {
     const response = await axios.get("https://localhost:7136/api/applicationuser/user",
     {

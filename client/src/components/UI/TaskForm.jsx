@@ -16,10 +16,10 @@ import axios from "axios";
 
 const style = {
     position: 'absolute',
-    top: '50%',
+    top: '30%',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
+    transform: 'translate(-50%, -30%)',
+    width: 400,
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -123,7 +123,7 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             required
             multiline
             value={description}
-            maxRows={4}
+            maxRows={7}
             onChange={(newValue) => setDescription(newValue.target.value)}
             />
             </FormControl>

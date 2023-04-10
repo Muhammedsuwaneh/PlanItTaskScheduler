@@ -74,7 +74,7 @@ Users can create an account using this form
 
 ## License 
 
-This project is license under [`MIT`](LICENSE)
+This project is licensed under [`MIT`](LICENSE)
 
 ## Version 
 1.0.0

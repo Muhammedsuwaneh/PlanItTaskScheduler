@@ -52,7 +52,7 @@ export default function Profile({ user }) {
                 <Divider />
                 <Alert severity="warning" sx={{margin: "1rem 0"}}>Warning: all task related to this account will be deleted</Alert>
                 <Typography id="modal-modal-description" sx={{ mt: 2, color: "red" }}>
-                    Are you sure you want to delete this task ?
+                    Are you sure you want to delete this account ?
                 </Typography>
                 <Box sx={{ margin: "1rem 0"}}>
                   <Button variant="contained" onClick={handleAccountDelete}>Yes</Button>

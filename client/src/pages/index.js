@@ -14,7 +14,7 @@ export default function Home() {
       const { responseData } = data;
       const { responseObject, status, token } = responseData;
 
-      if(responseObject !== null && status === 200) {
+      if(responseObject !== null && status === 201) {
         setCookie('USER_AUTH_TOKEN', token);
         setCookie('USER_AUTH_USERNAME', responseObject.username);
         

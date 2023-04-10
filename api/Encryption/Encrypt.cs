@@ -2,29 +2,52 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 using System.Text;
-using XSystem.Security.Cryptography;
-
 namespace EmployeeManagementSystemAPI.Encryption
 {
+ 
     public static class Encrypt
     {
+        private static string hash { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
+
         public static string GenerateMD5HashedPassword(string password)
         {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] data = UTF8Encoding.UTF8.GetBytes(password);
+            string encryptedPassword = "";
 
-            byte[] arr = Encoding.UTF8.GetBytes(password);
-
-            arr = md5.ComputeHash(arr);
-
-            StringBuilder sb = new StringBuilder();
-
-            foreach (byte ba in arr)
+            using (var md5 = new MD5CryptoServiceProvider())
             {
-                sb.Append(ba.ToString("x2").ToLower());
+                byte[] keys = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
+                using (var tripDes = new TripleDESCryptoServiceProvider() { Key = keys, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 })
+                {
+                    ICryptoTransform transform = tripDes.CreateEncryptor();
+                    byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
+                    encryptedPassword = Convert.ToBase64String(results, 0, results.Length);
+                }
             }
 
-            return sb.ToString();
+            return encryptedPassword;
+        }
+
+        public static string DecryptPassword(string EncryptedPassword)
+        {
+            byte[] data = Convert.FromBase64String(EncryptedPassword); // decrypt the incrypted text
+            string decryptedPassword = "";
+
+            using(var md5 = new MD5CryptoServiceProvider())
+            {
+                byte[] keys = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
+                using (var tripDes = new TripleDESCryptoServiceProvider() { Key = keys, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 })
+                {
+                    System.Security.Cryptography.ICryptoTransform transform = tripDes.CreateDecryptor();
+                    byte[] results = transform.TransformFinalBlock(data, 0, data.Length);
+                    decryptedPassword = UTF8Encoding.UTF8.GetString(results);
+                }
+
+                return decryptedPassword;
+            }
         }
 
         public static string GenerateSessionToken(ApplicationUser user, IConfiguration _config)
@@ -46,7 +69,7 @@ namespace EmployeeManagementSystemAPI.Encryption
 
             // generate token
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(30),
+                _config["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

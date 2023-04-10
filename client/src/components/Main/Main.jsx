@@ -9,7 +9,7 @@ const UserAuthContainer = styled(Grid)(() => ({
     height: "100vh",
     background: "#E9EDF2",
     margin: "auto",
-    padding: "3rem",
+    padding: "2rem",
     justifyContent: "center",
 }));
 
@@ -30,8 +30,8 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
     setHideRegisterPage("none");
   };
 
-  const UserRegisterationRequestHandler = (data) => {
-      onUserRegisterationRequestMain(data);
+  const UserRegisterationRequestHandler = (responseData) => {
+      onUserRegisterationRequestMain(responseData);
   };
 
   const UserAuthRequestHandler = (responseData) => {
@@ -44,7 +44,7 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
         <Box  sx={{ backgroundImage: `url("/task.jpg")`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
             height: "100%", width: "30%", borderTopLeftRadius: "2rem", boxShadow: "1px 1px 2px #333", borderBottomLeftRadius: "2rem" }}>
         </Box>
-        <Box sx={{ background: "#fff", height: "100%", width: "50%", padding: "3rem", boxShadow: "1px 1px 2px #333"}}>
+        <Box sx={{ background: "#fff", height: "100%", width: "50%", padding: "3rem", boxShadow: "1px 1px 2px #333", borderRadius: "0 1rem 1rem 0"}}>
             <Typography variant="h5" sx={{ fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
                 PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
             </Typography>

@@ -157,6 +157,17 @@ namespace UserTaskManagerAPI.Controllers
 
                     var _task = _context.UserTasks.FirstOrDefault(t => t.Id == id && t.user == _userId);
 
+                    if (_task == null)
+                    {
+                        return NotFound(new ApiResponse<UserTask>
+                        {
+                            ResponseObject = null,
+                            message = "not found",
+                            token = null,
+                            status = 401
+                        });
+                    }
+
                     _context.UserTasks.Remove(_task);
 
                     _context.SaveChanges();
@@ -221,6 +232,74 @@ namespace UserTaskManagerAPI.Controllers
                     {
                         ResponseObject = taskCounts,
                         message = "request successful",
+                        token = null,
+                        status = 200
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = null,
+                        message = "oops something went wrong: " + ex.Message,
+                        token = null,
+                        status = 500
+                    });
+                }
+            }
+
+            else
+            {
+                return BadRequest(new ApiResponse<UserTask>
+                {
+                    ResponseObject = null,
+                    message = "request rejected",
+                    token = null,
+                    status = 401
+                });
+            }
+        }
+
+        [HttpPut("update/{id}")]
+        [Produces("application/json")]
+        public IActionResult UpdateUserTasks(UserTask task, int id)
+        {
+            // obtain user id from token
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                try
+                {
+                    var userClaims = identity.Claims;
+
+                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
+                    var _id = userId.ToInt32();
+
+                    var _task = _context.UserTasks.FirstOrDefault(task => task.Id == id && _id == task.user);
+
+                    if(_task == null)
+                    {
+                        return NotFound(new ApiResponse<UserTask>
+                        {
+                            ResponseObject = null,
+                            message = "not found",
+                            token = null,
+                            status = 401
+                        });
+                    }
+
+                    _task.Title = task.Title;
+                    _task.Description = task.Description;
+                    _task.DateAdded = task.DateAdded;
+
+                    _context.SaveChanges();
+
+                    return Ok(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = _task,
+                        message = "task updated",
                         token = null,
                         status = 200
                     });

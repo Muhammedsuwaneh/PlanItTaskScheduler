@@ -11,14 +11,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { userRegisterationHandler } from '@/pages/api/auth/userAuth';
 
+import LinearProgress from '@mui/material/LinearProgress';
+
 export default function Register({ onUserRegisterationRequest }) {
   
   const [showPassword, setShowPassword] = useState(false);
-
-  
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [sendingRequest, setSendingRequest] = useState("none");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -26,16 +27,19 @@ export default function Register({ onUserRegisterationRequest }) {
     event.preventDefault();
   };
 
-  const userRegisterHandler = (event) => {
-      event.preventDefault();  
+  const userRegisterHandler = async(event) => {
+      event.preventDefault();
+      setSendingRequest("block");
       
-      const data = userRegisterationHandler({ username, email, password });
+      const responseData = await userRegisterationHandler({ username, email, password });
 
-      onUserRegisterationRequest({ data });
+      setSendingRequest("none");
+
+      onUserRegisterationRequest({ responseData });
   };
 
   return (
-    <Box sx={{ marginTop: "2rem"}}>
+    <Box sx={{ marginTop: "1rem"}}>
        <Box sx={{ display: "flex", flexDirection: "column"}}>
        <form style={{ display: "flex", flexDirection: "column" }} onSubmit={(event) => userRegisterHandler(event)}>
                     <Stack sx={{ margin:"1.2rem 0" }}>   
@@ -77,6 +81,7 @@ export default function Register({ onUserRegisterationRequest }) {
                    </FormControl>
                     <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: ".7rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign up</Button>
               </form>
+              <LinearProgress sx={{ display: `${sendingRequest}`}}/>
        </Box>
     </Box>
   )

@@ -5,7 +5,7 @@ import PageTitle from '../UI/PageTitle';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import UpdateForm from './UpdateForm';
-import { getCookie } from 'cookies-next';
+import { getCookie, deleteCookie } from 'cookies-next';
 
 const style = {
   position: 'absolute',
@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export default function Profile({ user }) {
+export default function Profile({ user, onUserAccountDelete }) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -35,9 +35,36 @@ export default function Profile({ user }) {
       }
   };
 
-  const handleAccountDelete = () => {
+  const handleAccountDelete = async () => {
     const token = getCookie("USER_AUTH_TOKEN");
     // send a delete request
+    await fetch("https://localhost:7136/api/applicationuser/delete", {
+      mode: 'cors',
+      method: "DELETE",
+      withCredentials: true,
+      credentials: 'same-origin',
+      headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Methods': '*',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+      }
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        const { status } = responseJson;
+        console.log(responseJson);
+        if(status == 200) {
+            handleClose();
+            // user deleted alert
+            // delete cookies and logout 
+            onUserAccountDelete();
+        }
+    })
+    .catch(error => {
+        alert(error);
+    });
   };
 
   return (
@@ -72,7 +99,7 @@ export default function Profile({ user }) {
             </Stack>
         </Box>
         <Box sx={{ background: "#fff", display: "flex", alignItems: "center",justifyContent: { lg: "space-between", sm: "center", md: "space-between", xs: "center"},flexDirection: { lg: "row", sm: "column", md: "row", xs: "column"}, padding: "1rem", borderRadius: "1rem"}}>
-            <Typography color="#333"sx={{  margin: { lg: "0", md: "0", sm: "1rem 0", xs: "1rem 0"}}}>,
+            <Typography color="#333"sx={{  margin: { lg: "0", md: "0", sm: "1rem 0", xs: "1rem 0"}}}>
               <span style={{ color: "#1976D2"}}>Date Joined:</span> {user.dateJoined}
              </Typography>
             <Button variant="text" sx={{ color: "red", margin: { lg: "0", md: "0", sm: "1.3rem 0", xs: "1.3rem 0"}}} onClick={handleOpen}>Delete Account</Button>

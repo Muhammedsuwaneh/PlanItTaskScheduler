@@ -1,15 +1,25 @@
 import React from 'react';
 import DashboardLayout from '../layout';
 import Profile from '@/components/Profile/Profile';
+import { useRouter } from 'next/router';
 
-import { getCookie } from 'cookies-next';
+import { getCookie, deleteCookie } from 'cookies-next';
 
 import { getUserInfoHandler } from '../api/auth/userAuth';
 
 export default function ProfilePage({ user }) {
+
+  const router = useRouter();
+
+  const userDeletedHandler = () => {
+    deleteCookie("USER_AUTH_TOKEN");
+    deleteCookie("USER_AUTH_USERNAME");
+    router.push("/");
+  };
+
   return (
     <DashboardLayout>
-        <Profile user={user}/>
+        <Profile user={user} onUserAccountDelete={userDeletedHandler}/>
     </DashboardLayout>
   )
 }

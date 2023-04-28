@@ -9,8 +9,9 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import CircularProgress from '@mui/material/CircularProgress';
 import LinearProgress from '@mui/material/LinearProgress';
+
+import Toast from '../UI/Toast/Toast';
 
 import { userAuthenticationHandler } from '@/pages/api/auth/userAuth';
 
@@ -18,6 +19,10 @@ export default function Login({ onUserAuthRequest }) {
   
   const [showPassword, setShowPassword] = useState(false);
   const [sendingRequest, setSendingRequest] = useState("none");
+  const [disableButton, setDisableButton] = useState(false);
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -32,12 +37,26 @@ export default function Login({ onUserAuthRequest }) {
       
       event.preventDefault();
       setSendingRequest("block");
+      setDisableButton(true);
 
-      const responseData = await userAuthenticationHandler({ email, password });
-      
+      await userAuthenticationHandler({ email, password })
+      .then(response => {
+          const { data } = response;
+          setRequestIsCompleted(true);
+          setSnackMessage(`${data.message} 😊`);
+          setSnackBarType("success");
+
+          // redirect 
+          onUserAuthRequest(data);
+      })
+      .catch(error => {
+          const { response } = error;
+          setRequestIsCompleted(true);
+          setSnackMessage(`${response.data.message} 😊`);
+          setSnackBarType("error");
+      });
+    
       setSendingRequest("none");
-
-      onUserAuthRequest({ responseData });
   };
 
   return (
@@ -74,9 +93,11 @@ export default function Login({ onUserAuthRequest }) {
                       }
                     />
                    </FormControl>
-                   <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: "1.4rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign in</Button>
+                   <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: "1.4rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}
+                   disabled={disableButton}>Sign in</Button>
               </form>
               <LinearProgress sx={{ display: `${sendingRequest}`}}/>
+              {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
        </Box>
   )
 }

@@ -9,23 +9,8 @@ export default function Home() {
 
   const router = useRouter();
 
-  const UserRegisterationRequestMainHandler = (data) => {
-    
-      const { responseData } = data;
-      const { responseObject, status, token } = responseData;
-
-      if(responseObject !== null && status === 201) {
-        setCookie('USER_AUTH_TOKEN', token);
-        setCookie('USER_AUTH_USERNAME', responseObject.username);
-        
-        router.push("/dashboard");
-      }
-  };
-
   const UserAuthRequestMainHandler = (data) => {
-       
-    const { responseData } = data;
-    const { responseObject, status, token } = responseData;
+    const { responseObject, status, token } = data;
 
     if(responseObject !== null && status === 200) {
       setCookie('USER_AUTH_TOKEN', token);
@@ -44,8 +29,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>        
-        <Main onUserRegisterationRequestMain={UserRegisterationRequestMainHandler}  
-              onUserAuthRequestMain={UserAuthRequestMainHandler}/>
+        <Main onUserAuthRequestMain={UserAuthRequestMainHandler}/>
       </main>
     </>
   )

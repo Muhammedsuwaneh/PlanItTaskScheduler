@@ -6,18 +6,10 @@ const agent = new https.Agent({
 });
 
 export const userAuthenticationHandler = async ({ email, password }) => {
-    try {
-        const res = axios.post("https://localhost:7136/api/applicationuser/authenticate", {
-            email: email,
-            password: password
-         },{ headers: {'Content-Type': 'application/json'}});
-      
-         const { data } = await res;
-         return data;
-    } 
-    catch (error) {
-        alert("oops! something went wrong");
-    }
+    return axios.post("https://localhost:7136/api/applicationuser/authenticate", {
+        email: email,
+        password: password
+    },{ headers: {'Content-Type': 'application/json'}});
 };
 
 export const userRegisterationHandler = async ({ username, email, password }) => {
@@ -29,10 +21,9 @@ export const userRegisterationHandler = async ({ username, email, password }) =>
             dateJoined: "date",
          },{ headers: {'Content-Type': 'application/json'}});
 
-         const { data } = await res;
-         return data;
+         return res;
     } catch (error) {
-        alert("oops! something went wrong");
+        return error;
     }
 };
 

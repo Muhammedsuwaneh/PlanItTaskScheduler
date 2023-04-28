@@ -38,13 +38,13 @@ namespace EmployeeManagementSystemAPI.Controllers
                 {
                     var token = Encrypt.GenerateSessionToken(_user, config);
                     var successfulAuthenticationResponse = 
-                        new ApiResponse<ApplicationUser>(_user, "user authenticated successfully", token, 200);
+                        new ApiResponse<ApplicationUser>(_user, "authentication was successful", token, 200);
 
                     return Ok(successfulAuthenticationResponse);
                 }
 
                 var userNotFoundResponse = 
-                    new ApiResponse<ApplicationUser>(null, "user authenticated unsuccessfully", string.Empty, 400);
+                    new ApiResponse<ApplicationUser>(null, "authentication was unsuccessful. please check your credentials and try again", string.Empty, 400);
 
                 return NotFound(userNotFoundResponse);
 

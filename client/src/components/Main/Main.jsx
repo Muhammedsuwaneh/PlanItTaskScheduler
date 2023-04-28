@@ -13,7 +13,7 @@ const UserAuthContainer = styled(Grid)(() => ({
     justifyContent: "center",
 }));
 
-export default function Main({ onUserRegisterationRequestMain, onUserAuthRequestMain}) {
+export default function Main({ onUserAuthRequestMain}) {
  
   const [hideLoginPage, setHideLoginPage] = useState("block");
   const [displayError, setDisplayError] = useState("none");
@@ -30,12 +30,7 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
     setHideRegisterPage("none");
   };
 
-  const UserRegisterationRequestHandler = (responseData) => {
-      onUserRegisterationRequestMain(responseData);
-  };
-
   const UserAuthRequestHandler = (responseData) => {
-
       onUserAuthRequestMain(responseData);
   };
 
@@ -64,7 +59,7 @@ export default function Main({ onUserRegisterationRequestMain, onUserAuthRequest
                  {errorType}
             </Alert>
             <Box sx={{ display: `${hideRegisterPage}`}}>
-              <Register onUserRegisterationRequest={UserRegisterationRequestHandler} />
+              <Register onUserRegisterationRequest={UserAuthRequestHandler} />
                   <Box>
                   <Typography sx={{marginTop: ".5rem"}}>
                     Already have an account ?  <Button variant="text" onClick={hideRegisterPageHandler}>Sign in !</Button>

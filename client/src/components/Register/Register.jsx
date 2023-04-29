@@ -10,16 +10,21 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { userRegisterationHandler } from '@/pages/api/auth/userAuth';
+import Toast from '../UI/Toast/Toast';
 
 import LinearProgress from '@mui/material/LinearProgress';
 
-export default function Register({ onUserRegisterationRequest }) {
+export default function Register({ onUserAuthRequest }) {
   
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [sendingRequest, setSendingRequest] = useState("none");
+  const [disableButton, setDisableButton] = useState(false);
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -30,12 +35,27 @@ export default function Register({ onUserRegisterationRequest }) {
   const userRegisterHandler = async(event) => {
       event.preventDefault();
       setSendingRequest("block");
+      setDisableButton(true);
       
-      const responseData = await userRegisterationHandler({ username, email, password });
-
-      setSendingRequest("none");
-
-      onUserRegisterationRequest({ responseData });
+      await userRegisterationHandler({ username, email, password })
+      .then(response => {
+        const { data } = response;
+        setRequestIsCompleted(true);
+        setSnackMessage(`${data.message} 😊`);
+        setSnackBarType("success");
+        // redirect 
+        onUserAuthRequest(data);
+    })
+    .catch(error => {
+        const { response } = error;
+        console.log(error);
+        setRequestIsCompleted(true);
+        setSnackMessage(`${response.data.message} 😢`);
+        setSnackBarType("error");
+        setDisableButton(false);
+    });
+  
+    setSendingRequest("none");
   };
 
   return (
@@ -50,16 +70,16 @@ export default function Register({ onUserRegisterationRequest }) {
                             variant="standard" 
                             required
                             onChange={(element) => { setUsername(element.target.value)}}
-                            sx={{ margin: ".6rem 0", width: "400px"}}
+                            sx={{ margin: ".6rem 0", width: "100%"}}
                     />
                      <TextField id="standard-basic" 
                             label="Email" 
                             variant="standard" 
                             required
                             onChange={(element) => { setEmail(element.target.value)}}
-                            sx={{ margin: ".5rem 0", width: "400px"}}
+                            sx={{ margin: ".5rem 0", width: "100%"}}
                     />
-                   <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "400px"}}>
+                   <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "100%"}}>
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input
                       id="standard-adornment-password"
@@ -82,6 +102,7 @@ export default function Register({ onUserRegisterationRequest }) {
                     <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: ".7rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign up</Button>
               </form>
               <LinearProgress sx={{ display: `${sendingRequest}`}}/>
+              {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
        </Box>
     </Box>
   )

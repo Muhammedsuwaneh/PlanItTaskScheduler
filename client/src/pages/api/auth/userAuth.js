@@ -5,26 +5,20 @@ const agent = new https.Agent({
   rejectUnauthorized: false
 });
 
-export const userAuthenticationHandler = async ({ email, password }) => {
+export const userAuthenticationHandler = ({ email, password }) => {
     return axios.post("https://localhost:7136/api/applicationuser/authenticate", {
         email: email,
         password: password
     },{ headers: {'Content-Type': 'application/json'}});
 };
 
-export const userRegisterationHandler = async ({ username, email, password }) => {
-    try {
-        const res = axios.post("https://localhost:7136/api/applicationuser/register", {
+export const userRegisterationHandler = ({ username, email, password }) => {
+        return axios.post("https://localhost:7136/api/applicationuser/register", {
             username: username,
             email: email,
             password: password,
             dateJoined: "date",
          },{ headers: {'Content-Type': 'application/json'}});
-
-         return res;
-    } catch (error) {
-        return error;
-    }
 };
 
 export const updateUserInfoRequest = async ({ updatedUser, token }) => {

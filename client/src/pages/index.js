@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Main from '@/components/Main/Main'
 
-import { getCookie, deleteCookie, setCookie } from "cookies-next"
+import { getCookie, setCookie } from "cookies-next"
 
 import { useRouter } from 'next/router';
 
@@ -49,7 +49,6 @@ export const getServerSideProps = ({ req, res }) => {
          props:{},
        }
   }
-
   return {
      props: {
      }

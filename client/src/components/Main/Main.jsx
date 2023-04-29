@@ -35,11 +35,14 @@ export default function Main({ onUserAuthRequestMain}) {
   };
 
   return (
-    <UserAuthContainer container>
-        <Box  sx={{ backgroundImage: `url("/task.jpg")`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
-            height: "100%", width: "30%", borderTopLeftRadius: "2rem", boxShadow: "1px 1px 2px #333", borderBottomLeftRadius: "2rem" }}>
+    <UserAuthContainer container sx={{ display: { md: 'column', sm: 'column', xs: 'column', lg: 'row'} }}>
+        <Box sx={{ backgroundImage: `url("/task.jpg")`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
+            height: { lg: "100%", sm: "50%", md: "50%", xs: "50%"}, width: { md: '100%', sm: '100%', xs: '100%', lg: '30%'}, 
+            borderTopLeftRadius: { md: '0', sm: '0', xs: '0', lg: '2rem'}, 
+            boxShadow: "1px 1px 2px #333", borderBottomLeftRadius: { lg: "2rem", sm: "0", md: "0", xs: "0"} }}>
         </Box>
-        <Box sx={{ background: "#fff", height: "100%", width: "50%", padding: "3rem", boxShadow: "1px 1px 2px #333", borderRadius: "0 1rem 1rem 0"}}>
+        <Box sx={{ background: "#fff", height: "auto", width: { md: '100%', sm: '100%', xs: '100%', lg: '50%'}, padding: "3rem", boxShadow: "1px 1px 2px #333", 
+        borderRadius: { lg: "0 1rem 1rem 0", sm: "0", xs: "0", md: "0"} }}>
             <Typography variant="h5" sx={{ fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
                 PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
             </Typography>
@@ -59,7 +62,7 @@ export default function Main({ onUserAuthRequestMain}) {
                  {errorType}
             </Alert>
             <Box sx={{ display: `${hideRegisterPage}`}}>
-              <Register onUserRegisterationRequest={UserAuthRequestHandler} />
+              <Register onUserAuthRequest={UserAuthRequestHandler} />
                   <Box>
                   <Typography sx={{marginTop: ".5rem"}}>
                     Already have an account ?  <Button variant="text" onClick={hideRegisterPageHandler}>Sign in !</Button>

@@ -51,9 +51,11 @@ export default function Login({ onUserAuthRequest }) {
       })
       .catch(error => {
           const { response } = error;
+          console.log(response);
           setRequestIsCompleted(true);
-          setSnackMessage(`${response.data.message} 😊`);
+          setSnackMessage(`${response.data.message} 😢`);
           setSnackBarType("error");
+          setDisableButton(false);
       });
     
       setSendingRequest("none");
@@ -71,9 +73,9 @@ export default function Login({ onUserAuthRequest }) {
                             required
                             defaultValue={"defaultuser8596@gmail.com"}
                             onChange={(element) => { setEmail(element.target.value)}}
-                            sx={{ margin: "1rem 0", width: "400px"}}
+                            sx={{ margin: "1rem 0", width: "100%"}}
                     />
-                    <FormControl variant="standard" sx={{ width: "400px"}}>
+                    <FormControl variant="standard" sx={{ width: "100%"}}>
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input
                       id="standard-adornment-password"

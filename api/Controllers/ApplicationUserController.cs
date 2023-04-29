@@ -71,7 +71,7 @@ namespace EmployeeManagementSystemAPI.Controllers
                         ResponseObject = null,
                         token = null,
                         message = "Oops! user exist. Please check entered credentials",
-                        status = 401,
+                        status = 500,
                     });
                 }
 

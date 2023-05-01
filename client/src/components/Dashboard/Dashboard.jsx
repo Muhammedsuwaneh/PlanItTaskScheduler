@@ -7,6 +7,8 @@ import Backdrop from '@mui/material/Backdrop';
 import { CChart } from "@coreui/react-chartjs";
 import { getCookie } from "cookies-next"
 
+import Toast from '../UI/Toast/Toast';
+
 import { getTaskIconHandler, getTaskStatusColor } from '../Tasks/TaskList';
 import TaskList from '../Tasks/TaskList';
 
@@ -17,8 +19,13 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   const [isLoadingTasks, setIsLoadingTasks] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [sendingRequest, setSendingRequest] = useState("none");
+  const [disableButton, setDisableButton] = useState(false);
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
 
-  const newAddedTaskHandler = async ({ responseObject }) => {
+  const newAddedTaskHandler = async ({ responseObject, message }) => {
 
         if(userTasks.length == 4)
             userTasks.pop();
@@ -28,6 +35,19 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 
         initDataHandler();
         handleClose();
+
+        // user feedback
+        if(responseObject == null) {
+            setRequestIsCompleted(true);
+            setSnackMessage(message);
+            setSnackBarType("error");
+            setDisableButton(false);
+        }
+        else {
+            setSnackMessage(`${message} 😊`);
+            setSnackBarType("success");
+            setRequestIsCompleted(true);
+        }
   };
 
   const deleteHandler = (listIsEmpty) => {
@@ -141,6 +161,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     </Box>
             </Stack>
         </Box>
+        {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
         </Stack>
      </>
   )

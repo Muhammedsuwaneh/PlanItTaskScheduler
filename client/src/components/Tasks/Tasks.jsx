@@ -6,23 +6,40 @@ import PageTitle from '../UI/PageTitle';
 import { getTaskStatusColor, getTaskIconHandler } from './TaskList';
 import TaskList from './TaskList';
 
+import Toast from '../UI/Toast/Toast';
+
 export default function Tasks({ userTasks, userStatistics }) {
 
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);  
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
 
-  const newAddedTaskHandler = ({ responseObject }) => {
+  const newAddedTaskHandler = ({ responseObject, message }) => {
+
         userTasks.unshift(responseObject);
         initDataHandler();
         handleClose();
+
+        // user feedback
+        if(responseObject == null) {
+            setRequestIsCompleted(true);
+            setSnackMessage(message);
+            setSnackBarType("error");
+            setDisableButton(false);
+        }
+        else {
+            setSnackMessage(`${message} 😊`);
+            setSnackBarType("success");
+            setRequestIsCompleted(true);
+        }
   };
 
   const successfullyDeletedTaskHandler = (listIsEmpty) => {
-        if(listIsEmpty === true) {
-            userTasks = [];
-        }
+        if(listIsEmpty === true) userTasks = [];
         initDataHandler();
   };
 
@@ -64,6 +81,7 @@ export default function Tasks({ userTasks, userStatistics }) {
         <Box sx={{ background: "#fff", padding: "1.3rem", margin: "1rem 0", borderRadius: "1rem"}}>
             {content}
         </Box>
+        {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
     </Stack>
     </>
   )

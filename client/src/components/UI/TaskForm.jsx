@@ -11,9 +11,6 @@ import { getCookie } from "cookies-next";
 
 import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
 
-
-import axios from "axios";
-
 const style = {
     position: 'absolute',
     top: '30%',
@@ -33,11 +30,12 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   const [description, setDescription] = useState(itemObject.description);
   const [status, setStatus] = useState(itemObject.status);
   const [dateAdded, setDateAdded] = useState(itemObject.dateAdded);
+  const [disableButton, setDisableButton] = useState(false);
 
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
-
     const token = getCookie("USER_AUTH_TOKEN");
+    setDisableButton(true);
 
     if(action == "new") {
         const newTask = { 
@@ -48,7 +46,7 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             user: 0
         };
     
-        const response = await fetch("https://localhost:7136/api/usertasks/new",
+        await fetch("https://localhost:7136/api/usertasks/new",
         {
             method: "POST",
             body: JSON.stringify(newTask),
@@ -62,15 +60,17 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             }
-        });
-    
-        const resJson = response.json();
-    
-        resJson.then(res => {
-            if(res != undefined && res != null && res != {} && res != '') {
-                const { responseObject } = res;
-                onNewTaskAdded({ responseObject });
+        })
+        .then(response => response.json())
+        .then(resJson => {
+            if(resJson != undefined && resJson != null && resJson != {} && resJson != '') {
+                const { responseObject, message } = resJson;
+                // feedback
+                onNewTaskAdded({ responseObject, message });
             }
+        })
+        .catch(error => {
+                onNewTaskAdded({ responseObject: null, message:"oops something went wrong 😢" });
         });
     }
 
@@ -129,8 +129,9 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             </FormControl>
             <Box sx={{ display: "flex", justifyContent: "right", marginTop: "1rem" }}>
                 <Button variant="outlined" sx={{ margin: "0 1rem"}} onClick={onModalClose}>Cancel</Button>
-                {(action == "new") && <Button variant="contained" type="submit">Add</Button>} 
-                {(action == "update") && <Button variant="contained" type="submit" sx={{ background: "#F87D01"}}>Update</Button>}
+                {(action == "new") && <Button variant="contained" type="submit" disabled={disableButton}>Add</Button>} 
+                {(action == "update") && <Button variant="contained" type="submit" sx={{ background: "#F87D01"}}
+                disabled={disableButton}>Update</Button>}
             </Box>        
             </Stack>
         </form>

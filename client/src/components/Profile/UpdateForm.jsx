@@ -53,6 +53,9 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
             else {
                 onUserProfileUpdate(false);
             }
+       })
+       .catch(error => {
+
        });
   };
 

@@ -88,9 +88,11 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
         updateUserTaskRequest({ token, updatedTask, taskId })
         .then(res => {
             if(res != undefined && res != null && res != {} && res != '') {
-                const { responseObject } = res;
-                onUpdateTask({ responseObject });
+                const { responseObject, message } = res;
+                onUpdateTask({ responseObject, message });
             }
+        }).catch(error => {
+            onUpdateTask({ responseObject: null, message:"oops something went wrong 😢" });
         });
     }
 

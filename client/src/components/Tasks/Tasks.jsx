@@ -57,6 +57,18 @@ export default function Tasks({ userTasks, userStatistics }) {
         }
   };
 
+  const updateTaskHandler = (isUpdated) => {
+        setRequestIsCompleted(true);
+        if(isUpdated) {
+            setSnackMessage("task updated");
+            setSnackBarType("success");
+        }
+        else {
+            setSnackMessage("oops! something went wronf");
+            setSnackBarType("error");
+        }
+  };
+
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) {
@@ -64,7 +76,7 @@ export default function Tasks({ userTasks, userStatistics }) {
     }
     
     else {
-        setContent(<TaskList userTasks={userTasks} onDeleteSuccessful={successfullyDeletedTaskHandler}/>);
+        setContent(<TaskList userTasks={userTasks} onDeleteSuccessful={successfullyDeletedTaskHandler} onTaskUpdate={updateTaskHandler}/>);
       }
   }
 

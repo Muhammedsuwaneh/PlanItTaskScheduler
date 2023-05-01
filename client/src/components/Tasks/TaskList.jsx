@@ -47,7 +47,7 @@ export const getTaskIconHandler = (status) => {
     }
 };
 
-export default function TaskList({ userTasks, currentPage, onDeleteSuccessful }) {
+export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, onTaskUpdate }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
@@ -99,20 +99,25 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful })
         .catch(error => {
             onDeleteSuccessful(true, false);
         });
-        
+
         handleClose();
     }
   };
 
   const updateTaskHandler = ({ responseObject }) => {
-    console.log("updated");
-    const newTaskList = tasksList.map(task => {
-        if(task.id == responseObject.id) {
-            task = responseObject;
-        }
-        return task;
-    });
-    setTaskList(newTaskList);
+    if(responseObject != null) {
+        const newTaskList = tasksList.map(task => {
+            if(task.id == responseObject.id) {
+                task = responseObject;
+            }
+            return task;
+        });
+        setTaskList(newTaskList);
+        onTaskUpdate(true);
+    }
+    else {
+        onTaskUpdate(false);
+    }
     handleClose();
   };
 

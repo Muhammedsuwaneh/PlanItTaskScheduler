@@ -71,6 +71,19 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         }
   };
 
+  const updateTaskHandler = (isUpdated) => {
+    setRequestIsCompleted(true);
+    
+    if(isUpdated) {
+        setSnackMessage("task updated");
+        setSnackBarType("success");
+    }
+    else {
+        setSnackMessage("oops! something went wronf");
+        setSnackBarType("error");
+    }
+  };
+
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) {
@@ -78,7 +91,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
     }
     
     else {
-        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler}/>);
+        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler}
+        onTaskUpdate={updateTaskHandler}/>);
       }
   }
 

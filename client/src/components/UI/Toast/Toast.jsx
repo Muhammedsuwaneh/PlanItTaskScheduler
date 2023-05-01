@@ -28,7 +28,7 @@ export default function Toast({ snackBarType, snackMessage }) {
           {snackMessage}
         </Alert>
         </Snackbar>
-       </>;
+       </>
   }
   else if(snackBarType === "error") {
     content = <>

@@ -38,9 +38,23 @@ export default function Tasks({ userTasks, userStatistics }) {
         }
   };
 
-  const successfullyDeletedTaskHandler = (listIsEmpty) => {
-        if(listIsEmpty === true) userTasks = [];
-        initDataHandler();
+  const successfullyDeletedTaskHandler = (listIsEmpty, isSuccessful) => {
+        setRequestIsCompleted(true);
+
+        if(isSuccessful) {
+            if(listIsEmpty === true) {
+                userTasks = [];
+            }
+
+            initDataHandler();
+            setSnackMessage("task deleted");
+            setSnackBarType("success");
+        }
+
+        else {             
+            setSnackMessage("oops! something went wrong");
+            setSnackBarType("oerror");
+        }
   };
 
   const initDataHandler = () => {

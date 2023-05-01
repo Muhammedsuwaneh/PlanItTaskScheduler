@@ -50,12 +50,25 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         }
   };
 
-  const deleteHandler = (listIsEmpty) => {
-        userStatisticsEntries.Pending -= 1;
-        if(listIsEmpty === true) {
-            userTasks = [];
+  const deleteHandler = (listIsEmpty, isSuccessful) => {
+
+        setRequestIsCompleted(true);
+
+        if(isSuccessful) {
+            userStatisticsEntries.Pending -= 1;
+            if(listIsEmpty === true) {
+                userTasks = [];
+            }
+
+            initDataHandler();
+            setSnackMessage("task deleted");
+            setSnackBarType("success");
         }
-        initDataHandler();
+
+        else {             
+            setSnackMessage("oops! something went wrong");
+            setSnackBarType("oerror");
+        }
   };
 
   const initDataHandler = () => {

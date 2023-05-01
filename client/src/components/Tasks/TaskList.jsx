@@ -93,9 +93,13 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful })
                 setTaskList(newTasks);
                 let listIsEmpty = false; 
                 if(newTasks.length <= 0) listIsEmpty = true;
-                onDeleteSuccessful(listIsEmpty);
+                onDeleteSuccessful(listIsEmpty, true);
             }
+        })
+        .catch(error => {
+            onDeleteSuccessful(true, false);
         });
+        
         handleClose();
     }
   };

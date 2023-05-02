@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Stack, Typography, Modal, Alert, Button, Divider } from "@mui/material";
-import PageTitle from '../UI/PageTitle';
-
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import Toast from '../UI/Toast/Toast';
+import PageTitle from '../UI/PageTitle';
 import UpdateForm from './UpdateForm';
+
 import { getCookie, deleteCookie } from 'cookies-next';
 
 const style = {
@@ -24,14 +25,23 @@ export default function Profile({ user, onUserAccountDelete }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);  
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
 
   const userInfoUpdateHandler = (isUpdated) => {
+      setRequestIsCompleted(true);
+
       if(isUpdated) {
         // alert user that info is updated
+        setSnackMessage("profile info updated 😊");
+        setSnackBarType("success");
       }
 
       else {
         // alert user that info is not updated
+        setSnackMessage("oops! something went wrong 😊");
+        setSnackBarType("error");
       }
   };
 
@@ -104,6 +114,7 @@ export default function Profile({ user, onUserAccountDelete }) {
              </Typography>
             <Button variant="text" sx={{ color: "red", margin: { lg: "0", md: "0", sm: "1.3rem 0", xs: "1.3rem 0"}}} onClick={handleOpen}>Delete Account</Button>
         </Box>
+        {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
         </Stack>
     </>
   )

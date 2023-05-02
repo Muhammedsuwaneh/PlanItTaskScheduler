@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { updateUserInfoRequest } from '@/pages/api/auth/userAuth';
 import { getCookie, deleteCookie, setCookie } from 'cookies-next';
@@ -21,6 +22,8 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
   const [username, setUsername] = useState(userInfo.username);
   const [password, setPassword] = useState(userInfo.password);
   const [dateJoined, setDateJoined] = useState(userInfo.dateJoined);
+  const [disableButton, setDisableButton] = useState(false);
+  const [sendingRequest, setSendingRequest] = useState("none");
   
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -30,6 +33,8 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
   
   const userRegisterHandler = (event) => {
       event.preventDefault();  
+      setDisableButton(true);
+      setSendingRequest("block");
 
       const token = getCookie("USER_AUTH_TOKEN");
       const updatedUser = {
@@ -53,9 +58,13 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
             else {
                 onUserProfileUpdate(false);
             }
+            setSendingRequest("none");
+            setDisableButton(false);
        })
        .catch(error => {
-
+          onUserProfileUpdate(false);
+          setDisableButton(false);
+          setSendingRequest("none");
        });
   };
 
@@ -66,54 +75,57 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
   };
 
   return (
-    <form style={{ display: "flex", flexDirection: "column", marginTop: "3rem" }} onSubmit={(event) => userRegisterHandler(event)}>
-    <TextField id="standard-basic" 
-            label="Username" 
-            variant="standard" 
-            required
-            value={username}
-            onChange={(element) => { setUsername(element.target.value)}}
-            sx={{ margin: ".6rem 0", width: "400px"}}
-    />
-     <TextField id="standard-basic" 
-            label="Email" 
-            variant="standard" 
-            required
-            value={userEmail}
-            onChange={(element) => { setUserEmail(element.target.value)}}
-            sx={{ margin: ".5rem 0", width: "400px"}}
-    />
-   <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "400px"}}>
-    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-    <Input
-      id="standard-adornment-password"
-      required
-      value={password}
-      onChange={(element) => { setPassword(element.target.value)}}
-      type={showPassword ? 'text' : 'password'}
-      endAdornment={
-        <InputAdornment position="end">
-          <IconButton
-            aria-label="toggle password visibility"
-            onClick={handleClickShowPassword}
-            onMouseDown={handleMouseDownPassword}
-          >
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </IconButton>
-        </InputAdornment>
-      }
-    />
-   </FormControl>
-    <Box sx={{ display: "flex", marginTop: "1rem", justifyContent: "right" }}>
-        <Button variant="contained" onClick={restoredChangesHandler}
-        sx={{ margin: "1rem 1rem", borderRadius: ".5rem", background: "#333"}}>
-            Discard
-        </Button>
-        <Button type='submit' variant="contained" 
-        sx={{ margin: "1rem 0", borderRadius: ".5rem", background: "#F87D01"}}>
-            Save Changes
-        </Button>
-    </Box>
-</form>
+    <>
+      <form style={{ display: "flex", flexDirection: "column", marginTop: "3rem" }} onSubmit={(event) => userRegisterHandler(event)}>
+        <TextField id="standard-basic" 
+                label="Username" 
+                variant="standard" 
+                required
+                value={username}
+                onChange={(element) => { setUsername(element.target.value)}}
+                sx={{ margin: ".6rem 0", width: "400px"}}
+        />
+        <TextField id="standard-basic" 
+                label="Email" 
+                variant="standard" 
+                required
+                value={userEmail}
+                onChange={(element) => { setUserEmail(element.target.value)}}
+                sx={{ margin: ".5rem 0", width: "400px"}}
+        />
+      <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "400px"}}>
+        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+        <Input
+          id="standard-adornment-password"
+          required
+          value={password}
+          onChange={(element) => { setPassword(element.target.value)}}
+          type={showPassword ? 'text' : 'password'}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+        <Box sx={{ display: "flex", marginTop: "1rem", justifyContent: "right" }}>
+            <Button variant="contained" onClick={restoredChangesHandler}
+            sx={{ margin: "1rem 1rem", borderRadius: ".5rem", background: "#333"}} disabled={disableButton}>
+                Discard
+            </Button>
+            <Button type='submit' variant="contained" 
+            sx={{ margin: "1rem 0", borderRadius: ".5rem", background: "#F87D01"}} disabled={disableButton}>
+                Save Changes
+            </Button>
+        </Box>
+      </form>
+      <LinearProgress sx={{ display: `${sendingRequest}`}}/>
+    </>
   )
 }

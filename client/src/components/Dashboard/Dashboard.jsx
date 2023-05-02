@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import Backdrop from '@mui/material/Backdrop';
 import { CChart } from "@coreui/react-chartjs";
-import { getCookie } from "cookies-next"
 
 import Toast from '../UI/Toast/Toast';
 

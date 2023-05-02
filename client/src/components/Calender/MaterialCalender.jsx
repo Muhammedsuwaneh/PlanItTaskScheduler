@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Grid, Typography, IconButton } from '@mui/material';
+import { Box, Grid, IconButton, Modal, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material/';
 
-const MaterialCalendar = ({ defaultDate }) => {
+const MaterialCalendar = ({ defaultDate, handleOpen }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handlePrevMonth = () => {
@@ -11,6 +11,17 @@ const MaterialCalendar = ({ defaultDate }) => {
 
   const handleNextMonth = () => {
     setSelectedDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+  };
+
+  const handleClickedDate = (day) => {
+    const month = selectedDate.toLocaleString('default', { month: 'long'});
+    const year = selectedDate.getFullYear();
+    const fullDate = `${day} ${month} ${year}`;
+
+    // get all task for this particular date 
+    const selectedTask = [];
+    // open modal 
+    handleOpen(selectedTask, fullDate);
   };
 
   const renderCalendarHeader = () => {
@@ -53,10 +64,12 @@ const MaterialCalendar = ({ defaultDate }) => {
       } else {
         const date = i - firstDayOfMonth + 1;
         days.push(
-          <Grid item key={i}>
+          <Grid item key={i} onClick={() => handleClickedDate(date)}>
              <Box sx={{ height: "100px", background: "#fff", padding: "1rem", borderRadius: "1rem", cursor: "pointer",
-                background: `${(currentDay == date && defaultDate.getMonth() == selectedDate.getMonth()) ? "#1976D2" : "#fff"}`}}>
-                <Typography variant="body1" align="center" color={`${(currentDay == date && defaultDate.getMonth() == selectedDate.getMonth()) ? "#fff" : "#000"}`}>
+                background: `${(currentDay == date && defaultDate.getMonth() == selectedDate.getMonth()) ? "#1976D2" : "#fff"}`,
+                transition: ".5s ease background",
+                '&:hover': { background: "#0D0C22", color: "#fff"}}}>
+                <Typography variant="body1" align="center" color={`${(currentDay == date && defaultDate.getMonth() == selectedDate.getMonth()) ? "#fff" : ""}`}>
                   {date}
                 </Typography>
             </Box>
@@ -78,10 +91,12 @@ const MaterialCalendar = ({ defaultDate }) => {
   };
 
   return (
-    <Grid container direction="column" spacing={1} sx={{ width: "100%", padding: "0" }}>
-      <Grid item>{renderCalendarHeader()}</Grid>
-      <Grid item>{renderCalendarBody()}</Grid>
-    </Grid>
+    <>
+      <Grid container direction="column" spacing={1} sx={{ width: "100%", padding: "0" }}>
+        <Grid item>{renderCalendarHeader()}</Grid>
+        <Grid item>{renderCalendarBody()}</Grid>
+      </Grid>
+    </>
   );
 };
 

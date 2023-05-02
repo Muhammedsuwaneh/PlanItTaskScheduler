@@ -53,7 +53,7 @@ export default function SideBar() {
         <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
             PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
         </Typography>
-        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background"}}>
           <ListItemButton>
             <ListItemIcon>
               <DashboardIcon sx={{ color: "#fff"}}/>
@@ -63,7 +63,7 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background"}}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon sx={{ color: "#fff"}}/>
@@ -73,7 +73,7 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
       </ListItem>
-      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"}}}>
           <ListItemButton>
             <ListItemIcon>
               <CalendarMonthIcon sx={{ color: "#fff"}}/>
@@ -83,7 +83,7 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
       </ListItem>
-      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}}}>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"}}}>
           <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon sx={{ color: "#fff"}}/>
@@ -94,7 +94,7 @@ export default function SideBar() {
           </ListItemButton>
         </ListItem>
       <List sx={{ marginTop: "80%" }}>
-        <ListItem disablePadding onClick={logoutHandler} sx={{ marginTop: "1rem", '&:hover': { opacity: ".9"}}}>
+        <ListItem disablePadding onClick={logoutHandler} sx={{ marginTop: "1rem", '&:hover': { opacity: ".9"}, transition: ".5s ease background"}}>
           <ListItemButton>
             <ListItemIcon>
               <LogoutIcon sx={{ color: "red" }} />

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Stack, Typography, Modal } from "@mui/material";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PageTitle from '../UI/PageTitle';
+import PageTitle from '../UI/PageTitle/PageTitle';
 
 import MaterialCalendar from './MaterialCalender';
+
+import ModalContent from '../UI/Modal/ModalContent';
 
 export default function Calender() {
   const [open, setOpen] = useState(false);
@@ -20,10 +22,11 @@ export default function Calender() {
             open={open}
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description">
-            <Box sx={{ background: "#fff", height: "200px", width: "200px", position: "relative"}}>
-            <Typography>{clickedDate}</Typography>
-            </Box>
+              aria-describedby="modal-modal-description"
+              sx={{ overflow: "hidden", margin: "0", padding: "0" }}>
+            <ModalContent>
+              <Typography>{clickedDate}</Typography>
+            </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}}}>
           <PageTitle title="Calender">

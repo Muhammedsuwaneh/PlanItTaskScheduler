@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
-import TaskForm from '../UI/TaskForm';
+import TaskForm from '../UI/TaskForm/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import { CChart } from "@coreui/react-chartjs";
+import ModalContent from '../UI/Modal/ModalContent';
 
 import Toast from '../UI/Toast/Toast';
 
@@ -104,10 +105,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
              onClose={handleClose}
              aria-labelledby="modal-modal-title"
              aria-describedby="modal-modal-description">
-            <Box>
+            <ModalContent>
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
-            </Box>
+            </ModalContent>
         </Modal>
         <Stack sx={{ padding: "2rem" }}>
         <Box sx={{ background: "#fff", padding: "1rem", borderRadius: "1rem", display: "flex", justifyContent: "space-between"}}>

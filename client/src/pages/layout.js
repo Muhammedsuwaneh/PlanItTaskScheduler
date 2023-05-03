@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import SideBar from "@/components/UI/Navigation";
-import MobileNavigation from "@/components/UI/MobileNavigation";
+import SideBar from "@/components/UI/Navigation/Navigation";
+import MobileNavigation from "@/components/UI/Navigation/MobileNavigation";
 
 const LayoutTheme = styled(Grid)(({ theme }) => ({
     background: "#CFD8DC",

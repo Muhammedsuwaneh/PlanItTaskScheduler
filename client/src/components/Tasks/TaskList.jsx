@@ -13,21 +13,11 @@ import { getCookie } from "cookies-next";
 
 import { deleteUserTaskRequest } from '@/pages/api/userTaskApi';
 
-import DeleteContent from '../UI/DeleteContent';
-import TaskForm from '../UI/TaskForm';
+import DeleteContent from '../UI/DeleteContent/DeleteContent';
+import TaskForm from '../UI/TaskForm/TaskForm';
 import TaskListContent from './TaskListContent';
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import ModalContent from '../UI/Modal/ModalContent';
 
 export const getTaskStatusColor = (status) => {
     switch(status) {
@@ -143,9 +133,9 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <ModalContent>
                {modalContent}
-            </Box>
+            </ModalContent>
         </Modal>
         {(currentPage == "dashboard") || <Box>
             <Box sx={{ minWidth: 120, display: "flex", justifyContent: "space-between" }}>

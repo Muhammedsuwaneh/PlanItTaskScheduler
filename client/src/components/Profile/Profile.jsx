@@ -3,22 +3,12 @@ import { Box, Stack, Typography, Modal, Alert, Button, Divider } from "@mui/mate
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Toast from '../UI/Toast/Toast';
-import PageTitle from '../UI/PageTitle';
+import PageTitle from '../UI/PageTitle/PageTitle';
 import UpdateForm from './UpdateForm';
 
-import { getCookie, deleteCookie } from 'cookies-next';
+import ModalContent from '../UI/Modal/ModalContent';
 
-const style = {
-  position: 'absolute',
-  top: '30%',
-  left: '50%',
-  transform: 'translate(-30%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { getCookie, deleteCookie } from 'cookies-next';
 
 export default function Profile({ user, onUserAccountDelete }) {
 
@@ -84,7 +74,7 @@ export default function Profile({ user, onUserAccountDelete }) {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
-            <Box sx={style}>
+            <ModalContent>
                 <Typography id="modal-modal-title" variant="h6" component="h2">Delete Account</Typography>
                 <Divider />
                 <Alert severity="warning" sx={{margin: "1rem 0"}}>Warning: all task related to this account will be deleted</Alert>
@@ -95,7 +85,7 @@ export default function Profile({ user, onUserAccountDelete }) {
                   <Button variant="contained" onClick={handleAccountDelete}>Yes</Button>
                   <Button onClick={handleClose}>No</Button>
                 </Box>
-            </Box>
+            </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}}}>
           <PageTitle title="Profile">

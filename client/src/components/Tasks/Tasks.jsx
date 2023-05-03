@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Modal, Box, Grid, Stack, Link, Fab } from '@mui/material';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import TaskForm from '../UI/TaskForm';
-import PageTitle from '../UI/PageTitle';
+import TaskForm from '../UI/TaskForm/TaskForm';
+import PageTitle from '../UI/PageTitle/PageTitle';
 import { getTaskStatusColor, getTaskIconHandler } from './TaskList';
 import TaskList from './TaskList';
+
+import ModalContent from '../UI/Modal/ModalContent';
 
 import Toast from '../UI/Toast/Toast';
 
@@ -91,10 +93,10 @@ export default function Tasks({ userTasks, userStatistics }) {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
-            <Box>
+            <ModalContent>
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}} action="new"/>
-            </Box>
+            </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"} }}>
         <PageTitle title="Tasks">

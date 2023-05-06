@@ -5,7 +5,6 @@ const agent = new https.Agent({
   rejectUnauthorized: false
 });
 
-
 export const getUserTask = async({ token }) => {
     const response = await axios.get("https://localhost:7136/api/usertasks/",
     {

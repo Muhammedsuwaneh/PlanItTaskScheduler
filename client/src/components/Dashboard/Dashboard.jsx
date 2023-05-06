@@ -58,6 +58,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                 userTasks = [];
             }
 
+            else {
+                // remove deleted task from list
+            }
+
             initDataHandler();
             setSnackMessage("task deleted");
             setSnackBarType("success");

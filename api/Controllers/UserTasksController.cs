@@ -97,7 +97,7 @@ namespace UserTaskManagerAPI.Controllers
                     {
                         Title = task.Title,
                         Description = task.Description,
-                        DateAdded = DateTime.Now.ToString(),
+                        DateAdded = task.DateAdded,
                         Status = "Pending",
                         user = id,
                     };

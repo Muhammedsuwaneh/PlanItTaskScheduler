@@ -22,7 +22,7 @@ export const getServerSideProps = async({ req, res }) => {
        return {
          redirect: {
            permanent: false,
-           destination: "/401",
+           destination: "/404",
          },
          props:{},
        }

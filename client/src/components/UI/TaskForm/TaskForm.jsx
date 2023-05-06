@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Stack, TextField, FormControl, InputLabel, MenuItem, Box, Button, Typography, Divider } from "@mui/material";
-import dayjs from 'dayjs';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import EditIcon from '@mui/icons-material/Edit';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import AddTaskIcon from '@mui/icons-material/AddTask';
-import EditIcon from '@mui/icons-material/Edit';
 
 import { getCookie } from "cookies-next";
 
@@ -33,70 +33,73 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   const [disableButton, setDisableButton] = useState(false);
 
   const formSubmissionHandler = async (event) => {
+
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
     setDisableButton(true);
 
-    if(action == "new") {
-        const newTask = { 
-            title: title,
-            description: description,
-            dateAdded: "date",
-            status: "status",
-            user: 0
-        };
-    
-        await fetch("https://localhost:7136/api/usertasks/new",
-        {
-            method: "POST",
-            body: JSON.stringify(newTask),
-            mode: 'cors',
-            withCredentials: true,
-            credentials: 'same-origin',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': '*',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            }
-        })
-        .then(response => response.json())
-        .then(resJson => {
-            if(resJson != undefined && resJson != null && resJson != {} && resJson != '') {
-                const { responseObject, message } = resJson;
-                // feedback
-                onNewTaskAdded({ responseObject, message });
-            }
-        })
-        .catch(error => {
-                onNewTaskAdded({ responseObject: null, message:"oops something went wrong 😢" });
-        });
-    }
-
-    else if(action == "update") {
-
-        // send a update request
-        const updatedTask = {
-            id: taskId,
-            title: title,
-            status: status,
-            description: description,
-            dateAdded: dateAdded,
-        };  
-
-        updateUserTaskRequest({ token, updatedTask, taskId })
-        .then(res => {
-            if(res != undefined && res != null && res != {} && res != '') {
-                const { responseObject, message } = res;
-                onUpdateTask({ responseObject, message });
-            }
-        }).catch(error => {
-            onUpdateTask({ responseObject: null, message:"oops something went wrong 😢" });
-        });
-    }
-
+    if(action == "new") await sendNewTaskRequest(token);
+    else if(action == "update") await updateSelectedTask(token);
   };
+
+  const sendNewTaskRequest = async(token) => {
+    
+    const newTask = { 
+        title: title,
+        description: description,
+        dateAdded: dateAdded,
+        status: "pending",
+        user: 0
+    };
+
+    await fetch("https://localhost:7136/api/usertasks/new",
+    {
+        method: "POST",
+        body: JSON.stringify(newTask),
+        mode: 'cors',
+        withCredentials: true,
+        credentials: 'same-origin',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+    .then(response => response.json())
+    .then(resJson => {
+        if(resJson != undefined && resJson != null && resJson != {} && resJson != '') {
+            const { responseObject, message } = resJson;
+            // feedback
+            onNewTaskAdded({ responseObject, message });
+        }
+    })
+    .catch(error => {
+            onNewTaskAdded({ responseObject: null, message:"oops something went wrong 😢" });
+    });
+  };
+
+  const updateSelectedTaskRequest = async(token) => {
+        
+    const updatedTask = {
+        id: taskId,
+        title: title,
+        status: status,
+        description: description,
+        dateAdded: dateAdded,
+    };  
+
+    await updateUserTaskRequest({ token, updatedTask, taskId })
+    .then(res => {
+        if(res != undefined && res != null && res != {} && res != '') {
+            const { responseObject, message } = res;
+            onUpdateTask({ responseObject, message });
+        }
+    }).catch(error => {
+        onUpdateTask({ responseObject: null, message:"oops something went wrong 😢" });
+    });
+  }
 
   return (
     <Box sx={style}>
@@ -129,6 +132,16 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             onChange={(newValue) => setDescription(newValue.target.value)}
             />
             </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    label="Date *"
+                    value={dateAdded}
+                    onChange={(newValue) => {
+                    setDateAdded(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                disablePast />
+            </LocalizationProvider>
             <Box sx={{ display: "flex", justifyContent: "right", marginTop: "1rem" }}>
                 <Button variant="outlined" sx={{ margin: "0 1rem"}} onClick={onModalClose}>Cancel</Button>
                 {(action == "new") && <Button variant="contained" type="submit" disabled={disableButton}>Add</Button>} 

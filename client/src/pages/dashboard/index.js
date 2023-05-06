@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../layout';
 import Dashboard from '@/components/Dashboard/Dashboard';
-import { getCookie } from 'cookies-next'
+import { getCookie } from 'cookies-next';
 import { getUserTask, getUserTaskStatistics } from '../api/userTaskApi';
 
 export default function DashboardPage({ user, userTasks, userStatistics }) {
@@ -29,7 +29,7 @@ export const getServerSideProps = async({ req, res }) => {
         return {
           redirect: {
             permanent: false,
-            destination: "/401",
+            destination: "/404",
           },
           props:{},
         }

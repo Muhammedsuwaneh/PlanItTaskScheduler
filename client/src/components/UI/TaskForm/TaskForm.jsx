@@ -11,19 +11,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { getCookie } from "cookies-next";
 
 import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
-import { DayCalendar } from '@mui/x-date-pickers/internals';
-
-const style = {
-    position: 'absolute',
-    top: '30%',
-    left: '50%',
-    transform: 'translate(-50%, -30%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: "1rem",
-};
 
 const getTodaysDay = () => {
     const today = new Date();
@@ -56,17 +43,28 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     else if(action == "update") await updateSelectedTaskRequest(token);
   };
 
+  const fixDateHandler = () => {
+    const dateArr = dateAdded.toISOString().split('T')[0].split('-');
+    const newDate = `${dateArr[0]}-${dateArr[1]}-${+dateArr[2]+1}`;
+    return newDate;
+  }
+
   const sendNewTaskRequest = async(token) => {
     
-    let newDate = dateAdded.toISOString().split('T')[0];
-
-    const newTask = { 
+    let newTask = { 
         title: title,
         description: description,
-        dateAdded: newDate,
         status: "pending",
         user: 0
-    };
+    };;
+
+    try {
+        newTask.dateAdded = fixDateHandler();
+
+    } catch (error) {
+            
+        newTask.dateAdded = dateAdded;
+    }
 
     await fetch("https://localhost:7136/api/usertasks/new",
     {
@@ -94,19 +92,24 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     .catch(error => {
             onNewTaskAdded({ responseObject: null, message:"oops something went wrong 😢" });
     });
-  };
+   };
 
-  const updateSelectedTaskRequest = async(token) => {
-
-    let newDate = dateAdded.toISOString().split('T')[0];
+  const updateSelectedTaskRequest = async(token) => {   
 
     const updatedTask = {
         id: taskId,
         title: title,
         status: status,
         description: description,
-        dateAdded: newDate,
     };  
+
+    try {
+        updatedTask.dateAdded = fixDateHandler();
+
+    } catch (error) {
+            
+        updatedTask.dateAdded = dateAdded;
+    }
 
     await updateUserTaskRequest({ token, updatedTask, taskId })
     .then(res => {
@@ -120,7 +123,7 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   }
 
   return (
-    <Box sx={style}>
+    <Box>
         {(action == "new") && <Box sx={{ display: "flex" }}>
             <AddTaskIcon color="primary" sx={{ margin: ".5rem .2rem"}} />
             <Typography id="modal-modal-title" color="primary" sx={{ marginTop: ".3rem", marginLeft: ".3rem"}} variant="h6" component="h2">New Task</Typography>

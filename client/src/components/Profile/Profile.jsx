@@ -74,7 +74,7 @@ export default function Profile({ user, onUserAccountDelete }) {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
-            <ModalContent>
+            <ModalContent height="250px">
                 <Typography id="modal-modal-title" variant="h6" component="h2">Delete Account</Typography>
                 <Divider />
                 <Alert severity="warning" sx={{margin: "1rem 0"}}>Warning: all task related to this account will be deleted</Alert>
@@ -103,7 +103,7 @@ export default function Profile({ user, onUserAccountDelete }) {
         </Box>
         <Box sx={{ background: "#fff", display: "flex", alignItems: "center",justifyContent: { lg: "space-between", sm: "center", md: "space-between", xs: "center"},flexDirection: { lg: "row", sm: "column", md: "row", xs: "column"}, padding: "1rem", borderRadius: "1rem"}}>
             <Typography color="#333"sx={{  margin: { lg: "0", md: "0", sm: "1rem 0", xs: "1rem 0"}}}>
-              <span style={{ color: "#1976D2"}}>Date Joined:</span> {user.dateJoined}
+              <span style={{ color: "#1976D2"}}>Joined:</span> {user.dateJoined}
              </Typography>
             <Button variant="text" sx={{ color: "red", margin: { lg: "0", md: "0", sm: "1.3rem 0", xs: "1.3rem 0"}}} onClick={handleOpen}>Delete Account</Button>
         </Box>

@@ -3,7 +3,7 @@ import { Box, Typography, Button} from "@mui/material";
 
 export default function DeleteContent({ onConfirmDelete, noDelete }) {
   return (
-    <>
+    <Box sx={{ textAlign: "center"}}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
             Delete
         </Typography>
@@ -14,6 +14,6 @@ export default function DeleteContent({ onConfirmDelete, noDelete }) {
             <Button variant="contained" onClick={onConfirmDelete}>Yes</Button>
             <Button onClick={noDelete}>No</Button>
         </Box>
-    </>
+    </Box>
   )
 }

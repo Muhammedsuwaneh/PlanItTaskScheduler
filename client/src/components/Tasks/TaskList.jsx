@@ -1,7 +1,5 @@
 import React from 'react'
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { Box, Grid, Typography, Modal, Link, Fab, Stack, TextField } from '@mui/material'
 import InputLabel from '@mui/material/InputLabel';
@@ -42,6 +40,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
   const [open, setOpen] = React.useState(false);
+  const [newHeight, setNewHeight] = React.useState("400px");
   const [modalContent, setModalContent] = React.useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -115,10 +114,12 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
     // modal content based on action
     if(action == "delete") {
         setModalContent(<DeleteContent onConfirmDelete={() => deleteTaskHandler(itemObject.id)} noDelete={handleClose}/>);
+        setNewHeight("200px");
     }
 
     else if(action == "update") {
         setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action="update"/>)
+        setNewHeight("400px");
     }
 
     // open modal 
@@ -133,7 +134,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <ModalContent>
+            <ModalContent height={newHeight}>
                {modalContent}
             </ModalContent>
         </Modal>

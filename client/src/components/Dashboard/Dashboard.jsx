@@ -109,12 +109,12 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
              onClose={handleClose}
              aria-labelledby="modal-modal-title"
              aria-describedby="modal-modal-description">
-            <ModalContent>
+            <ModalContent height="400px">
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
             </ModalContent>
         </Modal>
-        <Stack sx={{ padding: "2rem" }}>
+        <Stack sx={{ padding: { lg: "2rem", sm: "10px", xs: "10px", md: "5px"} }}>
         <Box sx={{ background: "#fff", padding: "1rem", borderRadius: "1rem", display: "flex", justifyContent: "space-between"}}>
             <Box sx={{ padding: "1rem"}}>
                     <Typography sx={{ fontSize: "2rem"}}>Welcome - <span style={{ color: "#1976D2"}}>{user} </span> 😊</Typography>
@@ -129,7 +129,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
-            <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, padding: "2rem", background: "#fff", height: "auto", 
+            <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
+            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", height: "auto", 
             margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                     Upcoming Task

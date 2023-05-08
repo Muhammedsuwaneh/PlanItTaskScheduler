@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Grid, IconButton, Modal, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material/';
 
-const MaterialCalendar = ({ defaultDate, handleOpen }) => {
+import { getTaskStatusColor } from '@/components/Tasks/TaskList';
+import { shortenTextHandler } from '../CalenderTaskList/CalenderTaskList';
+
+const MaterialCalendar = ({ defaultDate, handleOpen, tasks }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handlePrevMonth = () => {
@@ -13,18 +16,29 @@ const MaterialCalendar = ({ defaultDate, handleOpen }) => {
     setSelectedDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
   };
 
-  const handleClickedDate = (day) => {
-    const month = selectedDate.getMonth();
+  const getDate = (day) => {
+    let month = selectedDate.getMonth()+1;
+    const monthFormatted = selectedDate.toLocaleString('default', { month: 'long'});
     const year = selectedDate.getFullYear();
-    const fullDate = `${year}-${month}-${day}`;
 
+    if(day < 10) day = "0"+day;
+    if(month < 10) month = "0"+month;
+
+    const fullDate = `${year}-${month}-${day}`;
+    const formattedDate = `${monthFormatted} ${day} ${year}`;
+
+    return [fullDate, formattedDate];
+  }
+
+  const handleClickedDate = (day) => {
+    const [fullDate, formattedDate] = getDate(day);
     // open modal 
-    handleOpen(fullDate);
+    handleOpen(fullDate, formattedDate);
   };
 
   const renderCalendarHeader = () => {
     return (
-      <Box sx={{ display: "flex", justifyContent:"space-between", margin: "1rem auto", alignItems: "center", background: "#fff", padding: "1rem", borderRadius: "1rem" }}>
+      <Box sx={{ display: "flex", justifyContent:"space-between", margin: "1rem 0", alignItems: "center", background: "#fff", padding: "1rem", borderRadius: "1rem" }}>
         <Typography variant="h5" align="center">
             {selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
         </Typography>
@@ -38,6 +52,22 @@ const MaterialCalendar = ({ defaultDate, handleOpen }) => {
         </Box>
       </Box>
     );
+  };
+
+  const indicateTaskExisthandler = (day) => {
+    const [fullDate, formattedDate] = getDate(day);
+    
+    // get task 
+    const filteredTask = tasks.filter(task => task.dateAdded == fullDate);
+
+    // indicate task exist 
+    if(filteredTask.length > 0) {
+      return (
+        <Box sx={{ background: "blue", height: "10px", borderRadius: "50%",
+        width: "10px", alignSelf: "center", justifyContent: "center", margin: "1rem auto"}}>
+        </Box>
+      );
+    }
   };
 
 
@@ -70,6 +100,7 @@ const MaterialCalendar = ({ defaultDate, handleOpen }) => {
                 <Typography variant="body1" align="center" color={`${(currentDay == date && defaultDate.getMonth() == selectedDate.getMonth()) ? "#fff" : ""}`}>
                   {date}
                 </Typography>
+                {indicateTaskExisthandler(date)}
             </Box>
           </Grid>
         );
@@ -90,7 +121,7 @@ const MaterialCalendar = ({ defaultDate, handleOpen }) => {
 
   return (
     <>
-      <Grid container direction="column" spacing={1} sx={{ width: "100%", padding: "0" }}>
+      <Grid container direction="column" spacing={1} sx={{ width: "100%", padding: "0", overflowX: "scroll" }}>
         <Grid item>{renderCalendarHeader()}</Grid>
         <Grid item>{renderCalendarBody()}</Grid>
       </Grid>

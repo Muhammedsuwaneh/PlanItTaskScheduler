@@ -94,7 +94,10 @@ export default function Profile({ user, onUserAccountDelete }) {
         <Box sx={{ background: "#fff", padding: "3rem", margin: "1rem 0", borderRadius: "1rem", display: "flex", 
         justifyContent: "center", alignItems: "center"}}>
             <Stack>
+              <Stack sx={{ alignItems: "center"}}>
                 <Typography variant="h5" component="h2" color="#9E9EA7">Edit profile</Typography>
+                <AccountCircleIcon sx={{ color: "#C9C9C9", fontSize: "8rem", margin: "1rem 0" }} />
+              </Stack>
                 <UpdateForm onUserProfileUpdate={userInfoUpdateHandler} userInfo={user} />
             </Stack>
         </Box>

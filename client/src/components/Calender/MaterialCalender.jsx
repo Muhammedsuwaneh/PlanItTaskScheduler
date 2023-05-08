@@ -14,14 +14,12 @@ const MaterialCalendar = ({ defaultDate, handleOpen }) => {
   };
 
   const handleClickedDate = (day) => {
-    const month = selectedDate.toLocaleString('default', { month: 'long'});
+    const month = selectedDate.getMonth();
     const year = selectedDate.getFullYear();
-    const fullDate = `${day} ${month} ${year}`;
+    const fullDate = `${year}-${month}-${day}`;
 
-    // get all task for this particular date 
-    const selectedTask = [];
     // open modal 
-    handleOpen(selectedTask, fullDate);
+    handleOpen(fullDate);
   };
 
   const renderCalendarHeader = () => {

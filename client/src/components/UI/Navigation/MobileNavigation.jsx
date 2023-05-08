@@ -11,7 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Grid, styled, Stack, Typography, Divider } from '@mui/material';
 
 const NavigationTheme = styled(Grid)(({ theme }) => ({
-    background: "#0D0C22",
+    background: "#131313",
     width: "100%",
     padding: "1rem",
     color: "#00",
@@ -28,7 +28,7 @@ function MobileNavigation({ onLogoutClick, window }) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', height: "inherit", background: "#0D0C22" }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', height: "inherit", background: "#131313" }}>
       <Divider />
       <Stack sx={{ marginTop: "1.3rem"}}>
         {navItems.map(link => {

@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 
 const SideBarTheme = styled(Box)(({ theme }) => ({
-  backgroundColor: '#0D0C22',
+  backgroundColor: '#131313',
   color:"#fff",
   padding: "1rem 3rem",
   textAlign: 'center',

@@ -7,10 +7,16 @@ import MaterialCalendar from './MaterialCalender';
 
 import ModalContent from '../UI/Modal/ModalContent';
 
-export default function Calender() {
+export default function Calender({ userTasks }) {
   const [open, setOpen] = useState(false);
   const [clickedDate, setClickedDate] = useState();
-  const handleOpen = (selectedTask, date) => {
+  const [selectedDateTask, setSelectedDateTask] = useState([]);
+
+  const handleOpen = (date) => {
+
+    // get task for clicked date
+    //const filteredTask = userTasks.filter(task => task.dateAdded == ); 
+
     setClickedDate(date);
     setOpen(true);
   }

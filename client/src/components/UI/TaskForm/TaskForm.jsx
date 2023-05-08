@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Stack, TextField, FormControl, InputLabel, MenuItem, Box, Button, Typography, Divider } from "@mui/material";
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import EditIcon from '@mui/icons-material/Edit';
+import dayjs from 'dayjs';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -10,6 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { getCookie } from "cookies-next";
 
 import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
+import { DayCalendar } from '@mui/x-date-pickers/internals';
 
 const style = {
     position: 'absolute',
@@ -23,14 +25,26 @@ const style = {
     borderRadius: "1rem",
 };
 
+const getTodaysDay = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+}
+
 export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, itemObject, action } ) {
 
   const [taskId, setTaskId] = useState(itemObject.id);
   const [title, setTitle] = useState(itemObject.title);
   const [description, setDescription] = useState(itemObject.description);
   const [status, setStatus] = useState(itemObject.status);
-  const [dateAdded, setDateAdded] = useState(itemObject.dateAdded);
+  const [dateAdded, setDateAdded] = useState((itemObject.dateAdded != "") ? itemObject.dateAdded : getTodaysDay());
   const [disableButton, setDisableButton] = useState(false);
+
 
   const formSubmissionHandler = async (event) => {
 
@@ -39,15 +53,17 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     setDisableButton(true);
 
     if(action == "new") await sendNewTaskRequest(token);
-    else if(action == "update") await updateSelectedTask(token);
+    else if(action == "update") await updateSelectedTaskRequest(token);
   };
 
   const sendNewTaskRequest = async(token) => {
     
+    let newDate = dateAdded.toISOString().split('T')[0];
+
     const newTask = { 
         title: title,
         description: description,
-        dateAdded: dateAdded,
+        dateAdded: newDate,
         status: "pending",
         user: 0
     };
@@ -81,13 +97,15 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   };
 
   const updateSelectedTaskRequest = async(token) => {
-        
+
+    let newDate = dateAdded.toISOString().split('T')[0];
+
     const updatedTask = {
         id: taskId,
         title: title,
         status: status,
         description: description,
-        dateAdded: dateAdded,
+        dateAdded: newDate,
     };  
 
     await updateUserTaskRequest({ token, updatedTask, taskId })
@@ -135,12 +153,14 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     label="Date *"
-                    value={dateAdded}
+                    defaultValue={dayjs(dateAdded)}
                     onChange={(newValue) => {
                     setDateAdded(newValue);
                     }}
+                    required
                     renderInput={(params) => <TextField {...params} />}
-                disablePast />
+                    disablePast 
+                />
             </LocalizationProvider>
             <Box sx={{ display: "flex", justifyContent: "right", marginTop: "1rem" }}>
                 <Button variant="outlined" sx={{ margin: "0 1rem"}} onClick={onModalClose}>Cancel</Button>

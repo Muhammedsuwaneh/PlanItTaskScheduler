@@ -76,7 +76,7 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
 
   return (
     <>
-      <form style={{ display: "flex", flexDirection: "column", marginTop: "3rem" }} onSubmit={(event) => userRegisterHandler(event)}>
+      <form style={{ display: "flex", flexDirection: "column", marginTop: "1rem" }} onSubmit={(event) => userRegisterHandler(event)}>
         <TextField id="standard-basic" 
                 label="Username" 
                 variant="standard" 

@@ -59,13 +59,16 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
      }
      else if(action == "search") {
         const filterStrTrimmed = event.target.value.trim().toLowerCase();
-        const items2Display = tasksList.filter((item)=>{
-            if (filterStrTrimmed == "") return true;
-            else if (item.title.toLowerCase().indexOf(filterStrTrimmed) >= 0) return true;
-            else return false;
-        });
-        
-        setTaskList(items2Display);
+        if(filterStrTrimmed == " " || filterStrTrimmed == null || filterStrTrimmed == undefined) 
+            setTaskList(userTasks);
+        else {
+            const items2Display = userTasks.filter((item)=>{
+                if (filterStrTrimmed == "") return true;
+                else if (item.title.toLowerCase().indexOf(filterStrTrimmed) >= 0) return true;
+                else return false;
+            });
+            setTaskList(items2Display);
+        }
      }
   };
 

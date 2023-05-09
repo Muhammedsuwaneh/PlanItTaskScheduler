@@ -45,7 +45,12 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
 
   const fixDateHandler = () => {
     const dateArr = dateAdded.toISOString().split('T')[0].split('-');
-    const newDate = `${dateArr[0]}-${dateArr[1]}-${+dateArr[2]+1}`;
+    let tempDay = "";
+    if(+dateArr[2]+1 < 10) 
+        tempDay = "0" + (+dateArr[2]+1);
+    else 
+        tempDay = +dateArr[2]+1;
+    const newDate = `${dateArr[0]}-${dateArr[1]}-${tempDay}`;
     return newDate;
   }
 

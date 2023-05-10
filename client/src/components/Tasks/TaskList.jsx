@@ -142,7 +142,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             </ModalContent>
         </Modal>
         {(currentPage == "dashboard") || <Box>
-            <Box sx={{ minWidth: 120, display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", alignItems: "center"}}>
                     <Typography sx={{ margin: "0 1rem"}}>Filter:</Typography>
                     <FormControl fullWidth>
@@ -173,7 +173,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             </Box>
         </Box>}
         <Box>
-           <TaskListContent onActionFired={actionButtonHandler} tasksList={tasksList}/>
+           <TaskListContent onActionFired={actionButtonHandler} tasksList={tasksList} page={currentPage}/>
         </Box>
     </>
   )

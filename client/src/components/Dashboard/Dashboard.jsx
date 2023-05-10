@@ -132,7 +132,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
             <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
             padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", height: "auto", 
             margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
-                <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
+                <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
                     Upcoming Task
                 </Typography>
                 <Stack sx={{ margin: "1rem 0"}}>

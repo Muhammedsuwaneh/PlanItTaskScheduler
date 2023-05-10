@@ -76,6 +76,60 @@ namespace UserTaskManagerAPI.Controllers
             }
         }
 
+        [HttpGet("usertaskbydate/{date}")]
+        [Produces("application/json")]
+        public IActionResult GetUserTasksByDate(string date)
+        {
+            // obtain user id from token
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                try
+                {
+                    var userClaims = identity.Claims;
+
+                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
+                    var id = userId.ToInt32();
+
+                    var tasks = _context.UserTasks.Where(t => t.user == id && t.DateAdded == date).ToList();
+
+                    tasks.Reverse();
+
+                    return Ok(new ApiResponse<List<UserTask>>
+                    {
+                        ResponseObject = tasks,
+                        message = "request successful",
+                        token = null,
+                        status = 200
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = null,
+                        message = "oops something went wrong: " + ex.Message,
+                        token = null,
+                        status = 500
+                    });
+                }
+            }
+
+            else
+            {
+                return BadRequest(new ApiResponse<UserTask>
+                {
+                    ResponseObject = null,
+                    message = "request rejected",
+                    token = null,
+                    status = 401
+                });
+            }
+        }
+
+
 
         [HttpPost("new")]
         [Produces("application/json")]

@@ -26,22 +26,22 @@ export default function CalenderTaskList({ selectedTask }) {
 
   else {
     selectedTaskContent = (
-      <>
-        <List sx={{ width: '100%', padding: "1rem 0", margin: "0", height: "300px", overflowY: "scroll", maxWidth: 360 }}>
+      <Box sx={{ width: '100%', padding: "1rem 0", margin: "0", height: "300px", overflowY: "scroll" }}>
+        <List>
             {selectedTask.map(task => {
             return (
-              <ListItem sx={{ height: "3" }}>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar>
                     {getTaskIconHandler(task.status)}
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={shortenTextHandler(task.title, 25)} secondary={task.status} />
+                <ListItemText primary={shortenTextHandler(task.title, 30)} secondary={task.status} />
               </ListItem>
             )  
           })}
         </List>
-      </>
+      </Box>
     );
   };
 

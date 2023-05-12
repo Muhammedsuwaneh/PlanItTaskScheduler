@@ -12,7 +12,7 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
         {tasksList.map(task => {
                 return (
                     <Box key={task.id} sx={{ borderRadius: "1rem",  boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19)", 
-                    padding: "1rem", margin: { sm: "1rem 0", md: "1rem 0", xs: "1rem 0", lg: "1rem"}, 
+                    padding: "1rem", margin: { sm: "1rem 0", md: "1rem 0", xs: "1rem 0", lg: "1rem"},
                     display: "flex", justifyContent: "space-between", background: "#F9F9F9"}}>
                         <Box sx={{ display: { sm: "column", xs: "column", md: "flex", lg: "flex"}, margin: { lg: "1rem 0", sm: "0", md: "1rem 0", xs: "0"} }}>
                             <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">

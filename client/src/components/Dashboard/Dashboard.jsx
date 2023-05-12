@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import { CChart } from "@coreui/react-chartjs";
 import ModalContent from '../UI/Modal/ModalContent';
 
 import Toast from '../UI/Toast/Toast';
@@ -173,21 +172,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ height:"auto", padding: "1.4rem", background: "#fff", 
-                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%"}}>
-                        {(userTasks.length == 0) || <CChart
-                            type="doughnut"
-                            data={{
-                                labels: ['Pending', 'Completed'],
-                                datasets: [
-                                {
-                                    data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
-                                    backgroundColor: [`${getTaskStatusColor("Pending")}`,  
-                                    `${getTaskStatusColor("Completed")}`],
-                                },
-                                ],
-                            }}
-                        />}
+                    <Box sx={{ height:"25rem", padding: "1.4rem", background: "#fff", 
+                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
+                    alignItems:"center", justifyContent: "center", display: "flex"}}>
+                        {(userTasks.length == 0)}
                     </Box>
             </Stack>
         </Box>
@@ -198,3 +186,15 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 }
 
 export default Dashboard;
+
+                            
+                            // data={{
+                            //     labels: ['Pending', 'Completed'],
+                            //     datasets: [
+                            //     {
+                            //         data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
+                            //         backgroundColor: [`${getTaskStatusColor("Pending")}`,  
+                            //         `${getTaskStatusColor("Completed")}`],
+                            //     },
+                            //     ],
+                            // }}

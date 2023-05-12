@@ -1,37 +1,45 @@
 import React from 'react';
-import { Box, Button, Grid, Stack, Paper, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { experimentalStyled as styled } from '@mui/material/styles';
+import { Box, Button, Stack, Paper, Typography } from '@mui/material';
 
+const data = {
+  datasets: [{
+    label: [ 'Daily Task'],
+    data: [
+     { x: ['20', '23'], y:  'Task 1'},
+     { x: ['02', '05'], y:  'Task 2'},
+     { x: ['13', '15'], y:  'Task 3'},
+    ],
+    backgroundColor: [
+      '#1976D2',
+      '#F87D01',
+      '#F87D01',
+    ],
+    borderColor: [
+      '#1976D2',
+      '#F87D01',
+      '#F87D01',
+    ],
+    borderWidth: 1
+  }]
+};
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-const GanttChart = ({ retrievedTasksByDate }) => {
-  const tasks = [
-    { id: 1, name: 'Task 1', start: 8, end: 12 },
-    { id: 2, name: 'Task 2', start: 10, end: 14 },
-    { id: 3, name: 'Task 3', start: 13, end: 16 },
-  ];
-
+const GanttChart = ({ retrievedTasksByDate, date }) => {
   return (
-    <Box p={3} sx={{ flexGrow: 1 }}>
-        <Button component="a" href={`/calender`} sx={{ '&:hover': { color: "#131313"} }}>
-          <ArrowBackIcon sx={{ fontSize: '3rem'}}></ArrowBackIcon>
-        </Button>
-        <Stack sx={{ width: 1 }}>
-          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-            <Box gridColumnStart="2" gridColumn="span 3" margin="1rem 0">
-              <Item>xs=8</Item>
-            </Box>
-          </Box> 
-        </Stack>
-    </Box>
+      <Box p={2} sx={{ background: "#fff", margin: '1rem', borderRadius:"1rem"}}>
+        {/* <CChart
+          type="bar"
+          data={data}
+          options={{
+            indexAxis: 'y',
+            scales: {
+              x: { 
+                type: 'linear',
+              }
+            },
+            plugins: [ChartDataLabels],
+          }}
+        /> */}
+      </Box>
   );
 };
 

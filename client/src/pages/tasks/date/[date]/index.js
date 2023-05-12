@@ -1,13 +1,13 @@
 import React from 'react';
 import { getCookie } from "cookies-next";
 import { getUserTaskByDate } from '@/pages/api/userTaskApi';
-import GanttChart from '@/components/GanttChart/GanttChart';
+import DailyTask from '@/components/DailyTask/DailyTask';
 import DashboardLayout from '@/pages/layout';
 
-export default function TodaysDatePage({ retrievedTasksByDate }) {
+export default function TodaysDatePage({ retrievedTasksByDate, date }) {
   return (
     <DashboardLayout>
-      <GanttChart retrievedTasksByDate={retrievedTasksByDate} />
+      <DailyTask retrievedTasksByDate={retrievedTasksByDate} date={date} />
     </DashboardLayout>
   )
 }
@@ -40,6 +40,7 @@ export const getServerSideProps = async({ req, res, query }) => {
   return {
      props: {
       retrievedTasksByDate: userTasks,
+      date: date
      }
   }
 };

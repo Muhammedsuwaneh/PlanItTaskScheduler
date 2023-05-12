@@ -37,6 +37,7 @@ const SideBarTheme = styled(Box)(({ theme }) => ({
 export default function SideBar() {
 
   const router = useRouter();
+  const [currentPage, setCurrentPage] = useState("");
 
   const logoutHandler = () => {
 
@@ -46,6 +47,12 @@ export default function SideBar() {
       router.push("/");
   };
 
+
+  useEffect(() => {
+    const currentPageUrlTemp = (window.location.pathname).split("/")[1];
+    setCurrentPage(currentPageUrlTemp);
+  }, []);
+
   return (
     <>
         <MobileNavigation onLogoutClick={logoutHandler}/>
@@ -53,7 +60,8 @@ export default function SideBar() {
         <Typography variant="h5" sx={{ color: "#fff", fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
             PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
         </Typography>
-        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background"}}>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background", 
+      background: `${(currentPage === "dashboard") ? "#1976D2" : ""}`, margin: "5px 0"}}>
           <ListItemButton>
             <ListItemIcon>
               <DashboardIcon sx={{ color: "#fff"}}/>
@@ -63,7 +71,8 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background"}}>
+        <ListItem disablePadding sx={{'&:hover': { background: "#1976D2"}, transition: ".5s ease background",
+       background: `${(currentPage === "tasks") ? "#1976D2" : ""}`, margin: "5px 0"}}>
           <ListItemButton>
             <ListItemIcon>
               <ListAltIcon sx={{ color: "#fff"}}/>
@@ -73,7 +82,8 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
       </ListItem>
-      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"}}}>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"},
+     background: `${(currentPage === "calender") ? "#1976D2" : ""}`, margin: "5px 0"}}>
           <ListItemButton>
             <ListItemIcon>
               <CalendarMonthIcon sx={{ color: "#fff"}}/>
@@ -83,7 +93,8 @@ export default function SideBar() {
               </Link>
           </ListItemButton>
       </ListItem>
-      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"}}}>
+      <ListItem disablePadding sx={{'&:hover': { background: "#1976D2", transition: ".5s ease background"},
+     background: `${(currentPage === "profile") ? "#1976D2" : ""}`, margin: "5px 0"}}>
           <ListItemButton>
             <ListItemIcon>
               <AccountCircleIcon sx={{ color: "#fff"}}/>

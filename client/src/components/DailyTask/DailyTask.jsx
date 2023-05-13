@@ -3,7 +3,7 @@ import { Box, Button, Stack, Paper, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
-import GanttChart from '../GanttChart/GanttChart';
+import GanttChart from '../UI/GanttChart/GanttChart';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

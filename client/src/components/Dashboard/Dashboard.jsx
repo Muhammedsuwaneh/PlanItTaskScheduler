@@ -3,6 +3,7 @@ import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ModalContent from '../UI/Modal/ModalContent';
+import Doughnut from '../UI/Charts/Doughnut/DoughnutChart';
 
 import Toast from '../UI/Toast/Toast';
 
@@ -21,6 +22,23 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [snackBarType, setSnackBarType] = useState("");
+
+  
+  const data = {
+      labels: ['On going', 'Completed'],
+      datasets: [
+      {
+          data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
+          backgroundColor: [`${getTaskStatusColor("Pending")}`,  
+          `${getTaskStatusColor("Completed")}`],
+      },
+      ],
+      borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+      ],
+      borderWidth: 1,
+  };
 
   const newAddedTaskHandler = async ({ responseObject, message }) => {
 
@@ -175,7 +193,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                     <Box sx={{ height:"25rem", padding: "1.4rem", background: "#fff", 
                     margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0)}
+                        {(userTasks.length == 0) || <Doughnut data={data}/> }
                     </Box>
             </Stack>
         </Box>

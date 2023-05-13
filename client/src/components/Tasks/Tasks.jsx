@@ -66,7 +66,7 @@ export default function Tasks({ userTasks, userStatistics }) {
             setSnackBarType("success");
         }
         else {
-            setSnackMessage("oops! something went wronf");
+            setSnackMessage("oops! something went wrong");
             setSnackBarType("error");
         }
   };

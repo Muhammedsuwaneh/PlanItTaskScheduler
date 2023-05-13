@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,39 +10,102 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+import { getTaskStatusColor } from "../../Tasks/TaskList";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
-export const options = {
-  indexAxis: 'y'
+import { Box, Typography, Button } from "@mui/material";
+
+const options = {
+  indexAxis: 'y',
+  scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Hours'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Daily Tasks',
+      },
+      ticks: {
+        display: false // Set display to false to hide Y-axis values
+      },
+    }
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    datalabels: {
+      centerLabels: true,
+      anchor: 'start', // Set the anchor position of the labels to the center of the bars
+      align: 'start', // Set the alignment of the labels to the center of the bars
+      color: '#EDEFF1', // Set the color of the labels
+      font: {
+        weight: 'bold' // Set the font weight of the labels
+      },
+      formatter: function(value, context) {
+        // Customize the label format if needed
+        return value.y; // Display the original value as the label
+      }
+    }
+  }
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [100, 20, 40, 75, 85, 85, 79],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data:  [100, 20, 40, 75, 85, 85, 79],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+export default function GanntChart({ retrievedTasksByDate, date }) {
 
-export function GanntChart({ retrievedTasksByDate, date }) {
-  return <Bar options={options} data={data} />;
+  const data = {
+    datasets: [
+      {
+        data: retrievedTasksByDate.map((task) => {
+          return { x: [10, 20], y: task.title}
+        }),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: [
+          getTaskStatusColor("Pending"),
+          getTaskStatusColor("Completed"),
+        ],
+      },
+    ],
+  };
+
+  let content = "";
+
+  if(retrievedTasksByDate.length <= 0) {
+    content = (
+      <Box p={1} sx={{ display: "flex", flexDirection: "column", alignContent: "center", justifyContent: "center", borderRadius: "1rem", margin: "1rem", background: "#fff", height: "50vh"}}>
+          <Typography sx={{ fontSize: "2rem", textAlign: "center"}}>No tasks for today</Typography>
+          <Button variant="contained" href="/tasks" sx={{ margin: "1rem auto", width: "auto"}}>Go to tasks</Button>
+      </Box>
+    );
+  }
+
+  else {
+    content = (
+            <Box p={1} sx={{ flexGrow: 1, display: "flex", margin: "1rem", background: "#fff", 
+            borderRadius: "1rem", height: "100vh", overflow: "scroll" }}>
+              <Bar options={options} data={data} />
+            </Box>
+    );
+  }
+
+  return (
+    <>
+      {content}
+    </>
+  );
 }

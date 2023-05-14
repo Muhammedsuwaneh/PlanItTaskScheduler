@@ -31,7 +31,7 @@ const DailyTask = ({ retrievedTasksByDate, date }) => {
             {date}
           </Typography>
         </Box>
-        <GanttChart retrievedTasksByDate={retrievedTasksByDate} date={date} />
+        <GanttChart retrievedTasksByDate={retrievedTasksByDate} />
       </Box>
   );
 };

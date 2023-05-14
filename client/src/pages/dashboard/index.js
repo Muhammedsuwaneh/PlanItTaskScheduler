@@ -6,7 +6,7 @@ import { getUserTask, getUserTaskStatistics } from '../api/userTaskApi';
 
 export default function DashboardPage({ user, userTasks, userStatistics }) {
 
-  let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Pending");
+  let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Ongoing");
 
   if(filteredTasksBasedOnStatus.length >= 4) {
     filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 4);
@@ -49,7 +49,7 @@ export const getServerSideProps = async({ req, res }) => {
    await getUserTaskStatistics({ token })
    .then(res => {
       userStatistics = res;
-      userTaskStatistics = { "Pending": (userStatistics.Pending == undefined) ? 0 : userStatistics.Pending, 
+      userTaskStatistics = { "Ongoing": (userStatistics.Ongoing == undefined) ? 0 : userStatistics.Ongoing, 
       "Completed": (userStatistics.Completed == undefined) ? 0 : userStatistics.Completed};
    });
 

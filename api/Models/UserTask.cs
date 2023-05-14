@@ -22,6 +22,12 @@ namespace UserTaskManagerAPI.Models
         public string Status { get; set; }
 
         [Required]
+        public string StartTime { get; set; }
+
+        [Required]
+        public string EndTime { get; set; }
+
+        [Required]
         public int user { get; set; }
 
     }

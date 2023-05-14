@@ -19,7 +19,7 @@ import ModalContent from '../UI/Modal/ModalContent';
 
 export const getTaskStatusColor = (status) => {
     switch(status) {
-        case "Pending": 
+        case "Ongoing": 
             return "#F87D01";
         case "Completed":
             return "#1976D2";
@@ -28,7 +28,7 @@ export const getTaskStatusColor = (status) => {
 
 export const getTaskIconHandler = (status) => {
     switch(status) {
-        case "Pending": 
+        case "Ongoing": 
             return <HourglassBottomIcon />;
         case "Completed":
             return <TaskAltIcon />;
@@ -122,7 +122,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
 
     else if(action == "update") {
         setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action="update"/>)
-        setNewHeight("400px");
+        setNewHeight("auto");
     }
 
     // open modal 
@@ -156,7 +156,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
                     sx={{ width: 150 }}
                     >
                     <MenuItem value="All">All</MenuItem>
-                    <MenuItem value="Pending">Pending</MenuItem>
+                    <MenuItem value="Ongoing">Ongoing</MenuItem>
                     <MenuItem value="Completed">Completed</MenuItem>
                     </Select>
                 </FormControl>

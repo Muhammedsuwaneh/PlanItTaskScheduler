@@ -25,11 +25,11 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 
   
   const data = {
-      labels: ['On going', 'Completed'],
+      labels: ['Ongoing', 'Completed'],
       datasets: [
       {
-          data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
-          backgroundColor: [`${getTaskStatusColor("Pending")}`,  
+          data: [userStatisticsEntries.Ongoing, userStatisticsEntries.Completed],
+          backgroundColor: [`${getTaskStatusColor("Ongoing")}`,  
           `${getTaskStatusColor("Completed")}`],
       },
       ],
@@ -126,7 +126,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
              onClose={handleClose}
              aria-labelledby="modal-modal-title"
              aria-describedby="modal-modal-description">
-            <ModalContent height="400px">
+            <ModalContent height="auto">
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
             </ModalContent>
@@ -161,17 +161,17 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                         <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
                         </Typography>
-                        <Box sx={{ background: `${getTaskStatusColor("Pending")}`, borderRadius: "1rem", padding: ".5rem", 
+                        <Box sx={{ background: `${getTaskStatusColor("Ongoing")}`, borderRadius: "1rem", padding: ".5rem", 
                                 margin: "1rem 0", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                             <Box sx={{ display: "flex", padding: "1rem"}}>
                                 <Fab sx={{ background:"#fff", color: "#000" }} aria-label="add">
-                                        {getTaskIconHandler("Pending")}
+                                        {getTaskIconHandler("Ongoing")}
                                 </Fab>
                             </Box>
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
                                         <Typography>Pending</Typography>
-                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Pending}</Typography>
+                                        <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Ongoing}</Typography>
                                     </Stack>
                             </Box>
                         </Box>

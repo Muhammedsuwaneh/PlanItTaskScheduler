@@ -152,7 +152,9 @@ namespace UserTaskManagerAPI.Controllers
                         Title = task.Title,
                         Description = task.Description,
                         DateAdded = task.DateAdded,
-                        Status = "Pending",
+                        Status = "On going",
+                        StartTime = task.StartTime,
+                        EndTime = task.EndTime,
                         user = id,
                     };
 
@@ -347,6 +349,8 @@ namespace UserTaskManagerAPI.Controllers
                     _task.Title = task.Title;
                     _task.Description = task.Description;
                     _task.DateAdded = task.DateAdded;
+                    _task.StartTime = task.StartTime;
+                    _task.EndTime = task.EndTime;
 
                     _context.SaveChanges();
 

@@ -66,17 +66,23 @@ const options = {
 };
 
 
-export default function GanntChart({ retrievedTasksByDate, date }) {
+export default function GanntChart({ retrievedTasksByDate }) {
+
+  const test = [9, 12];
+
+  const fixHoursHandler = (hour) => {
+    return (hour < 10) ? "0"+hour : hour;
+  };
 
   const data = {
     datasets: [
       {
         data: retrievedTasksByDate.map((task) => {
-          return { x: [10, 20], y: task.title}
+          return { x: [fixHoursHandler(test[0]), fixHoursHandler(test[1])], y: task.title}
         }),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: [
-          getTaskStatusColor("Pending"),
+          getTaskStatusColor("On going"),
           getTaskStatusColor("Completed"),
         ],
       },
@@ -96,8 +102,8 @@ export default function GanntChart({ retrievedTasksByDate, date }) {
 
   else {
     content = (
-            <Box p={1} sx={{ flexGrow: 1, display: "flex", margin: "1rem", background: "#fff", 
-            borderRadius: "1rem", height: "100vh", overflow: "scroll" }}>
+            <Box p={3} sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignContent: "center", justifyContent: "center", 
+            margin: "1rem", background: "#fff", borderRadius: "1rem", height: "90vh", overflow: "scroll" }}>
               <Bar options={options} data={data} />
             </Box>
     );

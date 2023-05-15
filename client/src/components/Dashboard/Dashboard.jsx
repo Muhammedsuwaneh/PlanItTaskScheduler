@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Grid, Typography, Modal, Link, Fab, Stack } from '@mui/material'
+import { Box, Grid, Button, Typography, Modal, Link, Fab, Stack } from '@mui/material'
 import TaskForm from '../UI/TaskForm/TaskForm';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ModalContent from '../UI/Modal/ModalContent';
+
 import Doughnut from '../UI/Charts/Doughnut/DoughnutChart';
+import LineChart from '../UI/Charts/LineChart/LineChart';
+
+import ReadOnlyCalender from '../Calender/ReadOnlyCalender/ReadOnlyCalender';
 
 import Toast from '../UI/Toast/Toast';
 
 import { getTaskIconHandler, getTaskStatusColor } from '../Tasks/TaskList';
 import TaskList from '../Tasks/TaskList';
 
-const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
+const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDate }) => {
       
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState();
@@ -24,7 +28,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
   const [snackBarType, setSnackBarType] = useState("");
 
   
-  const data = {
+  const doughnutChartData = {
       labels: ['Ongoing', 'Completed'],
       datasets: [
       {
@@ -38,6 +42,18 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
           'rgba(54, 162, 235, 1)',
       ],
       borderWidth: 1,
+  };
+
+  const lineChartdata = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [
+        {
+        label: 'Total Task Every Month',
+        data: [10, 70, 30, 80, 50, 160, 70, 80, 90, 100, 110, 120],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+    ],
   };
 
   const newAddedTaskHandler = async ({ responseObject, message }) => {
@@ -155,6 +171,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                 <Stack sx={{ margin: "1rem 0"}}>
                     {content}                    
                 </Stack>
+                {(userTasks.length > 0) && 
+                <Button variant="contained" href="/tasks" sx={{ width: "auto", alignSelf: "center", margin:"2rem 1rem" }}> 
+                    Explore tasks
+                </Button>}
             </Stack>
             <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 2rem 0 0", sm: "0", md: "0", xs: "0"}, margin: "0" }}>
                     <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 2rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
@@ -190,12 +210,22 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ height:"25rem", padding: "1.4rem", background: "#fff", 
+                    <Box sx={{ padding: "1.4rem", background: "#fff", 
                     margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0) || <Doughnut data={data}/> }
+                        <ReadOnlyCalender />
+                    </Box>
+                    <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
+                    alignItems:"center", justifyContent: "center", display: "flex"}}>
+                        {(userTasks.length == 0) || <Doughnut data={doughnutChartData}/> }
                     </Box>
             </Stack>
+        </Box>
+        <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    margin: { lg: "1rem 0", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
+                    alignItems:"center", justifyContent: "center", display: "flex"}}>
+                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
         </Box>
         {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
         </Stack>
@@ -204,15 +234,3 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
 }
 
 export default Dashboard;
-
-                            
-                            // data={{
-                            //     labels: ['Pending', 'Completed'],
-                            //     datasets: [
-                            //     {
-                            //         data: [userStatisticsEntries.Pending, userStatisticsEntries.Completed],
-                            //         backgroundColor: [`${getTaskStatusColor("Pending")}`,  
-                            //         `${getTaskStatusColor("Completed")}`],
-                            //     },
-                            //     ],
-                            // }}

@@ -76,14 +76,14 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
 
   return (
     <>
-      <form style={{ display: "flex", flexDirection: "column", marginTop: "1rem" }} onSubmit={(event) => userRegisterHandler(event)}>
+      <form style={{ display: "flex", flexDirection: "column", marginTop: "1rem", justifyContent: "center", margin: "auto" }} onSubmit={(event) => userRegisterHandler(event)}>
         <TextField id="standard-basic" 
                 label="Username" 
                 variant="standard" 
                 required
                 value={username}
                 onChange={(element) => { setUsername(element.target.value)}}
-                sx={{ margin: ".6rem 0", width: "400px"}}
+                sx={{ margin: ".6rem 0", width: "auto"}}
         />
         <TextField id="standard-basic" 
                 label="Email" 
@@ -91,9 +91,9 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
                 required
                 value={userEmail}
                 onChange={(element) => { setUserEmail(element.target.value)}}
-                sx={{ margin: ".5rem 0", width: "400px"}}
+                sx={{ margin: ".5rem 0", width: "auto"}}
         />
-      <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "400px"}}>
+      <FormControl variant="standard" sx={{ margin: ".6rem 0", width: "auto"}}>
         <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
         <Input
           id="standard-adornment-password"
@@ -116,7 +116,7 @@ export default function UpdateForm({ onUserProfileUpdate, userInfo }) {
       </FormControl>
         <Box sx={{ display: "flex", marginTop: "1rem", justifyContent: "right" }}>
             <Button variant="contained" onClick={restoredChangesHandler}
-            sx={{ margin: "1rem 1rem", borderRadius: ".5rem", background: "#333"}} disabled={disableButton}>
+            sx={{ margin: "1rem 5px", borderRadius: ".5rem", background: "#333"}} disabled={disableButton}>
                 Discard
             </Button>
             <Button type='submit' variant="contained" 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../layout';
 import Dashboard from '@/components/Dashboard/Dashboard';
 import { getCookie } from 'cookies-next';
-import { getUserTask, getUserTaskStatistics } from '../api/userTaskApi';
-
-export default function DashboardPage({ user, userTasks, userStatistics }) {
+import { getUserTask, getUserTaskStatistics, getUserTaskByDate } from '../api/userTaskApi';
+import dayjs from 'dayjs';
+export default function DashboardPage({ user, userTasks, userStatistics, retrievedTasksByDate }) {
 
   let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Ongoing");
 
@@ -14,7 +14,8 @@ export default function DashboardPage({ user, userTasks, userStatistics }) {
 
   return (
     <DashboardLayout>
-        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userStatistics}/>
+        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userStatistics}
+        retrievedTasksByDate={retrievedTasksByDate} />
     </DashboardLayout>
   )
 }
@@ -40,6 +41,7 @@ export const getServerSideProps = async({ req, res }) => {
    let userTasks = [];
    let userStatistics = [];
    let userTaskStatistics = {};
+   let retrievedTasksByDate = [];
 
    await getUserTask({ token })
    .then(res => {
@@ -52,6 +54,11 @@ export const getServerSideProps = async({ req, res }) => {
       userTaskStatistics = { "Ongoing": (userStatistics.Ongoing == undefined) ? 0 : userStatistics.Ongoing, 
       "Completed": (userStatistics.Completed == undefined) ? 0 : userStatistics.Completed};
    });
+
+  await getUserTaskByDate({ token, date: '2023-05-15' })
+  .then(res => {
+    retrievedTasksByDate = res;
+  });
 
    return {
       props: {

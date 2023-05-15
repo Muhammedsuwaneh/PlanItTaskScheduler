@@ -33,7 +33,7 @@ const formatHoursIntoAMandPM = (hour) => {
   else if(hour < 12 && hour >= 0) 
       bufferTimeString = hour + " AM";
   else
-      bufferTimeString = hour + " PM";
+      bufferTimeString = 24-hour + " PM";
   return bufferTimeString;
 };
 
@@ -43,7 +43,7 @@ const options = {
       x: {
         title: {
           display: true,
-          text: 'Hours'
+          text: 'Hours',
         },
         ticks: {
           callback: function (value, index) {

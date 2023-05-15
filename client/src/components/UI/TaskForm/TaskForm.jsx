@@ -13,6 +13,8 @@ import { getCookie } from "cookies-next";
 
 import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
 
+export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, itemObject, action } ) {
+  
 const getTodaysDay = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -24,19 +26,18 @@ const getTodaysDay = (date) => {
 };
 
 const getTimer = (date) => {
-    const newDate = new Date();
-    const fullDateTime = date + "T" + newDate.getHours() + ":" + newDate.getMinutes();
+    const temp = getTodaysDay(date);
+    const fullDateTime = temp + "T" + date.getHours() + ":" + date.getMinutes();
     return fullDateTime;
 };
 
-export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, itemObject, action } ) {
 
   const [taskId, setTaskId] = useState(itemObject.id);
   const [title, setTitle] = useState(itemObject.title);
   const [description, setDescription] = useState(itemObject.description);
   const [status, setStatus] = useState(itemObject.status);
-  const [startTime, setStartTime] = useState((itemObject.startTime != "") ? itemObject.startTime : getTimer(new Date()));
-  const [endTime, setEndTime] = useState((itemObject.endTime != "") ? itemObject.endTime : getTodaysDay(new Date()));
+  const [startTime, setStartTime] = useState((itemObject.startTime != "") ? itemObject.startTime : dayjs());
+  const [endTime, setEndTime] = useState((itemObject.endTime != "") ? itemObject.endTime : dayjs());
   const [dateAdded, setDateAdded] = useState((itemObject.dateAdded != "") ? itemObject.dateAdded : getTodaysDay(new Date()));
   const [disableButton, setDisableButton] = useState(false);
 
@@ -45,11 +46,14 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
 
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
-    setDisableButton(true);
+    //setDisableButton(true);
 
-    if(action == "new") await sendNewTaskRequest(token);
-    else if(action == "update") await updateSelectedTaskRequest(token);
+    alert(startTime);
+    //if(action == "new") await sendNewTaskRequest(token);
+    //else if(action == "update") await updateSelectedTaskRequest(token);
   };
+
+  // validate time 
 
   const fixDateHandler = (date) => {
     let dateArr = "";
@@ -71,7 +75,9 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     let newTask = { 
         title: title,
         description: description,
-        status: "pending",
+        status: "Ongoing",
+        startTime: startTime,
+        endTime: endTime,
         user: 0
     };;
 
@@ -118,6 +124,8 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
         title: title,
         status: status,
         description: description,
+        startTime: startTime,
+        endTime: endTime,
     };  
 
     try {
@@ -176,9 +184,6 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
                     defaultValue={dayjs(dateAdded)}
                     onChange={(newValue) => {
                         setDateAdded(newValue);
-                        const temp = fixDateHandler(newValue)
-                        setStartTime(getTimer(temp));
-                        setEndTime(getTimer(temp));
                     }}
                     required
                     renderInput={(params) => <TextField {...params} />}
@@ -187,23 +192,22 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
             </LocalizationProvider>
             <Box sx={{ display: "flex", margin: "1rem 0" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <MobileTimePicker label={'"Start"'} openTo="minutes"    
+                    <MobileTimePicker label={'"Start"'} openTo="minutes" sx={{ marginRight: "1rem" }}
                         onChange={(newValue) => {
-                        setStartTime(newValue);
+                            setStartTime(newValue);
                         }} 
-                        defaultValue={dayjs(startTime)}
-                        sx={{ marginRight: "1rem" }}
+                        value={dayjs(startTime)}
                         required
-                        disablePast 
+                        renderInput={(params) => <TextField {...params} />}
                         />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker label={'"End"'} openTo="minutes" 
                         onChange={(newValue) => {
-                        setEndTime(newValue);
+                           setEndTime(newValue);
                         }}
                         required
-                        disablePast 
+                        defaultValue={dayjs(endTime)}
                         />
                 </LocalizationProvider>
             </Box>

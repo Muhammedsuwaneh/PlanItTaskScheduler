@@ -45,7 +45,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         if(userTasks.length == 4)
             userTasks.pop();
 
-        userStatisticsEntries.Pending += 1;
+        userStatisticsEntries.Ongoing += 1;
         userTasks.unshift(responseObject);
 
         initDataHandler();
@@ -70,7 +70,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
         setRequestIsCompleted(true);
 
         if(isSuccessful) {
-            userStatisticsEntries.Pending -= 1;
+            userStatisticsEntries.Ongoing -= 1;
             if(listIsEmpty === true) {
                 userTasks = [];
             }
@@ -128,7 +128,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
              aria-describedby="modal-modal-description">
             <ModalContent height="auto">
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
-                itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}}/>
+                itemObject={{id: "", title: "", description: "", dateAdded: "", status: "", startTime: "", endTime: ""}}/>
             </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "2rem", sm: "10px", xs: "10px", md: "5px"} }}>
@@ -170,7 +170,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries }) => {
                             </Box>
                             <Box sx={{ display: "flex", color: "#fff" }}>                  
                                     <Stack sx={{ margin: ".5rem 1rem", fontSize: "2rem"}}>
-                                        <Typography>Pending</Typography>
+                                        <Typography>Ongoing</Typography>
                                         <Typography sx={{ fontSize: "2rem", textAlign: "right"}}>{userStatisticsEntries.Ongoing}</Typography>
                                     </Stack>
                             </Box>

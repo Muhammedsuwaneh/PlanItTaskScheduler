@@ -26,6 +26,17 @@ ChartJS.register(
 
 import { Box, Typography, Button } from "@mui/material";
 
+const formatHoursIntoAMandPM = (hour) => {
+  let bufferTimeString = "";
+  if(hour === 0)
+      bufferTimeString = '12 AM';
+  else if(hour < 12 && hour >= 0) 
+      bufferTimeString = hour + " AM";
+  else
+      bufferTimeString = hour + " PM";
+  return bufferTimeString;
+};
+
 const options = {
   indexAxis: 'y',
   scales: {
@@ -33,6 +44,12 @@ const options = {
         title: {
           display: true,
           text: 'Hours'
+        },
+        ticks: {
+          callback: function (value, index) {
+            // format time into AM and PM
+            return formatHoursIntoAMandPM(value);
+          },
         }
       },
       y: {
@@ -49,11 +66,23 @@ const options = {
     legend: {
       display: false,
     },
+    tooltip: {
+      // Customize the tooltip value
+      callbacks: {
+        label: function (context) {
+          const value = context.raw.x; // Get the original value
+          
+          // Manipulate the tooltip value as desired
+          const [startHr, endHr] = value;
+          return formatHoursIntoAMandPM(startHr) + " - " + formatHoursIntoAMandPM(endHr);
+        },
+      },
+    },
     datalabels: {
       centerLabels: true,
       anchor: 'start', // Set the anchor position of the labels to the center of the bars
       align: 'start', // Set the alignment of the labels to the center of the bars
-      color: '#EDEFF1', // Set the color of the labels
+      color: '#131313', // Set the color of the labels
       font: {
         weight: 'bold' // Set the font weight of the labels
       },
@@ -68,21 +97,32 @@ const options = {
 
 export default function GanntChart({ retrievedTasksByDate }) {
 
-  const test = [9, 12];
+  const seperateHoursAndMinutes = (time) => {
 
-  const fixHoursHandler = (hour) => {
-    return (hour < 10) ? "0"+hour : hour;
+    const timeArr = time.split("T")[1];
+    const timeArr2 = timeArr.split(":");
+    const fullTimerStr = timeArr2[0] + "." + timeArr2[1];
+    const fullTimer = parseFloat(fullTimerStr);
+
+    return fullTimer;
+  };
+
+  const fixHoursHandler = (startTime, endTime) => {
+    const fullTimer1 = seperateHoursAndMinutes(startTime);
+    const fullTimer2 = seperateHoursAndMinutes(endTime);
+
+    return [fullTimer1, fullTimer2];
   };
 
   const data = {
     datasets: [
       {
         data: retrievedTasksByDate.map((task) => {
-          return { x: [fixHoursHandler(test[0]), fixHoursHandler(test[1])], y: task.title}
+          return { x: fixHoursHandler(task.startTime, task.endTime), y: task.title}
         }),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: [
-          getTaskStatusColor("On going"),
+          getTaskStatusColor("Ongoing"),
           getTaskStatusColor("Completed"),
         ],
       },

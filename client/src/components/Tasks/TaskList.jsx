@@ -142,7 +142,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             </ModalContent>
         </Modal>
         {(currentPage == "dashboard") || <Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: { lg: "flex", xs: "column", md: "flex", sm: "flex"}, justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", alignItems: "center"}}>
                     <Typography sx={{ margin: "0 1rem"}}>Filter:</Typography>
                     <FormControl fullWidth>

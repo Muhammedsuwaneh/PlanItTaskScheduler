@@ -152,7 +152,7 @@ namespace UserTaskManagerAPI.Controllers
                         Title = task.Title,
                         Description = task.Description,
                         DateAdded = task.DateAdded,
-                        Status = "On going",
+                        Status = "Ongoing",
                         StartTime = task.StartTime,
                         EndTime = task.EndTime,
                         user = id,

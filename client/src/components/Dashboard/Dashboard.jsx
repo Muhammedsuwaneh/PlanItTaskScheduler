@@ -122,7 +122,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) {
-        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "7rem", textAlign: "center"}}>No task available 😳</Typography>);
+        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "12rem", textAlign: "center"}}>No task available 😳</Typography>);
     }
     
     else {
@@ -163,7 +163,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
         </Box>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
             <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
-            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", height: "auto", 
+            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", height: { xs: "170vh", sm:"170vh", md:"150vh", lg: "150vh" }, 
             margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
                     Upcoming Task
@@ -171,10 +171,11 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
                 <Stack sx={{ margin: "1rem 0"}}>
                     {content}                    
                 </Stack>
-                {(userTasks.length > 0) && 
-                <Button variant="contained" href="/tasks" sx={{ width: "auto", alignSelf: "center", margin:"2rem 1rem" }}> 
-                    Explore tasks
-                </Button>}
+                <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    margin: "0", borderRadius: "1rem", width: "100%",
+                    alignItems:"center", justifyContent: "center", display: "flex"}}>
+                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
+                </Box>
             </Stack>
             <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 2rem 0 0", sm: "0", md: "0", xs: "0"}, margin: "0" }}>
                     <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 2rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
@@ -210,22 +211,17 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    <Box sx={{ height: "auto", padding: "1rem 0", background: "#fff", 
                     margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
                         <ReadOnlyCalender />
                     </Box>
-                    <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    <Box sx={{ height: "43vh", padding: "1.4rem", background: "#fff", 
                     margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0) || <Doughnut data={doughnutChartData}/> }
+                        <Doughnut data={doughnutChartData}/> 
                     </Box>
             </Stack>
-        </Box>
-        <Box sx={{ padding: "1.4rem", background: "#fff", 
-                    margin: { lg: "1rem 0", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
-                    alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
         </Box>
         {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
         </Stack>

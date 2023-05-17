@@ -13,7 +13,9 @@ import { deleteUserTaskRequest } from '@/pages/api/userTaskApi';
 
 import DeleteContent from '../UI/DeleteContent/DeleteContent';
 import TaskForm from '../UI/TaskForm/TaskForm';
+import MarkAsCompleted from '../UI/MarkAsComplete/MarkAsCompleted';
 import TaskListContent from './TaskListContent';
+
 
 import ModalContent from '../UI/Modal/ModalContent';
 
@@ -45,6 +47,8 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const token = getCookie("USER_AUTH_TOKEN");
+
   const handleChangeFilter = (event, action) => {
      if(action == "filter") {
         setStatus(event.target.value);
@@ -74,7 +78,6 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
 
   const deleteTaskHandler = async (id) => {
     if(id != "" && id != 0 && id != null && id != undefined) {
-        const token = getCookie("USER_AUTH_TOKEN");
         // send a delete request
         await deleteUserTaskRequest({ token, id })
         .then(res => {
@@ -113,6 +116,24 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
     handleClose();
   };
 
+  const markTaskAsCompletedHandler  = async (id) => {
+    // const req = await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
+    // {
+    //     method: "PUT",
+    //     mode: 'cors',
+    //     withCredentials: true,
+    //     credentials: 'same-origin',
+    //     headers: {
+    //         'Access-Control-Allow-Origin': '*',
+    //         'Access-Control-Allow-Headers': '*',
+    //         'Access-Control-Allow-Methods': '*',
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${token}`,
+    //     }
+    // });  
+    alert(id)
+  };
+
   const actionButtonHandler = (action, itemObject) => {
     // modal content based on action
     if(action == "delete") {
@@ -123,6 +144,11 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
     else if(action == "update") {
         setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action="update"/>)
         setNewHeight("auto");
+    }
+
+    else if(action == "mark") {
+        setModalContent(<MarkAsCompleted onMarkConfirmed={() => markTaskAsCompletedHandler(itemObject.id)} noAction={handleClose} />);
+        setNewHeight("200px");
     }
 
     // open modal 

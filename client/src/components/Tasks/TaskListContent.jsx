@@ -27,11 +27,11 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                             <VisibilityIcon onClick={() => onActionFired("update", {...task})} 
                             sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
                             cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                            <TaskAltIcon onClick={() => onActionFired("update", {...task})} 
-                            sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
+                            <TaskAltIcon onClick={() => onActionFired("mark", {...task})} 
+                            sx={{ fontSize: "1.7rem", color: "#1976D2", margin: "0 .5rem", 
                             cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
                             <EditIcon onClick={() => onActionFired("update", {...task})} 
-                            sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
+                            sx={{ fontSize: "1.7rem", color: "#F87D01", margin: "0 .5rem", 
                             cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
                             <DeleteForeverIcon onClick={() => onActionFired("delete", {...task})} 
                             sx={{ fontSize: "1.7rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />

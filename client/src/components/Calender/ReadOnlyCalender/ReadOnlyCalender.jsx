@@ -10,8 +10,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 export default function ReadOnlyCalender() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar defaultValue={dayjs()} onChange={(value) => {
-          }}/>
+          <DateCalendar defaultValue={dayjs()}/>
     </LocalizationProvider>
   );
 }

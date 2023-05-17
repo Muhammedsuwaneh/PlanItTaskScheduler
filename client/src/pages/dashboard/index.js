@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../layout';
 import Dashboard from '@/components/Dashboard/Dashboard';
+
 import { getCookie } from 'cookies-next';
-import { getUserTask, getUserTaskStatistics, getUserTaskByDate } from '../api/userTaskApi';
-import dayjs from 'dayjs';
-export default function DashboardPage({ user, userTasks, userStatistics, retrievedTasksByDate }) {
+
+import { getUserTask, getUserTaskStatistics, getUserMonthlyTaskCount } from '../api/userTaskApi';
+
+export default function DashboardPage({ user, userTasks, userTaskStatistics, taskCountEveryMonth }) {
 
   let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Ongoing");
 
@@ -14,8 +16,8 @@ export default function DashboardPage({ user, userTasks, userStatistics, retriev
 
   return (
     <DashboardLayout>
-        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userStatistics}
-        retrievedTasksByDate={retrievedTasksByDate} />
+        <Dashboard user={user} userTasks={filteredTasksBasedOnStatus} userStatisticsEntries={userTaskStatistics}
+        taskCountEveryMonth={taskCountEveryMonth} />
     </DashboardLayout>
   )
 }
@@ -38,10 +40,7 @@ export const getServerSideProps = async({ req, res }) => {
 
 
    // get user task
-   let userTasks = [];
-   let userStatistics = [];
-   let userTaskStatistics = {};
-   let retrievedTasksByDate = [];
+   let userTasks = [], userStatistics = [], userTaskStatistics = {}, taskCountEveryMonth = [];
 
    await getUserTask({ token })
    .then(res => {
@@ -55,16 +54,17 @@ export const getServerSideProps = async({ req, res }) => {
       "Completed": (userStatistics.Completed == undefined) ? 0 : userStatistics.Completed};
    });
 
-  await getUserTaskByDate({ token, date: '2023-05-15' })
-  .then(res => {
-    retrievedTasksByDate = res;
-  });
+   await getUserMonthlyTaskCount({ token })
+   .then(res => {
+    taskCountEveryMonth = res;
+   });
 
    return {
       props: {
         user: username,
         userTasks: userTasks,
-        userStatistics: userTaskStatistics,
+        userTaskStatistics: userTaskStatistics,
+        taskCountEveryMonth: taskCountEveryMonth,
       }
    }
 };

@@ -14,14 +14,12 @@ import Toast from '../UI/Toast/Toast';
 import { getTaskIconHandler, getTaskStatusColor } from '../Tasks/TaskList';
 import TaskList from '../Tasks/TaskList';
 
-const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDate }) => {
+const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth }) => {
       
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState();
-  const [isLoadingTasks, setIsLoadingTasks] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [sendingRequest, setSendingRequest] = useState("none");
   const [disableButton, setDisableButton] = useState(false);
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
@@ -48,10 +46,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
         {
-        label: 'Total Task Every Month',
-        data: [10, 70, 30, 80, 50, 160, 70, 80, 90, 100, 110, 120],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        label: 'Total Task',
+        data: Object.values(taskCountEveryMonth),
+        borderColor: '#1976D2',
+        backgroundColor: '#1976D2',
         },
     ],
   };
@@ -69,10 +67,12 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
 
         // user feedback
         if(responseObject == null) {
+
             setRequestIsCompleted(true);
             setSnackMessage(message);
             setSnackBarType("error");
             setDisableButton(false);
+
         }
         else {
             setSnackMessage(`${message} 😊`);
@@ -87,13 +87,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
 
         if(isSuccessful) {
             userStatisticsEntries.Ongoing -= 1;
-            if(listIsEmpty === true) {
-                userTasks = [];
-            }
+            if(listIsEmpty === true) userTasks = [];
 
-            else {
+            else 
                 // remove deleted task from list
-            }
 
             initDataHandler();
             setSnackMessage("task deleted");
@@ -121,10 +118,8 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, retrievedTasksByDat
 
   const initDataHandler = () => {
 
-    if(userTasks.length <= 0) {
-        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "12rem", textAlign: "center"}}>No task available 😳</Typography>);
-    }
-    
+    if(userTasks.length <= 0) 
+        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "12rem", textAlign: "center"}}>No task available 😳</Typography>); 
     else {
         setContent(<TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler}
         onTaskUpdate={updateTaskHandler}/>);

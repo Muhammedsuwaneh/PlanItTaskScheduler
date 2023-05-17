@@ -12,7 +12,6 @@ export default function TodaysDatePage({ retrievedTasksByDate, date }) {
   )
 }
 
-
 export const getServerSideProps = async({ req, res, query }) => {
 
   const option = { req, res};
@@ -29,7 +28,6 @@ export const getServerSideProps = async({ req, res, query }) => {
        }
   }
 
-  // get user task
   let userTasks = [];
 
   await getUserTaskByDate({ token, date })

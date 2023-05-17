@@ -266,6 +266,7 @@ namespace UserTaskManagerAPI.Controllers
         {
 
             var id = UserClaims();
+
             if (id != -1)
             {
                 try
@@ -416,7 +417,13 @@ namespace UserTaskManagerAPI.Controllers
                         }
                     }
                    
-                    return Ok(monthlyStatistics);
+                    return Ok(new ApiResponse<Dictionary<int, int>>
+                    {
+                        ResponseObject = monthlyStatistics,
+                        message = "task retrieved",
+                        token = null,
+                        status = 200
+                    });
                 }
                 catch(Exception ex)
                 {
@@ -441,15 +448,15 @@ namespace UserTaskManagerAPI.Controllers
             }
         }
 
-        [HttpGet("marktaskascomplete/{id}")]
+        [HttpPut("marktaskascomplete/{id}")]
         [Produces("application/json")]
         public IActionResult MarkTaskAsComplete(int id)
         {
-            var _id = UserClaims();
+            var _userId = UserClaims();
 
-            if(_id != -1)
+            if(_userId != -1)
             {
-                var task = _context.UserTasks.FirstOrDefault(t => t.Id == _id);
+                var task = _context.UserTasks.FirstOrDefault(t => t.user == _userId && t.Id == id);
 
                 if(task == null)
                 {

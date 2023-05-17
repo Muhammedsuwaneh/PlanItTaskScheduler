@@ -13,12 +13,12 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                 return (
                     <Box key={task.id} sx={{ borderRadius: "1rem",  boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19)", 
                     padding: "1rem", margin: { sm: "1rem 0", md: "1rem 0", xs: "1rem 0", lg: "1rem"},
-                    display: "flex", justifyContent: "space-between", background: "#F9F9F9"}}>
-                        <Box sx={{ display: { sm: "column", xs: "column", md: "flex", lg: "flex"}, margin: { lg: "1rem 0", sm: "0", md: "1rem 0", xs: "0"} }}>
+                    display: { lg: "flex", sm: "column", md: "flex", xs: "column"}, justifyContent: "space-between", background: "#F9F9F9"}}>
+                        <Box sx={{ display: "flex", alignItems: "center", margin: { lg: "1rem 0", sm: "0", md: "1rem 0", xs: "0"} }}>
                             <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
                             {getTaskIconHandler(task.status)}
                             </Fab>
-                            <Stack sx={{ margin: { lg: ".5rem 0 .5rem .7rem", sm: "1rem 0", md: ".5rem 0 .5rem .7rem", xs: "1rem 0"}}}>
+                            <Stack sx={{ margin: { lg: ".5rem 0 .5rem .7rem", sm: "0 .7rem", md: ".5rem 0 .5rem .7rem", xs: "0 .7rem"}}}>
                                 <Typography>{task.title}</Typography>
                                 <Typography>{task.dateAdded}</Typography>
                             </Stack>

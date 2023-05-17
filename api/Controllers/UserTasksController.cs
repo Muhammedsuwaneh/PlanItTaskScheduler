@@ -23,23 +23,37 @@ namespace UserTaskManagerAPI.Controllers
             _config = config;
         }
 
+        /*private DateTime getDate(string dateTime)
+        {
+            return null;
+        }*/
+
+        private int UserClaims()
+        {
+            // obtain user id from token
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity == null) return -1;
+
+            var userClaims = identity.Claims;
+
+            var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
+            var id = userId.ToInt32();
+
+            return id;
+        }
 
         [HttpGet]
         [Produces("application/json")]
         public IActionResult GetUserTasks()
         {
-            // obtain user id from token
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var id = UserClaims();
 
-            if (identity != null)
+            if (id != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var id = userId.ToInt32();
-
+                    
                     var tasks = _context.UserTasks.Where(t => t.user == id).ToList();
 
                     tasks.Reverse();
@@ -81,17 +95,12 @@ namespace UserTaskManagerAPI.Controllers
         public IActionResult GetUserTasksByDate(string date)
         {
             // obtain user id from token
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var id = UserClaims();
 
-            if (identity != null)
+            if (id != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var id = userId.ToInt32();
-
                     var tasks = _context.UserTasks.Where(t => t.user == id && t.DateAdded == date).ToList();
 
                     tasks.Reverse();
@@ -136,17 +145,12 @@ namespace UserTaskManagerAPI.Controllers
         public IActionResult NewUserTasks(UserTask task)
         {
             // obtain user id from token
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var id = UserClaims();
 
-            if (identity != null)
+            if (id != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var id = userId.ToInt32();
-
                     var _task = new UserTask
                     {
                         Title = task.Title,
@@ -200,17 +204,12 @@ namespace UserTaskManagerAPI.Controllers
         public IActionResult DeleteUserTasks(int id)
         {
             // obtain user id from token
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var _userId = UserClaims();
 
-            if (identity != null)
+            if (_userId != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var _userId = userId.ToInt32();
-
                     var _task = _context.UserTasks.FirstOrDefault(t => t.Id == id && t.user == _userId);
 
                     if (_task == null)
@@ -265,18 +264,12 @@ namespace UserTaskManagerAPI.Controllers
         [Produces("application/json")]
         public IActionResult GetStatistics()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            if (identity != null)
+            var id = UserClaims();
+            if (id != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var id = userId.ToInt32();
-
-
                     // users's count tasks base on status
                     var userTasks = _context.UserTasks.Where(t => t.user == id).ToList();
 
@@ -322,17 +315,13 @@ namespace UserTaskManagerAPI.Controllers
         public IActionResult UpdateUserTasks(UserTask task, int id)
         {
             // obtain user id from token
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            if (identity != null)
+            var _id = UserClaims();
+
+            if (_id != -1)
             {
                 try
                 {
-                    var userClaims = identity.Claims;
-
-                    var userId = (userClaims.FirstOrDefault(o => o.Type == ClaimTypes.PrimarySid)?.Value);
-                    var _id = userId.ToInt32();
-
                     var _task = _context.UserTasks.FirstOrDefault(task => task.Id == id && _id == task.user);
 
                     if(_task == null)
@@ -375,6 +364,115 @@ namespace UserTaskManagerAPI.Controllers
                 }
             }
 
+            else
+            {
+                return BadRequest(new ApiResponse<UserTask>
+                {
+                    ResponseObject = null,
+                    message = "request rejected",
+                    token = null,
+                    status = 401
+                });
+            }
+        }
+
+
+        [HttpGet("totaltaskeverymonth")]
+        [Produces("application/json")]
+        public IActionResult GetTotalTaskEveryMonth()
+        {
+            var _id = UserClaims();
+
+            if (_id != -1)
+            {
+                try
+                {
+                    var userTasks = _context.UserTasks.Where(t => t.user == _id).ToList();
+
+                    // set value of all months to zero
+                    Dictionary<int, int> monthlyStatistics = Enumerable.Range(1, 12).ToDictionary(key => key, value => 0);
+
+                    if (userTasks != null)
+                    {
+
+                        // get task count of every month
+                        var taskCountEveryMonth =
+                       userTasks.GroupBy(x => new { Month = int.Parse(x.DateAdded.Split('-')[1]) })
+                       .Select(g => new
+                       {
+                           Month = g.Key.Month,
+                           Count = g.Count()
+                       })
+                       .OrderBy(x => x.Month)
+                       .ToDictionary(x => x.Month, x => x.Count);
+
+                        // update the date statistics values
+                        foreach (var keyValue in taskCountEveryMonth)
+                        {
+                            if (monthlyStatistics.ContainsKey(keyValue.Key))
+                            {
+                                monthlyStatistics[keyValue.Key] = keyValue.Value;
+                            }
+                        }
+                    }
+                   
+                    return Ok(monthlyStatistics);
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = null,
+                        message = "oops something went wrong: " + ex.Message,
+                        token = null,
+                        status = 500
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(new ApiResponse<UserTask>
+                {
+                    ResponseObject = null,
+                    message = "request rejected",
+                    token = null,
+                    status = 401
+                });
+            }
+        }
+
+        [HttpGet("marktaskascomplete/{id}")]
+        [Produces("application/json")]
+        public IActionResult MarkTaskAsComplete(int id)
+        {
+            var _id = UserClaims();
+
+            if(_id != -1)
+            {
+                var task = _context.UserTasks.FirstOrDefault(t => t.Id == _id);
+
+                if(task == null)
+                {
+                    return BadRequest(new ApiResponse<UserTask>
+                    {
+                        ResponseObject = null,
+                        message = "Task not found",
+                        token = null,
+                        status = 401
+                    });
+                }
+
+                task.Status = "Completed";
+                _context.SaveChanges();
+
+                return Ok(new ApiResponse<UserTask>
+                {
+                    ResponseObject = task,
+                    message = "Task status updated",
+                    token = null,
+                    status = 200
+                });
+            }
             else
             {
                 return BadRequest(new ApiResponse<UserTask>

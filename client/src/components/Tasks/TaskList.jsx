@@ -117,21 +117,20 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   };
 
   const markTaskAsCompletedHandler  = async (id) => {
-    // const req = await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
-    // {
-    //     method: "PUT",
-    //     mode: 'cors',
-    //     withCredentials: true,
-    //     credentials: 'same-origin',
-    //     headers: {
-    //         'Access-Control-Allow-Origin': '*',
-    //         'Access-Control-Allow-Headers': '*',
-    //         'Access-Control-Allow-Methods': '*',
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${token}`,
-    //     }
-    // });  
-    alert(id)
+    const req = await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
+    {
+        method: "PUT",
+        mode: 'cors',
+        withCredentials: true,
+        credentials: 'same-origin',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });  
   };
 
   const actionButtonHandler = (action, itemObject) => {

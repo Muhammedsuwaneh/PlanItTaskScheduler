@@ -25,7 +25,7 @@ const DailyTask = ({ retrievedTasksByDate, date }) => {
         <Box p={2} sx={{ flexGrow: 1, display: "flex", margin: "1rem", justifyContent: "space-between", alignItems: "center", background: "#fff", 
         borderRadius: "1rem" }}>
           <Button component="a" href={`/calender`} sx={{ '&:hover': { color: "#131313"} }}>
-            <ArrowBackIcon sx={{ fontSize: '2.5rem'}}></ArrowBackIcon>
+            Go to calender
           </Button>
           <Typography fontSize="1.2rem" color="#1976D2">
             {date}

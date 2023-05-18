@@ -50,6 +50,7 @@ const options = {
             // format time into AM and PM
             return formatHoursIntoAMandPM(value);
           },
+          color: "#1976D2",
         }
       },
       y: {
@@ -121,10 +122,10 @@ export default function GanntChart({ retrievedTasksByDate }) {
           return { x: fixHoursHandler(task.startTime, task.endTime), y: task.title}
         }),
         borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: [
-          getTaskStatusColor("Ongoing"),
-          getTaskStatusColor("Completed"),
-        ],
+        backgroundColor: 
+          retrievedTasksByDate.map((task) => {
+            return getTaskStatusColor(task.status);
+          }),
       },
     ],
   };
@@ -143,7 +144,7 @@ export default function GanntChart({ retrievedTasksByDate }) {
   else {
     content = (
             <Box p={3} sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignContent: "center", justifyContent: "center", 
-            margin: "1rem", background: "#fff", borderRadius: "1rem", height: "90vh", overflow: "scroll" }}>
+            margin: "1rem", borderRadius: "1rem", height: "90vh", overflow: "scroll" }}>
               <Bar options={options} data={data} />
             </Box>
     );

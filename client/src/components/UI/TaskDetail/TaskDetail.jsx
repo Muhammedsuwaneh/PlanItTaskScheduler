@@ -1,24 +1,16 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
 export default function TaskDetail(props) {
   return (
-    <Card sx={{ minWidth: 275}}>
-      <CardContent>
+    <Box sx={{ minWidth: 275}}>
+      <Stack>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Task detail
         </Typography>
@@ -36,10 +28,8 @@ export default function TaskDetail(props) {
           <br />
           Time: {props.startTime.split("T")[1]} - {props.endTime.split("T")[1]}
         </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" sx={{ color: "red"}} onClick={props.handleClose}>Close</Button>
-      </CardActions>
-    </Card>
+      </Stack>
+      <Button sx={{ color: "red", margin: "1rem 0" }} onClick={props.handleClose}>Close</Button>
+    </Box>
   );
 }

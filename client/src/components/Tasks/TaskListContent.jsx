@@ -6,6 +6,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { getTaskStatusColor, getTaskIconHandler } from './TaskList';
 
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+
 export default function TaskListContent({ onActionFired, tasksList, page }) {
   let content = "";
 
@@ -24,7 +27,16 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                     </Fab>
                     <Stack sx={{ margin: { lg: ".5rem 0 .5rem .7rem", sm: "0 .7rem", md: ".5rem 0 .5rem .7rem", xs: "0 .7rem"}}}>
                         <Typography>{task.title}</Typography>
-                        <Typography>{task.dateAdded}</Typography>
+                        <Box sx={{ display: "flex", margin: "5px 0" }}>
+                          <Box sx={{ display: "flex", marginRight: "1rem" }}>
+                              <CalendarMonthIcon sx={{ color: "#333" }} />
+                              <Typography sx={{ margin: "0 5px"}}>{task.dateAdded}</Typography>
+                          </Box>
+                          <Box sx={{ display: "flex" }}>
+                              <QueryBuilderIcon sx={{ color: "#333" }} />
+                              <Typography sx={{ margin: "0 5px"}}>{task.startTime.split("T")[1]} - {task.endTime.split("T")[1]}</Typography>
+                          </Box>
+                        </Box>
                     </Stack>
                 </Box>
                 <Box sx={{ display: "flex", padding: { sm: "1.2rem 0", md: "1.4rem", xs: "1.2rem 0", lg: "2rem 0"}}}>

@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 import { getCookie } from "cookies-next";
 
@@ -25,9 +26,10 @@ const getTodaysDay = (date) => {
     return formattedDate;
 };
 
-const getTimer = (date) => {
-    const temp = getTodaysDay(date);
-    const fullDateTime = temp + "T" + date.getHours() + ":" + date.getMinutes();
+const getTimer = (timer) => {
+    let minutes = "";
+    (timer.getMinutes() < 10) ? minutes = "0"+timer.getMinutes() : minutes = timer.getMinutes();
+    const fullDateTime = fixDateHandler(dateAdded) + "T" + timer.getHours() + ":" + minutes;
     return fullDateTime;
 };
 
@@ -46,11 +48,10 @@ const getTimer = (date) => {
 
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
-    //setDisableButton(true);
+    setDisableButton(true);
 
-    alert(startTime);
-    //if(action == "new") await sendNewTaskRequest(token);
-    //else if(action == "update") await updateSelectedTaskRequest(token);
+    if(action == "new") await sendNewTaskRequest(token);
+    else if(action == "update") await updateSelectedTaskRequest(token);
   };
 
   // validate time 
@@ -76,8 +77,8 @@ const getTimer = (date) => {
         title: title,
         description: description,
         status: "Ongoing",
-        startTime: startTime,
-        endTime: endTime,
+        startTime: getTimer(startTime["$d"]),
+        endTime: getTimer(endTime["$d"]),
         user: 0
     };;
 
@@ -124,8 +125,8 @@ const getTimer = (date) => {
         title: title,
         status: status,
         description: description,
-        startTime: startTime,
-        endTime: endTime,
+        startTime: getTimer(startTime["$d"]),
+        endTime: getTimer(endTime["$d"]),
     };  
 
     try {
@@ -196,9 +197,9 @@ const getTimer = (date) => {
                         onChange={(newValue) => {
                             setStartTime(newValue);
                         }} 
-                        value={dayjs(startTime)}
-                        required
+                        defaultValue={dayjs(startTime)}
                         renderInput={(params) => <TextField {...params} />}
+                        required
                         />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -206,8 +207,9 @@ const getTimer = (date) => {
                         onChange={(newValue) => {
                            setEndTime(newValue);
                         }}
-                        required
                         defaultValue={dayjs(endTime)}
+                        renderInput={(params) => <TextField {...params} />}
+                        required
                         />
                 </LocalizationProvider>
             </Box>

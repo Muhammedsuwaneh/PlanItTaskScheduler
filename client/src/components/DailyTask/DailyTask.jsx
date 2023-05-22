@@ -14,12 +14,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const DailyTask = ({ retrievedTasksByDate, date }) => {
-  const tasks = [
-    { id: 1, name: 'Task 1', start: 8, end: 12 },
-    { id: 2, name: 'Task 2', start: 10, end: 14 },
-    { id: 3, name: 'Task 3', start: 13, end: 16 },
-  ];
-
   return (
       <Box p={2}>
         <Box p={2} sx={{ flexGrow: 1, display: "flex", margin: "1rem", justifyContent: "space-between", alignItems: "center", background: "#fff", 

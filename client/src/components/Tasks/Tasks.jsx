@@ -1,91 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Modal, Box, Grid, Stack, Link, Fab } from '@mui/material';
+import { Modal, Box, Grid, Stack, Link, Fab } from '@mui/material';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import TaskForm from '../UI/TaskForm/TaskForm';
 import PageTitle from '../UI/PageTitle/PageTitle';
-import { getTaskStatusColor, getTaskIconHandler } from './TaskList';
 import TaskList from './TaskList';
 
 import ModalContent from '../UI/Modal/ModalContent';
 
 import Toast from '../UI/Toast/Toast';
 
-export default function Tasks({ userTasks, userStatistics }) {
+export default function Tasks({ userTasks }) {
 
   const [open, setOpen] = useState(false);
-  const [content, setContent] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);  
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [snackBarType, setSnackBarType] = useState("");
+  const [tasks, setTasks] = useState(userTasks);
 
   const newAddedTaskHandler = ({ responseObject, message }) => {
 
         userTasks.unshift(responseObject);
+        setTasks(userTasks);
         initDataHandler();
         handleClose();
 
         // user feedback
         if(responseObject == null) {
             setRequestIsCompleted(true);
-            setSnackMessage(message);
-            setSnackBarType("error");
             setDisableButton(false);
+            feedbackHandler("error", "something went wrong 😢");
         }
         else {
-            setSnackMessage(`${message} 😊`);
-            setSnackBarType("success");
             setRequestIsCompleted(true);
+            feedbackHandler("success", message);
         }
   };
 
-  const successfullyDeletedTaskHandler = (listIsEmpty, isSuccessful) => {
+  const successfullyDeletedTaskHandler = (isSuccessful) => {
         setRequestIsCompleted(true);
-
-        if(isSuccessful) {
-            if(listIsEmpty === true) {
-                userTasks = [];
-            }
-
-            initDataHandler();
-            setSnackMessage("task deleted");
-            setSnackBarType("success");
-        }
-
-        else {             
-            setSnackMessage("oops! something went wrong");
-            setSnackBarType("oerror");
-        }
+        if(isSuccessful)
+            feedbackHandler("success", "task deleted");
+        else       
+            feedbackHandler("error", "oops! something went wrong")
   };
 
   const updateTaskHandler = (isUpdated) => {
         setRequestIsCompleted(true);
-        if(isUpdated) {
-            setSnackMessage("task updated");
-            setSnackBarType("success");
-        }
-        else {
-            setSnackMessage("oops! something went wrong");
-            setSnackBarType("error");
-        }
+        if(isUpdated) 
+            feedbackHandler("success", "task updated");
+        else 
+            feedbackHandler("error", "oops! something went wrong");
   };
 
-  const initDataHandler = () => {
+  const marktaskascomplete = (response) => {
+    setRequestIsCompleted(true);
+    if(response == null)
+        feedbackHandler("error", "oops! something went wrong");
+    else
+        feedbackHandler("success", "task marked as completed");
+  };
 
-    if(userTasks.length <= 0) {
-        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "7rem", textAlign: "center"}}>No task available 😳</Typography>);
-    }
-    
-    else {
-        setContent(<TaskList userTasks={userTasks} onDeleteSuccessful={successfullyDeletedTaskHandler} onTaskUpdate={updateTaskHandler}/>);
-      }
+  const feedbackHandler = (type, message) => {
+    setSnackMessage(message);
+    setSnackBarType(type);
   }
 
-  useEffect(() => {
-    initDataHandler();
-  }, [userTasks, userStatistics, setContent]);
-    
   return (
     <>
         <Modal
@@ -107,7 +88,11 @@ export default function Tasks({ userTasks, userStatistics }) {
             </Link>
         </PageTitle>
         <Box sx={{ background: "#fff", padding: "1.3rem", margin: "1rem 0", borderRadius: "1rem"}}>
-            {content}
+            <TaskList userTasks={tasks} 
+            onDeleteSuccessful={successfullyDeletedTaskHandler} 
+            onTaskUpdate={updateTaskHandler}
+            onMarktaskascomplete={marktaskascomplete}
+            />
         </Box>
         {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
     </Stack>

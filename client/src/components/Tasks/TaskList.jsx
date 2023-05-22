@@ -18,6 +18,7 @@ import TaskListContent from './TaskListContent';
 
 
 import ModalContent from '../UI/Modal/ModalContent';
+import TaskDetail from '../UI/TaskDetail/TaskDetail';
 
 export const getTaskStatusColor = (status) => {
     switch(status) {
@@ -37,7 +38,7 @@ export const getTaskIconHandler = (status) => {
     }
 };
 
-export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, onTaskUpdate }) {
+export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, onTaskUpdate, onMarktaskascomplete }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
@@ -86,13 +87,11 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
                 // remove task from list
                 const newTasks = userTasks.filter((task) => task.id !== id);
                 setTaskList(newTasks);
-                let listIsEmpty = false; 
-                if(newTasks.length <= 0) listIsEmpty = true;
-                onDeleteSuccessful(listIsEmpty, true);
+                onDeleteSuccessful(true);
             }
         })
         .catch(error => {
-            onDeleteSuccessful(true, false);
+            onDeleteSuccessful(false);
         });
 
         handleClose();
@@ -117,7 +116,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   };
 
   const markTaskAsCompletedHandler  = async (id) => {
-    const req = await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
+    await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
     {
         method: "PUT",
         mode: 'cors',
@@ -130,7 +129,19 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         }
-    });  
+    })
+    .then(res => res.json())
+    .then(resJson => {
+        // feedback
+        onMarktaskascomplete(resJson);
+        // update task list
+        handleClose();
+    })
+    .catch(error => {
+        // feedback
+        onMarktaskascomplete(null);
+        handleClose();
+    });
   };
 
   const actionButtonHandler = (action, itemObject) => {
@@ -139,18 +150,19 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
         setModalContent(<DeleteContent onConfirmDelete={() => deleteTaskHandler(itemObject.id)} noDelete={handleClose}/>);
         setNewHeight("200px");
     }
-
     else if(action == "update") {
-        setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action="update"/>)
+        setModalContent(<TaskForm itemObject={itemObject} onUpdateTask={updateTaskHandler} onModalClose={handleClose} action={action}/>)
         setNewHeight("auto");
     }
-
     else if(action == "mark") {
         setModalContent(<MarkAsCompleted onMarkConfirmed={() => markTaskAsCompletedHandler(itemObject.id)} noAction={handleClose} />);
         setNewHeight("200px");
     }
+    else if(action == "details") {
+        setModalContent(<TaskDetail handleClose={handleClose} {...itemObject} />);
+        setNewHeight("auto");
+    }
 
-    // open modal 
     handleOpen();
   };
 
@@ -166,7 +178,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
                {modalContent}
             </ModalContent>
         </Modal>
-        {(currentPage == "dashboard") || <Box>
+        {currentPage == "dashboard" || <Box>
             <Box sx={{ display: { lg: "flex", xs: "column", md: "flex", sm: "flex"}, justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", alignItems: "center"}}>
                     <Typography sx={{ margin: "0 1rem"}}>Filter:</Typography>

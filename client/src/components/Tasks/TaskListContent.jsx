@@ -18,41 +18,43 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
   else {
     content =  tasksList.map(task => {
         return (
-            <Box key={task.id} sx={{ borderRadius: "1rem",  boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19)", 
+            <Stack key={task.id} sx={{ borderRadius: "1rem",  boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19)", 
             padding: "1rem", margin: { sm: "1rem 0", md: "1rem 0", xs: "1rem 0", lg: "1rem"},
-            display: { lg: "flex", sm: "column", md: "flex", xs: "column"}, justifyContent: "space-between", background: "#F9F9F9"}}>
-                <Box sx={{ display: "flex", alignItems: "center", margin: { lg: "1rem 0", sm: "0", md: "1rem 0", xs: "0"} }}>
-                    <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
-                    {getTaskIconHandler(task.status)}
-                    </Fab>
-                    <Stack sx={{ margin: { lg: ".5rem 0 .5rem .7rem", sm: "0 .7rem", md: ".5rem 0 .5rem .7rem", xs: "0 .7rem"}}}>
-                        <Typography>{task.title}</Typography>
-                        <Box sx={{ display: "flex", margin: "5px 0" }}>
-                          <Box sx={{ display: "flex", marginRight: "1rem" }}>
-                              <CalendarMonthIcon sx={{ color: "#333" }} />
-                              <Typography sx={{ margin: "0 5px"}}>{task.dateAdded}</Typography>
-                          </Box>
-                          <Box sx={{ display: "flex" }}>
-                              <QueryBuilderIcon sx={{ color: "#333" }} />
-                              <Typography sx={{ margin: "0 5px"}}>{task.startTime.split("T")[1]} - {task.endTime.split("T")[1]}</Typography>
-                          </Box>
-                        </Box>
-                    </Stack>
+           background: "#F9F9F9"}}>
+                <Box sx={{  display: { lg: "flex", sm: "column", md: "flex", xs: "column"}, justifyContent: "space-between" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", margin: { lg: "1rem 0", sm: "0", md: "1rem 0", xs: "0"} }}>
+                        <Fab sx={{ background:`${getTaskStatusColor(task.status)}`, color: "#fff", '&:hover': { background: "#333"} }} aria-label="add">
+                        {getTaskIconHandler(task.status)}
+                        </Fab>
+                        <Stack sx={{ margin: { lg: ".5rem 0 .5rem .7rem", sm: "0 .7rem", md: ".5rem 0 .5rem .7rem", xs: "0 .7rem"}}}>
+                            <Typography>{task.title}</Typography>
+                        </Stack>
+                    </Box>
+                    <Box sx={{ display: "flex", padding: { sm: "1.2rem 0", md: "1.4rem", xs: "1.2rem 0", lg: "2rem 0"}}}>
+                        <VisibilityIcon onClick={() => onActionFired("details", {...task})} 
+                        sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
+                        cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
+                        <TaskAltIcon onClick={() => onActionFired("mark", {...task})} 
+                        sx={{ fontSize: "1.7rem", color: "#1976D2", margin: "0 .5rem", 
+                        cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
+                        <EditIcon onClick={() => onActionFired("update", {...task})} 
+                        sx={{ fontSize: "1.7rem", color: "#F87D01", margin: "0 .5rem", 
+                        cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
+                        <DeleteForeverIcon onClick={() => onActionFired("delete", {...task})} 
+                        sx={{ fontSize: "1.7rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
+                    </Box>
                 </Box>
-                <Box sx={{ display: "flex", padding: { sm: "1.2rem 0", md: "1.4rem", xs: "1.2rem 0", lg: "2rem 0"}}}>
-                    <VisibilityIcon onClick={() => onActionFired("details", {...task})} 
-                    sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
-                    cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                    <TaskAltIcon onClick={() => onActionFired("mark", {...task})} 
-                    sx={{ fontSize: "1.7rem", color: "#1976D2", margin: "0 .5rem", 
-                    cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                    <EditIcon onClick={() => onActionFired("update", {...task})} 
-                    sx={{ fontSize: "1.7rem", color: "#F87D01", margin: "0 .5rem", 
-                    cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
-                    <DeleteForeverIcon onClick={() => onActionFired("delete", {...task})} 
-                    sx={{ fontSize: "1.7rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
+                <Box sx={{ display: { sm: "flex", md: "flex", lg: "flex", xs: "column"}, margin: { sm: "5px .4rem", lg: "5px 1rem" } }}>
+                    <Box sx={{ display: "flex", marginRight: "5px" }}>
+                        <CalendarMonthIcon sx={{ color: "#333" }} />
+                        <Typography sx={{ margin: "0 5px"}}>{task.dateAdded}</Typography>
+                    </Box>
+                    <Box sx={{ display: "flex" }}>
+                        <QueryBuilderIcon sx={{ color: "#333" }} />
+                        <Typography sx={{ margin: "0 5px"}}>{task.startTime.split("T")[1]} - {task.endTime.split("T")[1]}</Typography>
+                    </Box>
                 </Box>
-            </Box>
+            </Stack>
         )
     });
   }

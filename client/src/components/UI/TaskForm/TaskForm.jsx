@@ -48,7 +48,7 @@ const getTimer = (timer) => {
 
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
-    setDisableButton(true);
+    //setDisableButton(true);
 
     if(action == "new") await sendNewTaskRequest(token);
     else if(action == "update") await updateSelectedTaskRequest(token);
@@ -77,7 +77,7 @@ const getTimer = (timer) => {
         title: title,
         description: description,
         status: "Ongoing",
-        startTime: getTimer(startTime["$d"]),
+        startTime: getTimer(startTime),
         endTime: getTimer(endTime["$d"]),
         user: 0
     };;
@@ -125,16 +125,19 @@ const getTimer = (timer) => {
         title: title,
         status: status,
         description: description,
-        startTime: getTimer(startTime["$d"]),
-        endTime: getTimer(endTime["$d"]),
     };  
+
+    console.log(updatedTask);
 
     try {
         updatedTask.dateAdded = fixDateHandler("");
+        updatedTask.startTime = getTimer(startTime["$d"]);
+        updatedTask.endTime = getTimer(endTime["$d"]);
 
     } catch (error) {
-            
         updatedTask.dateAdded = dateAdded;
+        updatedTask.startTime = startTime;
+        updatedTask.endTime = endTime;
     }
 
     await updateUserTaskRequest({ token, updatedTask, taskId })

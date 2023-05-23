@@ -111,7 +111,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         setSnackBarType("success");
     }
     else {
-        setSnackMessage("oops! something went wronf");
+        setSnackMessage("oops! something went wrong");
         setSnackBarType("error");
     }
   };

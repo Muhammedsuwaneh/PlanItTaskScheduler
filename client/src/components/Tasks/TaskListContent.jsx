@@ -8,15 +8,14 @@ import { getTaskStatusColor, getTaskIconHandler } from './TaskList';
 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+  
+export const timeFixerHandler = (timeString) => {
+  const timeStringArr = timeString.split(":");
+  if(timeStringArr[0] < 10) return "0" + timeStringArr[0] + ":" + timeStringArr[1];
+  else return timeString;
+};
 
 export default function TaskListContent({ onActionFired, tasksList, page }) {
-  
-  const timeFixerHandler = (timeString) => {
-    const timeStringArr = timeString.split(":");
-    if(timeStringArr[0] < 10) return "0" + timeStringArr[0] + ":" + timeStringArr[1];
-    else timeStringArr;
-  };
-
   return (
     <Box sx={{ height: (page != "dashboard") ? "80vh" : "auto", overflowY: (page != "dashboard") ? "scroll" : ""}}>
        {tasksList.map(task => {

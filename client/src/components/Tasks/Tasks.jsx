@@ -19,8 +19,6 @@ export default function Tasks({ userTasks }) {
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
 
   const newAddedTaskHandler = ({ responseObject }) => {
-        // add new task to list
-        userTasks.unshift(responseObject);
         // close modal
         handleClose();
     
@@ -31,6 +29,8 @@ export default function Tasks({ userTasks }) {
             feedbackHandler("error", "something went wrong 😢");
         }
         else {
+            // add new task to list
+            userTasks.unshift(responseObject);
             setRequestIsCompleted(true);
             feedbackHandler("success", message);
         }

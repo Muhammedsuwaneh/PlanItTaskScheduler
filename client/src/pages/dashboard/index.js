@@ -10,8 +10,8 @@ export default function DashboardPage({ user, userTasks, userTaskStatistics, tas
 
   let filteredTasksBasedOnStatus = userTasks.filter(t => t.status == "Ongoing");
 
-  if(filteredTasksBasedOnStatus.length >= 4) 
-    filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 4);
+  if(filteredTasksBasedOnStatus.length >= 3) 
+    filteredTasksBasedOnStatus = filteredTasksBasedOnStatus.slice(0, 3);
 
   return (
     <DashboardLayout>

@@ -70,16 +70,16 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         }
         else {
 
-            if(userTasks.length == 4)
+            if(userTasks.length == 3)
                 userTasks.pop();
         
             // update task statistics count
             userStatisticsEntries.Ongoing += 1;
             userTasks.unshift(responseObject);
-            
+
             // increase task count for added month 
             const month = parseInt(responseObject.dateAdded.split("-")[1][1]);
-            currentTaskCountByDate[month] += 1;
+            currentTaskCountByDate[month-1] += 1;
 
             initDataHandler();
 

@@ -36,17 +36,16 @@ const parseMinHour = (hour) => {
 };
 
 const formatHours = (hour) => {
-  if(hour == 0) return "12 AM";
+  const [hourStr, minStr] = parseMinHour(hour)
+  if(hourStr == 0) return `00:${(minStr < 10) ? "0"+minStr : minStr} AM`;
   else if(hour == 12) return "12 PM";
   else if(Number.isInteger(hour) && hour > 0 && hour < 12) return `${hour} AM`;
   else if(!Number.isInteger(hour) && hour > 0 && hour < 12) {
-    const [hourStr, minStr] = parseMinHour(hour)
     return `${hourStr}:${(minStr < 10) ? "0"+minStr : minStr} AM`;
   }
   else if(Number.isInteger(hour) && hour >= 12)
     return `${hour-12}:00 PM`;
   else {
-    const [hourStr, minStr] = parseMinHour(hour)
     return `${(hourStr == 12) ? 12 : hourStr-12}:${(minStr < 10) ? "0"+minStr : minStr} PM`;
   }
 };

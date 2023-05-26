@@ -54,7 +54,9 @@ namespace UserTaskManagerAPI.Controllers
                 try
                 {
                     
-                    var tasks = _context.UserTasks.Where(t => t.user == id).ToList();
+                    var tasks = _context.UserTasks.Where(t => t.user == id)
+                                                  .OrderByDescending(t => t.DateAdded)
+                                                  .ToList();
 
                     tasks.Reverse();
 

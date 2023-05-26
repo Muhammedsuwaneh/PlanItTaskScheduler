@@ -26,15 +26,29 @@ ChartJS.register(
 
 import { Box, Typography, Button } from "@mui/material";
 
-const formatHoursIntoAMandPM = (hour) => {
-  let bufferTimeString = "";
-  if(hour == 0)
-      bufferTimeString = '12 AM';
-  else if(hour < 12 && hour >= 0) 
-      bufferTimeString = `${hour} AM`;
-  else
-      bufferTimeString = `${24-hour} PM`;
-  return bufferTimeString;
+const parseMinHour = (hour) => {
+  const timeString = hour.toString();
+  const timeStringArr = timeString.split(".");
+  const hourStr = parseInt(timeStringArr[0]);
+  const minStr = parseInt(timeStringArr[1]);
+
+  return [hourStr, minStr];
+};
+
+const formatHours = (hour) => {
+  if(hour == 0) return "12 AM";
+  else if(hour == 12) return "12 PM";
+  else if(Number.isInteger(hour) && hour > 0 && hour < 12) return `${hour} AM`;
+  else if(!Number.isInteger(hour) && hour > 0 && hour < 12) {
+    const [hourStr, minStr] = parseMinHour(hour)
+    return `${hourStr}:${(minStr < 10) ? "0"+minStr : minStr} AM`;
+  }
+  else if(Number.isInteger(hour) && hour >= 12)
+    return `${hour-12}:00 PM`;
+  else {
+    const [hourStr, minStr] = parseMinHour(hour)
+    return `${(hourStr == 12) ? 12 : hourStr-12}:${(minStr < 10) ? "0"+minStr : minStr} PM`;
+  }
 };
 
 const options = {
@@ -53,7 +67,7 @@ const options = {
         ticks: {
           callback: function (value, index) {
             // format time into AM and PM
-            return value;
+            return formatHours(value);
           },
           color: "#fff",
         },
@@ -91,7 +105,7 @@ const options = {
           
           // Manipulate the tooltip value as desired
           const [startHr, endHr] = value;
-          return startHr + " - " + endHr;
+          return formatHours(startHr) + " - " + formatHours(endHr);
         },
       },
     },
@@ -119,7 +133,8 @@ export default function GanntChart({ retrievedTasksByDate }) {
     let timeParts = timeString.split(":"); // Split the string into hours and minutes
 
     let hours = parseInt(timeParts[0]); // Parse the hours as an integer
-    let minutes = parseInt(timeParts[1]); // Parse the minutes as an integer
+    
+    let minutes = timeParts[1]; // get minutes
 
     let timesJoined = hours + '.' + minutes;
 
@@ -134,7 +149,6 @@ export default function GanntChart({ retrievedTasksByDate }) {
       {
         data: retrievedTasksByDate.map((task) => {
           const times = [seperateHoursAndMinutes(task.startTime), seperateHoursAndMinutes(task.endTime)];
-          console.log(times);
           return { x: times, y: task.title}
         }),
         borderColor: 'red',

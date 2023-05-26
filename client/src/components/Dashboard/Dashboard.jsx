@@ -119,10 +119,20 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) 
-        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "12rem", textAlign: "center"}}>No task available 😳</Typography>); 
+        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "15rem", textAlign: "center"}}>No task available 😳</Typography>); 
     else {
-        setContent(<TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler}
-        onTaskUpdate={updateTaskHandler}/>);
+        setContent(
+            <>
+                <Stack sx={{ margin: "1rem 0"}}>
+                    <TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler} onTaskUpdate={updateTaskHandler}/>                   
+                </Stack>
+                <Box sx={{ padding: "1.4rem", background: "#fff", 
+                    margin: "0", borderRadius: "1rem", width: "100%",
+                    alignItems:"center", justifyContent: "center", display: "flex"}}>
+                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
+                </Box>
+            </>
+        );
       }
   }
 
@@ -142,7 +152,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
                 itemObject={{id: "", title: "", description: "", dateAdded: "", status: "", startTime: "", endTime: ""}}/>
             </ModalContent>
         </Modal>
-        <Stack sx={{ padding: { lg: "2rem", sm: "10px", xs: "10px", md: "5px"} }}>
+        <Stack sx={{ padding: { lg: "0 2rem", sm: "10px", xs: "10px", md: "5px"} }}>
         <Box sx={{ background: "#fff", padding: "1rem", borderRadius: "1rem", display: "flex", justifyContent: "space-between"}}>
             <Box sx={{ padding: "1rem"}}>
                     <Typography sx={{ fontSize: "2rem"}}>Welcome - <span style={{ color: "#1976D2"}}>{user} </span> 😊</Typography>
@@ -158,22 +168,16 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         </Box>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
             <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
-            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", height: { xs: "170vh", sm:"170vh", md:"150vh", lg: "150vh" }, 
+            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", 
+            height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "150vh" }, 
             margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
                     Upcoming Task
                 </Typography>
-                <Stack sx={{ margin: "1rem 0"}}>
-                    {content}                    
-                </Stack>
-                <Box sx={{ padding: "1.4rem", background: "#fff", 
-                    margin: "0", borderRadius: "1rem", width: "100%",
-                    alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
-                </Box>
+                {content}
             </Stack>
-            <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 2rem 0 0", sm: "0", md: "0", xs: "0"}, margin: "0" }}>
-                    <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 2rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
+            <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 1rem", sm: "0", xs: "0", md: "0"}, margin: "0" }}>
+                    <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 1rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>
                         <Typography sx={{ fontSize: "1.4rem", color: "#333"}}>
                         Tasks Statistics
                         </Typography>
@@ -207,12 +211,12 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
                         </Box>
                     </Stack>
                     <Box sx={{ height: "auto", padding: "1rem 0", background: "#fff", 
-                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
+                    margin: { lg: "1rem 0 0 1rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
                         <ReadOnlyCalender />
                     </Box>
                     <Box sx={{ height: "43vh", padding: "1.4rem", background: "#fff", 
-                    margin: { lg: "1rem 0 0 2rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
+                    margin: { lg: "1rem 0 0 1rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
                         <Doughnut data={doughnutChartData}/> 
                     </Box>

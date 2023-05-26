@@ -5,8 +5,10 @@ const agent = new https.Agent({
   rejectUnauthorized: false
 });
 
+export const getBaseURL = () => "https://localhost:7136/api";
+
 export const getUserTask = async({ token }) => {
-    const response = await axios.get("https://localhost:7136/api/usertasks/",
+    const response = await axios.get(`${getBaseURL()}/usertasks/`,
     {
         httpsAgent: agent,
         mode: 'cors',
@@ -32,7 +34,7 @@ export const getUserTask = async({ token }) => {
 }
 
 export const getUserMonthlyTaskCount = async({ token }) => {
-    const response = await axios.get("https://localhost:7136/api/usertasks/totaltaskeverymonth",
+    const response = await axios.get(`${getBaseURL()}/usertasks/totaltaskeverymonth`,
     {
         httpsAgent: agent,
         mode: 'cors',
@@ -58,7 +60,7 @@ export const getUserMonthlyTaskCount = async({ token }) => {
 }
 
 export const getUserTaskByDate = async({ token, date }) => {
-    const response = await axios.get(`https://localhost:7136/api/usertasks/usertaskbydate/${date}`,
+    const response = await axios.get(`${getBaseURL()}/usertasks/usertaskbydate/${date}`,
     {
         httpsAgent: agent,
         mode: 'cors',
@@ -84,7 +86,7 @@ export const getUserTaskByDate = async({ token, date }) => {
 }
 
 export const deleteUserTaskRequest = async ({ token, id }) => {
-    const req = await fetch(`https://localhost:7136/api/usertasks/delete/${+id}`,
+    const req = await fetch(`${getBaseURL()}/usertasks/delete/${+id}`,
     {
         method: "DELETE",
         mode: 'cors',
@@ -103,7 +105,7 @@ export const deleteUserTaskRequest = async ({ token, id }) => {
 };
 
 export const updateUserTaskRequest = async ({ token, updatedTask, taskId }) => {
-    const req = await fetch(`https://localhost:7136/api/usertasks/update/${+taskId}`,
+    const req = await fetch(`${getBaseURL()}/usertasks/update/${+taskId}`,
     {
         method: "PUT",
         mode: 'cors',
@@ -123,7 +125,7 @@ export const updateUserTaskRequest = async ({ token, updatedTask, taskId }) => {
 };
 
 export const getUserTaskStatistics = async ({ token }) => {
-    const response = await axios.get("https://localhost:7136/api/usertasks/statistics",
+    const response = await axios.get(`${getBaseURL()}/usertasks/statistics`,
     {
         httpsAgent: agent,
         mode: 'cors',

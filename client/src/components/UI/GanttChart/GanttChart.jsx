@@ -28,12 +28,12 @@ import { Box, Typography, Button } from "@mui/material";
 
 const formatHoursIntoAMandPM = (hour) => {
   let bufferTimeString = "";
-  if(hour === 0)
+  if(hour == 0)
       bufferTimeString = '12 AM';
   else if(hour < 12 && hour >= 0) 
-      bufferTimeString = hour + " AM";
+      bufferTimeString = `${hour} AM`;
   else
-      bufferTimeString = 24-hour + " PM";
+      bufferTimeString = `${24-hour} PM`;
   return bufferTimeString;
 };
 
@@ -44,12 +44,20 @@ const options = {
         title: {
           display: true,
           text: 'Hours',
+          color: '#F87D01',
+          font: {
+            weight: 'bold',
+            size: '15px',
+          }
         },
         ticks: {
           callback: function (value, index) {
             // format time into AM and PM
-            return formatHoursIntoAMandPM(value);
+            return value;
           },
+          color: "#fff",
+        },
+        grid: {
           color: "#1976D2",
         }
       },
@@ -57,6 +65,14 @@ const options = {
         title: {
           display: true,
           text: 'Daily Tasks',
+          color: '#F87D01',
+          font: {
+            weight: 'bold',
+            size: '15px',
+          }
+      },
+      grid: {
+        color: "",
       },
       ticks: {
         display: false // Set display to false to hide Y-axis values
@@ -75,7 +91,7 @@ const options = {
           
           // Manipulate the tooltip value as desired
           const [startHr, endHr] = value;
-          return formatHoursIntoAMandPM(startHr) + " - " + formatHoursIntoAMandPM(endHr);
+          return startHr + " - " + endHr;
         },
       },
     },
@@ -83,7 +99,7 @@ const options = {
       centerLabels: true,
       anchor: 'start', // Set the anchor position of the labels to the center of the bars
       align: 'start', // Set the alignment of the labels to the center of the bars
-      color: '#131313', // Set the color of the labels
+      color: '#fff', // Set the color of the labels
       font: {
         weight: 'bold' // Set the font weight of the labels
       },
@@ -98,30 +114,30 @@ const options = {
 
 export default function GanntChart({ retrievedTasksByDate }) {
 
-  const seperateHoursAndMinutes = (time) => {
+  const seperateHoursAndMinutes = (timeString) => {
 
-    const timeArr = time.split("T")[1];
-    const timeArr2 = timeArr.split(":");
-    const fullTimerStr = timeArr2[0] + "." + timeArr2[1];
-    const fullTimer = parseFloat(fullTimerStr);
+    let timeParts = timeString.split(":"); // Split the string into hours and minutes
 
-    return fullTimer;
-  };
+    let hours = parseInt(timeParts[0]); // Parse the hours as an integer
+    let minutes = parseInt(timeParts[1]); // Parse the minutes as an integer
 
-  const fixHoursHandler = (startTime, endTime) => {
-    const fullTimer1 = seperateHoursAndMinutes(startTime);
-    const fullTimer2 = seperateHoursAndMinutes(endTime);
+    let timesJoined = hours + '.' + minutes;
 
-    return [fullTimer1, fullTimer2];
+    let timeInFloat = parseFloat(timesJoined); // Convert the time to a float
+
+    let roundedTime = timeInFloat.toFixed(2); // Round the float to 2 decimal places
+    return parseFloat(roundedTime);
   };
 
   const data = {
     datasets: [
       {
         data: retrievedTasksByDate.map((task) => {
-          return { x: fixHoursHandler(task.startTime, task.endTime), y: task.title}
+          const times = [seperateHoursAndMinutes(task.startTime), seperateHoursAndMinutes(task.endTime)];
+          console.log(times);
+          return { x: times, y: task.title}
         }),
-        borderColor: 'rgb(255, 99, 132)',
+        borderColor: 'red',
         backgroundColor: 
           retrievedTasksByDate.map((task) => {
             return getTaskStatusColor(task.status);
@@ -144,8 +160,8 @@ export default function GanntChart({ retrievedTasksByDate }) {
   else {
     content = (
             <Box p={3} sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignContent: "center", justifyContent: "center", 
-            margin: "1rem", borderRadius: "1rem", height: "90vh", overflow: "scroll" }}>
-              <Bar options={options} data={data} />
+            margin: "1rem", borderRadius: ".5rem", height: "100vh", overflowY: "scroll", background: "#0E141E"}}>
+                <Bar options={options} data={data} />
             </Box>
     );
   }

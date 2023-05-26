@@ -9,7 +9,7 @@ import Select from '@mui/material/Select';
 
 import { getCookie } from "cookies-next";
 
-import { deleteUserTaskRequest } from '@/pages/api/userTaskApi';
+import { deleteUserTaskRequest, getBaseURL } from '@/pages/api/userTaskApi';
 
 import DeleteContent from '../UI/DeleteContent/DeleteContent';
 import TaskForm from '../UI/TaskForm/TaskForm';
@@ -116,7 +116,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   };
 
   const markTaskAsCompletedHandler  = async (id) => {
-    await fetch(`https://localhost:7136/api/usertasks/marktaskascomplete/${+id}`,
+    await fetch(`${getBaseURL()}/usertasks/marktaskascomplete/${+id}`,
     {
         method: "PUT",
         mode: 'cors',

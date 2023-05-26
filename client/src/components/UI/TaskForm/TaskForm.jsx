@@ -12,44 +12,50 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 import { getCookie } from "cookies-next";
 
-import { updateUserTaskRequest } from '@/pages/api/userTaskApi';
+import { updateUserTaskRequest, getBaseURL } from '@/pages/api/userTaskApi';
 
+  
 export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, itemObject, action } ) {
   
-const getTodaysDay = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    const formattedDate = `${year}-${month}-${day}`;
-
-    return formattedDate;
-};
-
-const getTimer = (timer) => {
-    let minutes = "";
-    (timer.getMinutes() < 10) ? minutes = "0"+timer.getMinutes() : minutes = timer.getMinutes();
-    const fullDateTime = fixDateHandler(dateAdded) + "T" + timer.getHours() + ":" + minutes;
-    return fullDateTime;
-};
-
+  const getTodaysDay = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+  };
 
   const [taskId, setTaskId] = useState(itemObject.id);
   const [title, setTitle] = useState(itemObject.title);
   const [description, setDescription] = useState(itemObject.description);
   const [status, setStatus] = useState(itemObject.status);
-  const [startTime, setStartTime] = useState((itemObject.startTime != "") ? itemObject.startTime : dayjs());
-  const [endTime, setEndTime] = useState((itemObject.endTime != "") ? itemObject.endTime : dayjs());
+  const [startTime, setStartTime] = useState(
+    itemObject.startTime !== ""
+      ? dayjs(getTodaysDay(new Date()) + "T" + itemObject.startTime) : 
+      dayjs()
+  );
+  const [endTime, setEndTime] = useState(
+    itemObject.endTime !== ""
+      ? dayjs(getTodaysDay(new Date()) + "T" + itemObject.endTime) : 
+      dayjs()
+  );
   const [dateAdded, setDateAdded] = useState((itemObject.dateAdded != "") ? itemObject.dateAdded : getTodaysDay(new Date()));
   const [disableButton, setDisableButton] = useState(false);
 
+  const formatTimeHandler = (timer) => {
+    let minutes = "";
+    timer.getMinutes() < 10
+      ? (minutes = "0" + timer.getMinutes())
+      : (minutes = timer.getMinutes());
+    return timer.getHours() + ":" + minutes;
+  };
 
   const formSubmissionHandler = async (event) => {
 
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
     //setDisableButton(true);
-
+    console.log(startTime);
+    console.log(endTime);
     if(action == "new") await sendNewTaskRequest(token);
     else if(action == "update") await updateSelectedTaskRequest(token);
   };
@@ -77,10 +83,12 @@ const getTimer = (timer) => {
         title: title,
         description: description,
         status: "Ongoing",
-        startTime: getTimer(startTime),
-        endTime: getTimer(endTime["$d"]),
+        startTime: formatTimeHandler(startTime["$d"]),
+        endTime: formatTimeHandler(endTime["$d"]),
         user: 0
-    };;
+    };
+
+    console.log(newTask);
 
     try {
         newTask.dateAdded = fixDateHandler("");
@@ -90,7 +98,7 @@ const getTimer = (timer) => {
         newTask.dateAdded = dateAdded;
     }
 
-    await fetch("https://localhost:7136/api/usertasks/new",
+    await fetch(`${getBaseURL()}/usertasks/new`,
     {
         method: "POST",
         body: JSON.stringify(newTask),
@@ -125,19 +133,17 @@ const getTimer = (timer) => {
         title: title,
         status: status,
         description: description,
+        startTime: formatTimeHandler(startTime["$d"]),
+        endTime: formatTimeHandler(endTime["$d"]),
     };  
 
     console.log(updatedTask);
 
     try {
         updatedTask.dateAdded = fixDateHandler("");
-        updatedTask.startTime = getTimer(startTime["$d"]);
-        updatedTask.endTime = getTimer(endTime["$d"]);
 
     } catch (error) {
         updatedTask.dateAdded = dateAdded;
-        updatedTask.startTime = startTime;
-        updatedTask.endTime = endTime;
     }
 
     await updateUserTaskRequest({ token, updatedTask, taskId })
@@ -196,23 +202,17 @@ const getTimer = (timer) => {
             </LocalizationProvider>
             <Box sx={{ display: "flex", margin: "1rem 0" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <MobileTimePicker label={'"Start"'} openTo="minutes" sx={{ marginRight: "1rem" }}
-                        onChange={(newValue) => {
-                            setStartTime(newValue);
-                        }} 
-                        defaultValue={dayjs(startTime)}
-                        renderInput={(params) => <TextField {...params} />}
-                        required
+                    <TimePicker
+                        label="Start Time"
+                        value={dayjs(startTime)}
+                        onChange={(newValue) => setStartTime(newValue)}
                         />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <MobileTimePicker label={'"End"'} openTo="minutes" 
-                        onChange={(newValue) => {
-                           setEndTime(newValue);
-                        }}
-                        defaultValue={dayjs(endTime)}
-                        renderInput={(params) => <TextField {...params} />}
-                        required
+                    <TimePicker
+                        label="End Time"
+                        value={dayjs(endTime)}
+                        onChange={(newValue) => setEndTime(newValue)}
                         />
                 </LocalizationProvider>
             </Box>

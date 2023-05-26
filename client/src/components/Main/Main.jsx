@@ -9,7 +9,6 @@ const UserAuthContainer = styled(Grid)(() => ({
     height: "100vh",
     background: "#E9EDF2",
     margin: "auto",
-    padding: "2rem",
     justifyContent: "center",
 }));
 
@@ -35,7 +34,8 @@ export default function Main({ onUserAuthRequestMain}) {
   };
 
   return (
-    <UserAuthContainer container sx={{ display: { md: 'column', sm: 'column', xs: 'column', lg: 'row'} }}>
+    <UserAuthContainer container sx={{ display: { md: 'column', sm: 'column', xs: 'column', lg: 'row'}, 
+    padding: { lg: "3rem", sm: "1rem", md: "1rem", xs: "1rem"} }}>
         <Box sx={{ backgroundImage: `url("/task.jpg")`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
             height: { lg: "100%", sm: "50%", md: "50%", xs: "50%"}, width: { md: '100%', sm: '100%', xs: '100%', lg: '30%'}, 
             borderTopLeftRadius: { md: '0', sm: '0', xs: '0', lg: '2rem'}, 

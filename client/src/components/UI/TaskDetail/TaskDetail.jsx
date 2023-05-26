@@ -1,9 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
@@ -26,7 +23,7 @@ export default function TaskDetail(props) {
         <Typography variant="body2" marginTop="1rem">
           Date: {props.dateAdded}
           <br />
-          Time: {props.startTime.split("T")[1]} - {props.endTime.split("T")[1]}
+          Time: {props.startTime} - {props.endTime}
         </Typography>
       </Stack>
       <Button sx={{ color: "red", margin: "1rem 0" }} onClick={props.handleClose}>Close</Button>

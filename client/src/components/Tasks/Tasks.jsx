@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Grid, Stack, Link, Fab } from '@mui/material';
+import { Typography, Modal, Box, Grid, Stack, Link, Fab } from '@mui/material';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import TaskForm from '../UI/TaskForm/TaskForm';
 import PageTitle from '../UI/PageTitle/PageTitle';
@@ -67,6 +67,19 @@ export default function Tasks({ userTasks }) {
     setSnackBarType(type);
   }
 
+  let content = "";
+
+  if(userTasks.length <= 0) {
+    content = <Typography sx={{ fontSize: "2rem", marginTop: "1rem", textAlign: "center"}}>No task available 😳</Typography>;
+  }
+  else {
+    content =  <TaskList userTasks={tasks} 
+                    onDeleteSuccessful={successfullyDeletedTaskHandler} 
+                    onTaskUpdate={updateTaskHandler}
+                    onMarktaskascomplete={marktaskascomplete}
+                />;
+  }
+
   return (
     <>
         <Modal
@@ -88,11 +101,7 @@ export default function Tasks({ userTasks }) {
             </Link>
         </PageTitle>
         <Box sx={{ background: "#fff", padding: "1.3rem", margin: "1rem 0", borderRadius: "1rem"}}>
-            <TaskList userTasks={tasks} 
-            onDeleteSuccessful={successfullyDeletedTaskHandler} 
-            onTaskUpdate={updateTaskHandler}
-            onMarktaskascomplete={marktaskascomplete}
-            />
+           {content}
         </Box>
         {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
     </Stack>

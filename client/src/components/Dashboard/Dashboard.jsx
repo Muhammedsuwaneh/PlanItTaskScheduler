@@ -169,7 +169,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
             <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
             padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", 
-            height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "150vh" }, 
+            height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "auto" }, 
             margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
                 <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
                     Upcoming Task

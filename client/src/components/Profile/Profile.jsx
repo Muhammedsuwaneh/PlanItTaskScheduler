@@ -91,7 +91,7 @@ export default function Profile({ user, onUserAccountDelete }) {
           <PageTitle title="Profile">
             <AccountCircleIcon sx={{ color: "#0F4AC7" }} />
         </PageTitle>
-        <Box sx={{ background: "#fff", padding: "2rem 0", margin: "1rem 0", borderRadius: "1rem", display: "flex", 
+        <Box sx={{ background: "#fff", padding: "2rem 0", margin: "1rem 0", borderRadius: ".5rem", display: "flex", 
         justifyContent: "center", alignItems: "center"}}>
             <Stack width="100%">
                 <AccountCircleIcon sx={{ alignSelf: "center", color: "#C9C9C9", fontSize: "8rem", margin: ".3rem 0" }} />

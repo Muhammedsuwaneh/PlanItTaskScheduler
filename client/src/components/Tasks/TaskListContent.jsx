@@ -10,6 +10,13 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 
 export default function TaskListContent({ onActionFired, tasksList, page }) {
+  
+  const timeFixerHandler = (timeString) => {
+    const timeStringArr = timeString.split(":");
+    if(timeStringArr[0] < 10) return "0" + timeStringArr[0] + ":" + timeStringArr[1];
+    else timeStringArr;
+  };
+
   return (
     <Box sx={{ height: (page != "dashboard") ? "80vh" : "auto", overflowY: (page != "dashboard") ? "scroll" : ""}}>
        {tasksList.map(task => {
@@ -47,7 +54,7 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                     </Box>
                     <Box sx={{ display: "flex" }}>
                         <QueryBuilderIcon sx={{ color: "#333" }} />
-                        <Typography sx={{ margin: "0 5px"}}>{task.startTime} - {task.endTime}</Typography>
+                        <Typography sx={{ margin: "0 5px"}}>{timeFixerHandler(task.startTime)} - {timeFixerHandler(task.endTime)}</Typography>
                     </Box>
                 </Box>
             </Stack>)

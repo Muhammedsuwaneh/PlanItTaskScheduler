@@ -14,18 +14,16 @@ export default function Tasks({ userTasks }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);  
-  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [snackBarType, setSnackBarType] = useState("");
-  const [tasks, setTasks] = useState(userTasks);
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
 
-  const newAddedTaskHandler = ({ responseObject, message }) => {
-
+  const newAddedTaskHandler = ({ responseObject }) => {
+        // add new task to list
         userTasks.unshift(responseObject);
-        setTasks(userTasks);
-        initDataHandler();
+        // close modal
         handleClose();
-
+    
         // user feedback
         if(responseObject == null) {
             setRequestIsCompleted(true);
@@ -38,46 +36,9 @@ export default function Tasks({ userTasks }) {
         }
   };
 
-  const successfullyDeletedTaskHandler = (isSuccessful) => {
-        setRequestIsCompleted(true);
-        if(isSuccessful)
-            feedbackHandler("success", "task deleted");
-        else       
-            feedbackHandler("error", "oops! something went wrong")
-  };
-
-  const updateTaskHandler = (isUpdated) => {
-        setRequestIsCompleted(true);
-        if(isUpdated) 
-            feedbackHandler("success", "task updated");
-        else 
-            feedbackHandler("error", "oops! something went wrong");
-  };
-
-  const marktaskascomplete = (response) => {
-    setRequestIsCompleted(true);
-    if(response == null)
-        feedbackHandler("error", "oops! something went wrong");
-    else
-        feedbackHandler("success", "task marked as completed");
-  };
-
   const feedbackHandler = (type, message) => {
     setSnackMessage(message);
     setSnackBarType(type);
-  }
-
-  let content = "";
-
-  if(userTasks.length <= 0) {
-    content = <Typography sx={{ fontSize: "2rem", marginTop: "1rem", textAlign: "center"}}>No task available 😳</Typography>;
-  }
-  else {
-    content =  <TaskList userTasks={tasks} 
-                    onDeleteSuccessful={successfullyDeletedTaskHandler} 
-                    onTaskUpdate={updateTaskHandler}
-                    onMarktaskascomplete={marktaskascomplete}
-                />;
   }
 
   return (
@@ -88,8 +49,8 @@ export default function Tasks({ userTasks }) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description">
             <ModalContent>
-                <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} 
-                itemObject={{id: "", title: "", description: "", dateAdded: "", status: ""}} action="new"/>
+                <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
+                    itemObject={{id: "", title: "", description: "", dateAdded: "", status: "", startTime: "", endTime: ""}}/>
             </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"} }}>
@@ -101,7 +62,7 @@ export default function Tasks({ userTasks }) {
             </Link>
         </PageTitle>
         <Box sx={{ background: "#fff", padding: "1.3rem", margin: "1rem 0", borderRadius: "1rem"}}>
-           {content}
+            <TaskList userTasks={userTasks} />
         </Box>
         {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
     </Stack>

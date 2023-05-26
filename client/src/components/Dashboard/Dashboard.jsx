@@ -24,6 +24,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [snackBarType, setSnackBarType] = useState("");
+  const [currentTaskCountByDate, setCurrentTaskCountByDate] = useState(Object.values(taskCountEveryMonth));
 
   
   const doughnutChartData = {
@@ -47,7 +48,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
     datasets: [
         {
         label: 'Total Task',
-        data: Object.values(taskCountEveryMonth),
+        data: currentTaskCountByDate,
         borderColor: '#1976D2',
         backgroundColor: '#1976D2',
         },
@@ -56,13 +57,6 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
 
   const newAddedTaskHandler = async ({ responseObject, message }) => {
 
-        if(userTasks.length == 4)
-            userTasks.pop();
-
-        userStatisticsEntries.Ongoing += 1;
-        userTasks.unshift(responseObject);
-
-        initDataHandler();
         handleClose();
 
         // user feedback
@@ -75,65 +69,40 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
 
         }
         else {
+
+            if(userTasks.length == 4)
+                userTasks.pop();
+        
+            // update task statistics count
+            userStatisticsEntries.Ongoing += 1;
+            userTasks.unshift(responseObject);
+            
+            // increase task count for added month 
+            const month = parseInt(responseObject.dateAdded.split("-")[1][1]);
+            currentTaskCountByDate[month] += 1;
+
+            initDataHandler();
+
+            // user feedback
             setSnackMessage(`${message} 😊`);
             setSnackBarType("success");
             setRequestIsCompleted(true);
         }
   };
 
-  const deleteHandler = (listIsEmpty, isSuccessful) => {
-
-        setRequestIsCompleted(true);
-
-        if(isSuccessful) {
-            userStatisticsEntries.Ongoing -= 1;
-            if(listIsEmpty === true) userTasks = [];
-
-            else 
-                // remove deleted task from list
-
-            initDataHandler();
-            setSnackMessage("task deleted");
-            setSnackBarType("success");
-        }
-
-        else {             
-            setSnackMessage("oops! something went wrong");
-            setSnackBarType("oerror");
-        }
-  };
-
-  const updateTaskHandler = (isUpdated) => {
-    setRequestIsCompleted(true);
-    
-    if(isUpdated) {
-        setSnackMessage("task updated");
-        setSnackBarType("success");
-    }
-    else {
-        setSnackMessage("oops! something went wrong");
-        setSnackBarType("error");
-    }
-  };
-
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) 
-        setContent(<Typography sx={{ fontSize: "2rem", marginTop: "15rem", textAlign: "center"}}>No task available 😳</Typography>); 
+        setContent(<Typography sx={{ fontSize: "2rem", margin: { lg: "15rem 0", sm: "5rem 0", xs: "5rem 0", md: "10rem 0"}, textAlign: "center"}}>No task available 😳</Typography>); 
     else {
         setContent(
             <>
                 <Stack sx={{ margin: "1rem 0"}}>
-                    <TaskList userTasks={userTasks} currentPage="dashboard" onDeleteSuccessful={deleteHandler} onTaskUpdate={updateTaskHandler}/>                   
+                    <TaskList userTasks={userTasks} currentPage="dashboard"/>                   
                 </Stack>
-                <Box sx={{ padding: "1.4rem", background: "#fff", 
-                    margin: "0", borderRadius: "1rem", width: "100%",
-                    alignItems:"center", justifyContent: "center", display: "flex"}}>
-                        {(userTasks.length == 0) || <LineChart data={lineChartdata}/> }
-                </Box>
             </>
         );
-      }
+    }
   }
 
   useEffect(() => {
@@ -167,14 +136,21 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
             </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm:"column",md:"column", lg: "row" }, margin: { xs: "0", sm:"0", md:"0", lg: "2rem 0" }, height: "auto"}}>
-            <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"}, 
-            padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", 
-            height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "auto" }, 
-            margin: { lg: "0 1rem 0 0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
-                <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
-                    Upcoming Task
-                </Typography>
-                {content}
+            <Stack sx={{ width: { lg: "70%", sm:"100%", md: "100%", xs: "100%"} }}>
+                <Stack sx={{  
+                padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", 
+                height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "95vh" }, 
+                margin: { lg: "0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
+                    <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
+                        Upcoming Task
+                    </Typography>
+                    {content}
+                </Stack>
+                <Box sx={{ padding: "1rem", background: "#fff", height:"50vh" ,
+                        margin: "2rem 0", borderRadius: "1rem", width: "100%",
+                        alignItems:"center", justifyContent: "center", display: "flex"}}>
+                <LineChart data={lineChartdata}/> 
+                </Box>
             </Stack>
             <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 1rem", sm: "0", xs: "0", md: "0"}, margin: "0" }}>
                     <Stack sx={{ padding: "1rem", background: "#fff", margin: { lg: "0 0 0 1rem", sm: "0", md: "0", xs: "0"}, borderRadius: "1rem", width: "100%"}}>

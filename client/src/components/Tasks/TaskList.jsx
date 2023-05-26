@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import { Box, Grid, Typography, Modal, Link, Fab, Stack, TextField } from '@mui/material'
@@ -6,6 +6,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
+import Toast from '../UI/Toast/Toast';
 
 import { getCookie } from "cookies-next";
 
@@ -27,7 +29,7 @@ export const getTaskStatusColor = (status) => {
         case "Completed":
             return "#1976D2";
     }
-  };
+};
 
 export const getTaskIconHandler = (status) => {
     switch(status) {
@@ -38,13 +40,16 @@ export const getTaskIconHandler = (status) => {
     }
 };
 
-export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, onTaskUpdate, onMarktaskascomplete }) {
+export default function TaskList({ userTasks, currentPage }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
   const [open, setOpen] = React.useState(false);
   const [newHeight, setNewHeight] = React.useState("400px");
   const [modalContent, setModalContent] = React.useState();
+  const [requestIsCompleted, setRequestIsCompleted] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackBarType, setSnackBarType] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -54,9 +59,8 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
      if(action == "filter") {
         setStatus(event.target.value);
 
-        if(event.target.value == "All") {
+        if(event.target.value == "All")
             setTaskList(userTasks);
-        }
         else {
             const newtaskList = userTasks.filter((task) => task.status == event.target.value);
             setTaskList(newtaskList);
@@ -85,13 +89,13 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             const { responseObject } = res;
             if(responseObject != null && responseObject != undefined && responseObject != "") {
                 // remove task from list
-                const newTasks = userTasks.filter((task) => task.id !== id);
+                const newTasks = tasksList.filter((task) => task.id != id);
                 setTaskList(newTasks);
-                onDeleteSuccessful(true);
+                feedbackHandler("success", "task deleted");
             }
         })
         .catch(error => {
-            onDeleteSuccessful(false);
+            feedbackHandler("error", "oops! something went wrong")
         });
 
         handleClose();
@@ -99,6 +103,7 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
   };
 
   const updateTaskHandler = ({ responseObject }) => {
+    setRequestIsCompleted(true);
     if(responseObject != null) {
         const newTaskList = tasksList.map(task => {
             if(task.id == responseObject.id) {
@@ -107,10 +112,10 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             return task;
         });
         setTaskList(newTaskList);
-        onTaskUpdate(true);
+        feedbackHandler("success", "task updated");
     }
-    else {
-        onTaskUpdate(false);
+    else {    
+        feedbackHandler("error", "oops! something went wrong");
     }
     handleClose();
   };
@@ -132,15 +137,15 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
     })
     .then(res => res.json())
     .then(resJson => {
-        // feedback
-        onMarktaskascomplete(resJson);
         // update task list
         handleClose();
+        // feedback
+        feedbackHandler("success", "task marked as completed");
     })
     .catch(error => {
-        // feedback
-        onMarktaskascomplete(null);
         handleClose();
+        // feedback
+        feedbackHandler("error", "oops! something went wrong");
     });
   };
 
@@ -166,19 +171,21 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
     handleOpen();
   };
 
-  return (
-    <>
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <ModalContent height={newHeight}>
-               {modalContent}
-            </ModalContent>
-        </Modal>
-        {currentPage == "dashboard" || <Box>
+  const feedbackHandler = (type, message) => {
+    setSnackMessage(message);
+    setSnackBarType(type);
+  }
+
+  
+  let content = "";
+  
+  if(userTasks.length <= 0) {
+    content = <Typography sx={{ fontSize: "2rem", marginTop: "1rem", textAlign: "center"}}>No task available 😳</Typography>;
+  }
+  else {
+    content = <>
+        {(currentPage == "dashboard") || 
+        <Box>
             <Box sx={{ display: { lg: "flex", xs: "column", md: "flex", sm: "flex"}, justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", alignItems: "center"}}>
                     <Typography sx={{ margin: "0 1rem"}}>Filter:</Typography>
@@ -210,8 +217,26 @@ export default function TaskList({ userTasks, currentPage, onDeleteSuccessful, o
             </Box>
         </Box>}
         <Box>
-           <TaskListContent onActionFired={actionButtonHandler} tasksList={tasksList} page={currentPage}/>
+            <TaskListContent onActionFired={actionButtonHandler} tasksList={tasksList} page={currentPage}/>
+            {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }
         </Box>
+    </>
+  };
+
+
+  return (
+    <>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <ModalContent height={newHeight}>
+               {modalContent}
+            </ModalContent>
+        </Modal>
+        {content}
     </>
   )
 }

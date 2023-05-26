@@ -50,12 +50,9 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
   };
 
   const formSubmissionHandler = async (event) => {
-
     event.preventDefault();
     const token = getCookie("USER_AUTH_TOKEN");
-    //setDisableButton(true);
-    console.log(startTime);
-    console.log(endTime);
+    setDisableButton(true);
     if(action == "new") await sendNewTaskRequest(token);
     else if(action == "update") await updateSelectedTaskRequest(token);
   };
@@ -204,14 +201,14 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
                         label="Start Time"
-                        value={dayjs(startTime)}
+                        defaultValue={dayjs(startTime)}
                         onChange={(newValue) => setStartTime(newValue)}
                         />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
                         label="End Time"
-                        value={dayjs(endTime)}
+                        defaultValue={dayjs(endTime)}
                         onChange={(newValue) => setEndTime(newValue)}
                         />
                 </LocalizationProvider>

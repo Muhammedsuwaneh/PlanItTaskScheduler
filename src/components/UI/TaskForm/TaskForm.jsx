@@ -51,10 +51,12 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
 
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
+
     const token = getCookie("USER_AUTH_TOKEN");
     setDisableButton(true);
     if(action == "new") await sendNewTaskRequest(token);
     else if(action == "update") await updateSelectedTaskRequest(token);
+
   };
 
   // validate time 

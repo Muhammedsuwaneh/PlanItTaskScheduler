@@ -16,8 +16,8 @@ namespace EmployeeManagementSystemAPI.Context
                     var defaultUser = new ApplicationUser
                     {
                         Username = "John Doe",
-                        Email = "defaultuser8596@gmail.com",
-                        Password = Encrypt.GenerateMD5HashedPassword("Passw0rd!!"),
+                        Email = "defaultuser45@gmail.com",
+                        Password = Encrypt.GenerateMD5HashedPassword("454545"),
                         DateJoined = DateTime.Now.ToString()
                     };
 

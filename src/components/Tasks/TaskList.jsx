@@ -146,21 +146,15 @@ export default function TaskList({ userTasks, currentPage, onTaskDeleteHandler, 
         setRequestIsCompleted(true);
         handleClose();
         // update task list
-        const { responseObject } = resJson;
-        if(responseObject != null && responseObject != undefined && responseObject != "") {
-            // feedback
-            const newTasks = tasksList.map((task) => {
-                if(task.id == id) task.status = "Completed";
-                return task;
-            });
-            setTaskList(newTasks);
-            // feedback
-            feedbackHandler("success", "task marked as completed");
-            onTaskMarkAsCompletedHandler();
-        }
-        else {
-            feedbackHandler("error", "oops! something went wrong");
-        }
+        // feedback
+        const newTasks = tasksList.map((task) => {
+            if(task.id == id) task.status = "Completed";
+            return task;
+        });
+        setTaskList(newTasks);
+        // feedback
+        feedbackHandler("success", "task marked as completed");
+        onTaskMarkAsCompletedHandler();
     })
     .catch(error => {
         setRequestIsCompleted(true);

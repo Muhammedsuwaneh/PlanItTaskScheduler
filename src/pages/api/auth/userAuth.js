@@ -5,15 +5,17 @@ const agent = new https.Agent({
   rejectUnauthorized: false
 });
 
+import { getBaseURL } from '../userTaskApi';
+
 export const userAuthenticationHandler = ({ email, password }) => {
-    return axios.post("https://localhost:7136/api/applicationuser/authenticate", {
+    return axios.post(`${getBaseURL()}/applicationuser/authenticate`, {
         email: email,
         password: password
     },{ headers: {'Content-Type': 'application/json'}});
 };
 
 export const userRegisterationHandler = ({ username, email, password }) => {
-        return axios.post("https://localhost:7136/api/applicationuser/register", {
+        return axios.post(`${getBaseURL()}/applicationuser/register`, {
             username: username,
             email: email,
             password: password,
@@ -23,7 +25,7 @@ export const userRegisterationHandler = ({ username, email, password }) => {
 
 export const updateUserInfoRequest = async ({ updatedUser, token }) => {
     try {
-        const response = await fetch("https://localhost:7136/api/applicationuser/update", { 
+        const response = await fetch(`${getBaseURL()}/applicationuser/update`, { 
             httpsAgent: agent,
             method: "PUT",
             mode: 'cors',
@@ -46,7 +48,7 @@ export const updateUserInfoRequest = async ({ updatedUser, token }) => {
 };
 
 export const getUserInfoHandler = async ({ token }) => {
-    const response = await axios.get("https://localhost:7136/api/applicationuser/user",
+    const response = await axios.get(`${getBaseURL()}/applicationuser/user`,
     {
         httpsAgent: agent,
         mode: 'cors',

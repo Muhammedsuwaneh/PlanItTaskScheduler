@@ -10,8 +10,6 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import ChartDataLabels from "chartjs-plugin-datalabels";
-
 import { getTaskStatusColor } from "../../Tasks/TaskList";
 
 ChartJS.register(
@@ -21,7 +19,6 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ChartDataLabels
 );
 
 import { Box, Typography, Button } from "@mui/material";

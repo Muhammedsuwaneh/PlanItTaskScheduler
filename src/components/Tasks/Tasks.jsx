@@ -18,21 +18,19 @@ export default function Tasks({ userTasks }) {
   const [snackBarType, setSnackBarType] = useState("");
   const [requestIsCompleted, setRequestIsCompleted] = useState(false);
 
-  const newAddedTaskHandler = ({ responseObject }) => {
-        // close modal
+  const newAddedTaskHandler = (responseObject, response) => {
+        // close modal,
         handleClose();
-    
         // user feedback
-        if(responseObject == null) {
-            setRequestIsCompleted(true);
-            setDisableButton(false);
-            feedbackHandler("error", "something went wrong 😢");
-        }
-        else {
+        if(response) {
             // add new task to list
             userTasks.unshift(responseObject);
             setRequestIsCompleted(true);
-            feedbackHandler("success", message);
+            feedbackHandler("success", "Task added");
+        }
+        else {
+            setRequestIsCompleted(true);
+            feedbackHandler("error", "something went wrong 😢");
         }
   };
 

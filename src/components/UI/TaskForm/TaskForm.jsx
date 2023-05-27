@@ -85,8 +85,6 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
         user: 0
     };
 
-    console.log(newTask);
-
     try {
         newTask.dateAdded = fixDateHandler("");
 
@@ -112,14 +110,12 @@ export default function TaskForm({ onModalClose, onNewTaskAdded, onUpdateTask, i
     })
     .then(response => response.json())
     .then(resJson => {
-        if(resJson != undefined && resJson != null && resJson != {} && resJson != '') {
-            const { responseObject, message } = resJson;
-            // feedback
-            onNewTaskAdded({ responseObject, message });
-        }
+        const { responseObject } = resJson;
+        // feedback
+        onNewTaskAdded(responseObject, true);
     })
     .catch(error => {
-            onNewTaskAdded({ responseObject: null, message:"oops something went wrong 😢" });
+            onNewTaskAdded(null, false);
     });
    };
 

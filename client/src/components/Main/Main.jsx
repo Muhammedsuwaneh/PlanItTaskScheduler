@@ -44,10 +44,10 @@ export default function Main({ onUserAuthRequestMain}) {
         <Box sx={{ background: "#fff", height: "auto", width: { md: '100%', sm: '100%', xs: '100%', lg: '50%'}, padding: "3rem", boxShadow: "1px 1px 2px #333", 
         borderRadius: { lg: "0 1rem 1rem 0", sm: "0", xs: "0", md: "0"} }}>
             <Typography variant="h5" sx={{ fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
-                PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> 
+                PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> Scheduler
             </Typography>
             <Typography variant="p">
-              Manage your daily, weekly or monthly task in a user-friendly interface
+              Schedule your daily, weekly or monthly task in a user-friendly interface
             </Typography>
             <Box sx={{ display: `${hideLoginPage}`}}>
                 <Login onUserAuthRequest={UserAuthRequestHandler}/>

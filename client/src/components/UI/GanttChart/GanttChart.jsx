@@ -37,7 +37,10 @@ const parseMinHour = (hour) => {
 
 const formatHours = (hour) => {
   const [hourStr, minStr] = parseMinHour(hour)
-  if(hourStr == 0) return `00:${(minStr < 10) ? "0"+minStr : minStr} AM`;
+  if(hourStr == 0) {
+    if(minStr <= 0) return "00:00 AM";
+    return `00:${(minStr < 10) ? "0"+minStr : minStr} AM`;
+  }
   else if(hour == 12) return "12 PM";
   else if(Number.isInteger(hour) && hour > 0 && hour < 12) return `${hour} AM`;
   else if(!Number.isInteger(hour) && hour > 0 && hour < 12) {

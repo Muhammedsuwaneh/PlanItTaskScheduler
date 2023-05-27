@@ -137,14 +137,21 @@ export default function TaskList({ userTasks, currentPage }) {
     })
     .then(res => res.json())
     .then(resJson => {
+        setRequestIsCompleted(true);
         // update task list
+        // feedback
+        const newTasks = tasksList.map((task) => {
+            if(task.id == id) task.status = "Completed";
+            return task;
+        });
+        setTaskList(newTasks);
         handleClose();
         // feedback
         feedbackHandler("success", "task marked as completed");
     })
     .catch(error => {
+        setRequestIsCompleted(true);
         handleClose();
-        // feedback
         feedbackHandler("error", "oops! something went wrong");
     });
   };

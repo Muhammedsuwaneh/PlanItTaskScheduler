@@ -93,7 +93,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) 
-        setContent(<Typography sx={{ fontSize: "2rem", margin: { lg: "15rem 0", sm: "5rem 0", xs: "5rem 0", md: "10rem 0"}, textAlign: "center"}}>No task available 😳</Typography>); 
+        setContent(<Typography sx={{ fontSize: "2rem", margin: { lg: "15rem 0", sm: "5rem 0", xs: "5rem 0", md: "10rem 0"}, textAlign: "center"}}>No upcoming task 😳</Typography>); 
     else {
         setContent(
             <>
@@ -118,7 +118,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
              aria-describedby="modal-modal-description">
             <ModalContent height="auto">
                 <TaskForm onModalClose={handleClose} onNewTaskAdded={newAddedTaskHandler} action="new" 
-                itemObject={{id: "", title: "", description: "", dateAdded: "", status: "", startTime: "", endTime: ""}}/>
+                itemObject={{id: "", title: "", description: "", dateAdded: "", status: "Ongoing", startTime: "", endTime: ""}}/>
             </ModalContent>
         </Modal>
         <Stack sx={{ padding: { lg: "0 2rem", sm: "10px", xs: "10px", md: "5px"} }}>

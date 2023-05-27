@@ -32,7 +32,7 @@ export default function Tasks({ userTasks }) {
             setRequestIsCompleted(true);
             feedbackHandler("error", "something went wrong 😢");
         }
-  };
+  }
 
   const feedbackHandler = (type, message) => {
     setSnackMessage(message);

@@ -23,11 +23,6 @@ namespace UserTaskManagerAPI.Controllers
             _config = config;
         }
 
-        /*private DateTime getDate(string dateTime)
-        {
-            return null;
-        }*/
-
         private int UserClaims()
         {
             // obtain user id from token
@@ -55,10 +50,8 @@ namespace UserTaskManagerAPI.Controllers
                 {
                     
                     var tasks = _context.UserTasks.Where(t => t.user == id)
-                                                  .OrderByDescending(t => t.DateAdded)
+                                                  .OrderBy(t => t.DateAdded)
                                                   .ToList();
-
-                    tasks.Reverse();
 
                     return Ok(new ApiResponse<List<UserTask>>
                     {
@@ -103,9 +96,8 @@ namespace UserTaskManagerAPI.Controllers
             {
                 try
                 {
-                    var tasks = _context.UserTasks.Where(t => t.user == id && t.DateAdded == date).ToList();
-
-                    tasks.Reverse();
+                    var tasks = _context.UserTasks.Where(t => t.user == id && t.DateAdded == date)
+                        .OrderBy(t => t.DateAdded).ToList();
 
                     return Ok(new ApiResponse<List<UserTask>>
                     {
@@ -229,9 +221,9 @@ namespace UserTaskManagerAPI.Controllers
 
                     _context.SaveChanges();
 
-                    return Ok(new ApiResponse<int>
+                    return Ok(new ApiResponse<UserTask>
                     {
-                        ResponseObject = id,
+                        ResponseObject = _task,
                         message = "task removed",
                         token = null,
                         status = 200

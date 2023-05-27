@@ -90,6 +90,30 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         }
   };
 
+  const onTaskDeleteHandler = (responseObject, response, isEmpty) => {
+        if(response) {
+
+            // update line chart 
+            const month = parseInt(responseObject.dateAdded.split("-")[1][1]);
+            currentTaskCountByDate[month-1] -= 1;
+
+            // update pie chart and update task statistics
+            userStatisticsEntries[responseObject.status] -= 1;
+
+            // init data handler
+            if(isEmpty) userTasks = [];
+
+            initDataHandler();
+        }
+  }
+ 
+  const onTaskMarkAsCompletedHandler = (response) => {
+        if(response) {
+            userStatisticsEntries.Completed += 1;
+            userStatisticsEntries.Ongoing -= 1;
+        }
+  };
+
   const initDataHandler = () => {
 
     if(userTasks.length <= 0) 
@@ -98,7 +122,10 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         setContent(
             <>
                 <Stack sx={{ margin: "1rem 0"}}>
-                    <TaskList userTasks={userTasks} currentPage="dashboard"/>                   
+                    <TaskList userTasks={userTasks} 
+                    onTaskDeleteHandler={onTaskDeleteHandler} 
+                    onTaskMarkAsCompletedHandler={onTaskMarkAsCompletedHandler}
+                    currentPage="dashboard"/>                   
                 </Stack>
             </>
         );
@@ -186,7 +213,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
                             </Box>
                         </Box>
                     </Stack>
-                    <Box sx={{ height: "auto", padding: "1rem 0", background: "#fff", 
+                    <Box sx={{ height: "auto", padding: ".5rem", background: "#fff", 
                     margin: { lg: "1rem 0 0 1rem", sm: "1rem 0", md: "1rem 0", xs: "1rem 0"}, borderRadius: "1rem", width: "100%",
                     alignItems:"center", justifyContent: "center", display: "flex"}}>
                         <ReadOnlyCalender />

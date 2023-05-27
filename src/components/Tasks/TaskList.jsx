@@ -40,7 +40,7 @@ export const getTaskIconHandler = (status) => {
     }
 };
 
-export default function TaskList({ userTasks, currentPage }) {
+export default function TaskList({ userTasks, currentPage, onTaskDeleteHandler, onTaskMarkAsCompletedHandler }) {
 
   const [status, setStatus] = React.useState('All');
   const [tasksList, setTaskList] = React.useState(userTasks);
@@ -92,6 +92,12 @@ export default function TaskList({ userTasks, currentPage }) {
                 const newTasks = tasksList.filter((task) => task.id != id);
                 setTaskList(newTasks);
                 feedbackHandler("success", "task deleted");
+
+                let isEmpty = false;
+                if(newTasks.length <= 0) isEmpty = true;
+
+                // send feedback to dashboard for updates 
+                onTaskDeleteHandler(responseObject, true, isEmpty);
             }
         })
         .catch(error => {
@@ -138,16 +144,23 @@ export default function TaskList({ userTasks, currentPage }) {
     .then(res => res.json())
     .then(resJson => {
         setRequestIsCompleted(true);
-        // update task list
-        // feedback
-        const newTasks = tasksList.map((task) => {
-            if(task.id == id) task.status = "Completed";
-            return task;
-        });
-        setTaskList(newTasks);
         handleClose();
-        // feedback
-        feedbackHandler("success", "task marked as completed");
+        // update task list
+        const { responseObject } = res;
+        if(responseObject != null && responseObject != undefined && responseObject != "") {
+            // feedback
+            const newTasks = tasksList.map((task) => {
+                if(task.id == id) task.status = "Completed";
+                return task;
+            });
+            setTaskList(newTasks);
+            // feedback
+            feedbackHandler("success", "task marked as completed");
+            onTaskMarkAsCompletedHandler(true);
+        }
+        else {
+            feedbackHandler("error", "oops! something went wrong");
+        }
     })
     .catch(error => {
         setRequestIsCompleted(true);

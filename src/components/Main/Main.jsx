@@ -35,7 +35,7 @@ export default function Main({ onUserAuthRequestMain}) {
 
   return (
     <UserAuthContainer container sx={{ display: { md: 'column', sm: 'column', xs: 'column', lg: 'row'}, 
-    padding: { lg: "3rem", sm: "1rem", md: "1rem", xs: "1rem"} }}>
+    padding: { lg: "3rem", sm: ".1rem", md: "1rem", xs: ".1rem"} }}>
         <Box sx={{ backgroundImage: `url("/task.jpg")`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',
             height: { lg: "100%", sm: "50%", md: "50%", xs: "50%"}, width: { md: '100%', sm: '100%', xs: '100%', lg: '30%'}, 
             borderTopLeftRadius: { md: '0', sm: '0', xs: '0', lg: '2rem'}, 
@@ -46,7 +46,7 @@ export default function Main({ onUserAuthRequestMain}) {
             <Typography variant="h5" sx={{ fontWeight: "bold", margin: "2rem 1rem", textAlign: "center"}}>
                 PLAN<span style={{ color: "#1976D2", borderBottom: "1px solid #1976D2", paddingBottom: ".5rem" }}>IT</span> Scheduler
             </Typography>
-            <Typography variant="p">
+            <Typography variant="p" textAlign="center">
               Schedule your daily, weekly or monthly task in a user-friendly interface
             </Typography>
             <Box sx={{ display: `${hideLoginPage}`}}>

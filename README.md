@@ -1,4 +1,4 @@
-## PlanIt User Task Manager
+## PlanIt Task Scheduler
 
 ## About Project
 

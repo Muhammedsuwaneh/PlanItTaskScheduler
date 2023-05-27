@@ -55,15 +55,15 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
     ],
   };
 
-  const newAddedTaskHandler = async ({ responseObject, message }) => {
+  const newAddedTaskHandler = async (responseObject, response) => {
 
         handleClose();
 
         // user feedback
-        if(responseObject == null) {
+        if(!response) {
 
             setRequestIsCompleted(true);
-            setSnackMessage(message);
+            setSnackMessage("Oops! something went wrong");
             setSnackBarType("error");
             setDisableButton(false);
 
@@ -84,7 +84,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
             initDataHandler();
 
             // user feedback
-            setSnackMessage(`${message} 😊`);
+            setSnackMessage("New task added 😊");
             setSnackBarType("success");
             setRequestIsCompleted(true);
         }
@@ -107,11 +107,12 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         }
   }
  
-  const onTaskMarkAsCompletedHandler = (response) => {
-        if(response) {
-            userStatisticsEntries.Completed += 1;
-            userStatisticsEntries.Ongoing -= 1;
-        }
+  const onTaskMarkAsCompletedHandler = () => {
+        
+    userStatisticsEntries.Completed += 1;
+        userStatisticsEntries.Ongoing -= 1;
+        
+        initDataHandler();
   };
 
   const initDataHandler = () => {

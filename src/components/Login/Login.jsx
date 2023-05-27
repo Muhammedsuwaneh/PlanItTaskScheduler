@@ -30,8 +30,8 @@ export default function Login({ onUserAuthRequest }) {
     event.preventDefault();
   };
 
-  const [email, setEmail] = useState("defaultuser8596@gmail.com");
-  const [password, setPassword] = useState("Passw0rd!!");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
   const userAuthHandler = async (event) => {
       
@@ -71,7 +71,6 @@ export default function Login({ onUserAuthRequest }) {
                             label="Email" 
                             variant="standard" 
                             required
-                            defaultValue={"defaultuser8596@gmail.com"}
                             onChange={(element) => { setEmail(element.target.value)}}
                             sx={{ margin: "1rem 0", width: "100%"}}
                     />
@@ -79,7 +78,6 @@ export default function Login({ onUserAuthRequest }) {
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input
                       id="standard-adornment-password"
-                      defaultValue={"Passw0rd!!"}
                       onChange={(element) => { setPassword(element.target.value)}}
                       type={showPassword ? 'text' : 'password'}
                       endAdornment={

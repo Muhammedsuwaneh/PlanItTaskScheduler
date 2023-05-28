@@ -96,7 +96,7 @@ The dashboard offers a lot of different features ranging from charts to task sch
 
 ![Screenshot](screenshots/update.png)
 
-#### Mark task as complete
+#### Mark task as completed
 ![Screenshot](screenshots/mark.png)
 
 #### View task details
@@ -111,9 +111,9 @@ The actions can be seen on the screenshots above
 
 ### Calender
 
-Probably the most important part of the web application. Enables users to keep track of the 
-task they added and provide details of task added on specific dates. Users can also 
-navigate to a "Gannt-like" page where they can keep track of their daily task.
+Probably the most significant page on the web application. Enables users to keep track of the 
+task they added and provide details of the task added on specific dates. Users can also 
+navigate a "Gannt-like" page where they can keep track of their daily task.
 
 ![Screenshot](screenshots/calender.png)
 
@@ -128,6 +128,7 @@ Interesting Gannt-like UI showing daily scheduled task.
 ### Profile 
 
 Displays user info and has a form for user authentication credential updates and account deletion.
+
 ![Screenshot](screenshots/profile.png)
 
 ## License 

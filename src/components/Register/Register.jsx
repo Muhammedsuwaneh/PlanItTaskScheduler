@@ -64,7 +64,7 @@ export default function Register({ onUserAuthRequest }) {
   };
 
   return (
-    <Box sx={{ marginTop: "1rem"}}>
+    <Box sx={{ marginTop: "1.5rem"}}>
        <Box sx={{ display: "flex", flexDirection: "column"}}>
        <form style={{ display: "flex", flexDirection: "column" }} onSubmit={(event) => userRegisterHandler(event)}>
                 <Stack sx={{ margin:"0" }}>   

@@ -5,7 +5,7 @@ import AddTaskIcon from '@mui/icons-material/AddTask';
 import ModalContent from '../UI/Modal/ModalContent';
 
 import Doughnut from '../UI/Charts/Doughnut/DoughnutChart';
-import LineChart from '../UI/Charts/LineChart/LineChart';
+import LineChartUI from '../UI/Charts/LineChart/LineChart';
 
 import ReadOnlyCalender from '../Calender/ReadOnlyCalender/ReadOnlyCalender';
 
@@ -168,16 +168,16 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
                 <Stack sx={{  
                 padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}, background: "#fff", 
                 height: (userTasks.length < 0) ? { xs: "50vh", sm:"50vh", md:"50vh", lg: "150vh" } : { xs: "auto", sm:"auto", md:"auto", lg: "95vh" }, 
-                margin: { lg: "0", sm:"1rem 0", md: "1rem 0",xs: "1rem 0"}, borderRadius: "1rem"}}>
+                margin: { lg: "0", sm:".5rem 0", md: "1rem 0",xs: ".5rem 0"}, borderRadius: "1rem"}}>
                     <Typography sx={{ fontSize: "1.4rem", color: "#333", marginLeft: "1rem"}}>
                         Upcoming Task
                     </Typography>
                     {content}
                 </Stack>
                 <Box sx={{ padding: "1rem", background: "#fff", height:"50vh" ,
-                        margin: "2rem 0", borderRadius: "1rem", width: "100%",
+                        margin: "1rem 0", borderRadius: "1rem", width: "100%",
                         alignItems:"center", justifyContent: "center", display: "flex"}}>
-                <LineChart data={lineChartdata}/> 
+                <LineChartUI data={lineChartdata}/> 
                 </Box>
             </Stack>
             <Stack sx={{ width: { lg: "30%", xs: "100%", sm: "100%", md: "100%"}, padding: { lg: "0 1rem", sm: "0", xs: "0", md: "0"}, margin: "0" }}>

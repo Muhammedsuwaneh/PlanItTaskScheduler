@@ -33,7 +33,7 @@ function MobileNavigation({ onLogoutClick, window }) {
       <Stack sx={{ marginTop: "1.3rem"}}>
         {navItems.map(link => {
             return (
-                <Link href={`${link.toLowerCase()}`} underline="none" key={link} 
+                <Link href={`/${link.toLowerCase()}`} underline="none" key={link} 
                 sx={{ padding: "0 1rem", color: "#fff", margin: "1.2rem 0", '&:hover': { color: "#1871CD"}}}>
                     {link}
                 </Link>

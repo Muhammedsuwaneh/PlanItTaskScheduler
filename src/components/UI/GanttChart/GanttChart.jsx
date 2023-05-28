@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
 import { getTaskStatusColor } from "../../Tasks/TaskList";
 
 ChartJS.register(
@@ -19,6 +21,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  ChartDataLabels
 );
 
 import { Box, Typography, Button } from "@mui/material";
@@ -51,6 +54,8 @@ const formatHours = (hour) => {
 };
 
 const options = {
+  responsive: true,
+  maintainAspectRatio: false,
   indexAxis: 'y',
   scales: {
       x: {
@@ -110,7 +115,7 @@ const options = {
     },
     datalabels: {
       centerLabels: true,
-      anchor: 'start', // Set the anchor position of the labels to the center of the bars
+      anchor: 'end', // Set the anchor position of the labels to the center of the bars
       align: 'start', // Set the alignment of the labels to the center of the bars
       color: '#fff', // Set the color of the labels
       font: {
@@ -172,10 +177,11 @@ export default function GanntChart({ retrievedTasksByDate }) {
 
   else {
     content = (
-            <Box p={3} sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignContent: "center", justifyContent: "center", 
-            margin: "1rem", borderRadius: ".5rem", height: "100vh", overflowY: "scroll", background: "#0E141E"}}>
-                <Bar options={options} data={data} />
-            </Box>
+        <Box p={3} sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "1rem", borderRadius: ".5rem", height: "100vh", overflow: "auto", background: "#0E141E" }}>
+          <div style={{ width: "100%", height: "100%" }}>
+            <Bar options={options} data={data} />
+          </div>
+        </Box>
     );
   }
 

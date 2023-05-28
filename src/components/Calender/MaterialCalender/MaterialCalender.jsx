@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material/';
 
-import { getTaskStatusColor } from '@/components/Tasks/TaskList';
-import { shortenTextHandler } from '../CalenderTaskList/CalenderTaskList';
-
 const MaterialCalendar = ({ defaultDate, handleOpen, tasks }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 

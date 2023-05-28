@@ -43,7 +43,7 @@ export default function Calender({ userTasks }) {
                   <CalenderTaskList selectedTask={selectedDateTask}/>
               </ModalContent>
         </Modal>
-        <Stack sx={{ padding: { lg: "2rem", sm: "1rem", xs: "1rem", md: "1rem"}}}>
+        <Stack sx={{ padding: { lg: "2rem", sm: ".5rem", xs: ".5rem", md: "1rem"}}}>
           <PageTitle title="Calender">
             <CalendarMonthIcon sx={{ color: "#0F4AC7" }} />
           </PageTitle>

@@ -1,5 +1,6 @@
 using EmployeeManagementSystemAPI.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -73,5 +74,9 @@ app.UseStaticFiles();
 app.UseCors(ApiCorsPolicy);
 
 SeedInitializer.Seed(app);
+
+// Increase the request timeout
+var serverOptions = new Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions();
+serverOptions.Limits.RequestHeadersTimeout = TimeSpan.FromSeconds(300); // Specify the timeout value
 
 app.Run();

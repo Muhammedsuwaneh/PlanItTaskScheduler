@@ -32,9 +32,9 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                             <Typography>{task.title}</Typography>
                         </Stack>
                     </Box>
-                    <Box sx={{ display: "flex", padding: { sm: "1.2rem 0", md: "1.4rem", xs: "1.2rem 0", lg: "2rem 0"}}}>
+                    <Box sx={{ display: "flex", padding: { sm: "1.2rem .5rem", md: "1.4rem", xs: "1.2rem .5rem", lg: "2rem 0"}}}>
                         <VisibilityIcon onClick={() => onActionFired("details", {...task})} 
-                        sx={{ fontSize: "1.7rem", color: "#333", margin: "0 .5rem", 
+                        sx={{ fontSize: "1.7rem", color: "#333", margin: "0", 
                         cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}}/>
                         {(task.status == "Completed") || 
                         <>
@@ -50,8 +50,8 @@ export default function TaskListContent({ onActionFired, tasksList, page }) {
                         sx={{ fontSize: "1.7rem", color: "red", cursor: "pointer", transition: "opacity .5s ease-in", '&:hover': { opacity: '.7'}}} />
                     </Box>
                 </Box>
-                <Box sx={{ display: { sm: "flex", md: "flex", lg: "flex", xs: "column"}, margin: { sm: "5px .4rem", lg: "5px 1rem", xs:"5px .7rem" } }}>
-                    <Box sx={{ display: "flex", marginRight: "5px" }}>
+                <Box sx={{ display: { sm: "flex", lg: "flex", xs:"column", md: "flex" }, margin: { sm: "0 rem", lg: "5px 1rem", xs:"0 .5rem" } }}>
+                    <Box sx={{ display: "flex", marginRight: { sm: "0", lg: "1rem", xs:"0" }, marginBottom: { sm: "0", lg: "0", xs:".5rem" } }}>
                         <CalendarMonthIcon sx={{ color: "#333" }} />
                         <Typography sx={{ margin: "0 5px"}}>{task.dateAdded}</Typography>
                     </Box>

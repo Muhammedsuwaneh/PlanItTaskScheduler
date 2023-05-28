@@ -2,9 +2,8 @@
 
 ## About Project
 
-This is a dyamic user task manager web application. This project allows users to 
-manager their daily, weekly and monthly tasks in a easy and user-friendly interface.
-[explore application]("")
+Dynamic user task manager web application which allows users to schedule, track and manage their daily, weekly and monthly tasks in a easy and user-friendly interface.
+[explore application]("https://plan-it-task-scheduler-fox9.vercel.app/")
 
 ## Prerequisites
 
@@ -127,7 +126,7 @@ Interesting Gannt-like UI showing daily scheduled task.
 
 ### Profile 
 
-Displays user info and has a form for user authentication credential updates and account deletion.
+Displays user info and offers user authentication credential update and account deletion features.
 
 ![Screenshot](screenshots/profile.png)
 

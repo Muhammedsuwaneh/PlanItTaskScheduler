@@ -40,15 +40,21 @@ export default function Register({ onUserAuthRequest }) {
       await userRegisterationHandler({ username, email, password })
       .then(response => {
         const { data } = response;
+
         setRequestIsCompleted(true);
         setSnackMessage(`${data.message} 😊`);
         setSnackBarType("success");
+
+        setEmail("");
+        setPassword("");
+        setUsername("");
+
         // redirect 
         onUserAuthRequest(data);
     })
     .catch(error => {
         const { response } = error;
-        console.log(error);
+
         setRequestIsCompleted(true);
         setSnackMessage(`${response.data.message} 😢`);
         setSnackBarType("error");

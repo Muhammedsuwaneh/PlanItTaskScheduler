@@ -12,7 +12,7 @@ export default function Home() {
   const UserAuthRequestMainHandler = (data) => {
     const { responseObject, status, token } = data;
 
-    if(status == 200) {
+    if(status == 201 || status == 200) {
       setCookie('USER_AUTH_TOKEN', token);
       setCookie('USER_AUTH_USERNAME', responseObject.username);      
       

@@ -64,7 +64,7 @@ export default function Login({ onUserAuthRequest }) {
   return (
     <Box sx={{ marginTop: "2rem"}}>
        <form style={{ display: "flex", flexDirection: "column" }} onSubmit={(event) => userAuthHandler(event)}>
-                    <Stack sx={{ margin:"2rem 0" }}>   
+                    <Stack sx={{ margin:"1rem 0" }}>   
                     <Typography variant="h5" component="h2" color="#9E9EA7">Sign In</Typography>
                     </Stack>
                     <TextField id="standard-basic" 

@@ -6,6 +6,7 @@ const agent = new https.Agent({
 });
 
 export const getBaseURL = () => `${process.env.NEXT_PUBLIC_API_URL}`;
+//export const getBaseURL = () => "https://localhost:7136/api";
 
 export const getUserTask = async({ token }) => {
     const response = await axios.get(`${getBaseURL()}/usertasks/`,

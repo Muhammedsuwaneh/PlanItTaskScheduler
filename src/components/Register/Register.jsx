@@ -40,23 +40,22 @@ export default function Register({ onUserAuthRequest }) {
       await userRegisterationHandler({ username, email, password })
       .then(response => {
         const { data } = response;
+        const { responseObject, status, token } = data;
 
-        setRequestIsCompleted(true);
-        setSnackMessage(`${data.message} 😊`);
-        setSnackBarType("success");
+        console.log(responseObject);
 
-        setEmail("");
-        setPassword("");
-        setUsername("");
+        if(status == 201) {
+          
+          setRequestIsCompleted(true);
+          setSnackMessage(`${data.message} 😊`);
+          setSnackBarType("success");
 
-        // redirect 
-        onUserAuthRequest(data);
+          onUserAuthRequest(data);
+        }
     })
     .catch(error => {
-        const { response } = error;
-
         setRequestIsCompleted(true);
-        setSnackMessage(`${response.data.message} 😢`);
+        setSnackMessage(`oops! something went wrong 😢`);
         setSnackBarType("error");
         setDisableButton(false);
     });
@@ -68,12 +67,12 @@ export default function Register({ onUserAuthRequest }) {
     <Box sx={{ marginTop: "1rem"}}>
        <Box sx={{ display: "flex", flexDirection: "column"}}>
        <form style={{ display: "flex", flexDirection: "column" }} onSubmit={(event) => userRegisterHandler(event)}>
-                    <Stack sx={{ margin:"1.2rem 0" }}>   
+                <Stack sx={{ margin:"0" }}>   
                     <Typography variant="h5" component="h2" color="#9E9EA7">Sign Up</Typography>
-                    </Stack>
                     <TextField id="standard-basic" 
                             label="Username" 
                             variant="standard" 
+                            inputProps={{ maxLength: 15 }} 
                             required
                             onChange={(element) => { setUsername(element.target.value)}}
                             sx={{ margin: ".6rem 0", width: "100%"}}
@@ -105,7 +104,9 @@ export default function Register({ onUserAuthRequest }) {
                       }
                     />
                    </FormControl>
-                    <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: ".7rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}>Sign up</Button>
+                    <Button type='submit' variant="contained" endIcon={<LoginIcon />} sx={{ margin: ".7rem 0", padding: ".5rem", borderRadius: "1rem", width: "200px" }}
+                     disabled={disableButton}>Sign up</Button>
+                  </Stack>
               </form>
               <LinearProgress sx={{ display: `${sendingRequest}`}}/>
               {requestIsCompleted && <Toast snackBarType={snackBarType} snackMessage={snackMessage} /> }

@@ -152,7 +152,7 @@ const Dashboard = ({ user, userTasks, userStatisticsEntries, taskCountEveryMonth
         <Stack sx={{ padding: { lg: "0 2rem", sm: "10px", xs: "10px", md: "5px"} }}>
         <Box sx={{ background: "#fff", padding: "1rem", borderRadius: "1rem", display: "flex", justifyContent: "space-between"}}>
             <Box sx={{ padding: "1rem"}}>
-                    <Typography sx={{ fontSize: "2rem"}}>Welcome - <span style={{ color: "#1976D2"}}>{user} </span> 😊</Typography>
+                    <Typography sx={{ fontSize: { lg: "1.5rem", sm: "1rem", xs: "1rem", md: "1.2rem"}}}>Welcome - <span style={{ color: "#1976D2"}}>{user} </span> 😊</Typography>
                     <Typography sx={{ marginTop: "1rem", fontSize: "1.2rem"}}>Let's do something today</Typography>
             </Box>
             <Box>

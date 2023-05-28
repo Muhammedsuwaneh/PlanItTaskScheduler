@@ -80,7 +80,7 @@ Users can create an account using this form
 
 ### Dashboard
 
-The dashboard offers a lot of different features ranging from charts to task scheduling. 
+The dashboard offers a lot of different features ranging from charts to task scheduling forms. 
 
 ![Screenshot](screenshots/dashboard_1.png)
 

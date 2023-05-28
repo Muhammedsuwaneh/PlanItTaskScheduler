@@ -3,6 +3,8 @@ using EmployeeManagementSystemAPI.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 using UserTaskManagerAPI.Models;
 using XAct;
@@ -16,11 +18,13 @@ namespace UserTaskManagerAPI.Controllers
     {
         private ApplicationDbContext _context;
         private IConfiguration _config;
+        private readonly IMemoryCache _memoryCache;
 
-        public UserTasksController(ApplicationDbContext context, IConfiguration config)
+        public UserTasksController(ApplicationDbContext context, IConfiguration config, IMemoryCache memoryCache)
         {
             _context = context;
             _config = config;
+            _memoryCache = memoryCache;
         }
 
         private int UserClaims()
@@ -40,28 +44,40 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public IActionResult GetUserTasks()
+        public async Task<IActionResult> GetUserTasks()
         {
             var id = UserClaims();
+            var cacheKey = "UserTasks_" + id;
+
+            if (_memoryCache.TryGetValue(cacheKey, out List<UserTask>? tasks))
+            {
+                return Ok(new ApiResponse<List<UserTask>>
+                {
+                    ResponseObject = tasks,
+                    message = "request successful (from cache)",
+                    token = null,
+                    status = 200,
+                });
+            }
 
             if (id != -1)
             {
                 try
                 {
-                    
-                    var tasks = _context.UserTasks.Where(t => t.user == id)
-                                                  .OrderBy(t => t.DateAdded)
-                                                  .ToList();
+                    var _tasks = await _context.UserTasks
+                        .Where(t => t.user == id)
+                        .OrderBy(t => t.DateAdded)
+                        .ToListAsync();
 
                     return Ok(new ApiResponse<List<UserTask>>
                     {
-                        ResponseObject = tasks,
+                        ResponseObject = _tasks,
                         message = "request successful",
                         token = null,
                         status = 200
                     });
-
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     return BadRequest(new ApiResponse<UserTask>
                     {
@@ -72,7 +88,6 @@ namespace UserTaskManagerAPI.Controllers
                     });
                 }
             }
-
             else
             {
                 return BadRequest(new ApiResponse<UserTask>
@@ -87,7 +102,7 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpGet("usertaskbydate/{date}")]
         [Produces("application/json")]
-        public IActionResult GetUserTasksByDate(string date)
+        public async Task<IActionResult> GetUserTasksByDate(string date)
         {
             // obtain user id from token
             var id = UserClaims();
@@ -96,8 +111,8 @@ namespace UserTaskManagerAPI.Controllers
             {
                 try
                 {
-                    var tasks = _context.UserTasks.Where(t => t.user == id && t.DateAdded == date)
-                        .OrderBy(t => t.DateAdded).ToList();
+                    var tasks = await _context.UserTasks.Where(t => t.user == id && t.DateAdded == date)
+                        .OrderBy(t => t.DateAdded).ToListAsync();
 
                     return Ok(new ApiResponse<List<UserTask>>
                     {
@@ -136,7 +151,7 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpPost("new")]
         [Produces("application/json")]
-        public IActionResult NewUserTasks(UserTask task)
+        public async Task<IActionResult> NewUserTasks(UserTask task)
         {
             // obtain user id from token
             var id = UserClaims();
@@ -158,7 +173,7 @@ namespace UserTaskManagerAPI.Controllers
 
                     _context.Add(_task);
 
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     return Ok(new ApiResponse<UserTask>
                     {
@@ -256,7 +271,7 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpGet("statistics")]
         [Produces("application/json")]
-        public IActionResult GetStatistics()
+        public async Task<IActionResult> GetStatistics()
         {
 
             var id = UserClaims();
@@ -266,7 +281,7 @@ namespace UserTaskManagerAPI.Controllers
                 try
                 {
                     // users's count tasks base on status
-                    var userTasks = _context.UserTasks.Where(t => t.user == id).ToList();
+                    var userTasks = await _context.UserTasks.Where(t => t.user == id).ToListAsync();
 
                     Dictionary<string, int> taskCounts = userTasks.GroupBy(t => t.Status)
                         .Select(g => new { Status = g.Key, Count = g.Count() })
@@ -307,7 +322,7 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpPut("update/{id}")]
         [Produces("application/json")]
-        public IActionResult UpdateUserTasks(UserTask task, int id)
+        public async Task<IActionResult> UpdateUserTasks(UserTask task, int id)
         {
             // obtain user id from token
 
@@ -317,7 +332,7 @@ namespace UserTaskManagerAPI.Controllers
             {
                 try
                 {
-                    var _task = _context.UserTasks.FirstOrDefault(task => task.Id == id && _id == task.user);
+                    var _task = await _context.UserTasks.FirstOrDefaultAsync(task => task.Id == id && _id == task.user);
 
                     if(_task == null)
                     {
@@ -374,7 +389,7 @@ namespace UserTaskManagerAPI.Controllers
 
         [HttpGet("totaltaskeverymonth")]
         [Produces("application/json")]
-        public IActionResult GetTotalTaskEveryMonth()
+        public async Task<IActionResult> GetTotalTaskEveryMonth()
         {
             var _id = UserClaims();
 
@@ -382,7 +397,7 @@ namespace UserTaskManagerAPI.Controllers
             {
                 try
                 {
-                    var userTasks = _context.UserTasks.Where(t => t.user == _id).ToList();
+                    var userTasks = await _context.UserTasks.Where(t => t.user == _id).ToListAsync();
 
                     // set value of all months to zero
                     Dictionary<int, int> monthlyStatistics = Enumerable.Range(1, 12).ToDictionary(key => key, value => 0);

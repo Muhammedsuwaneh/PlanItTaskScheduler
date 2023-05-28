@@ -19,6 +19,8 @@ builder.Services.AddCors(options => options.AddPolicy(ApiCorsPolicy, builder =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddMemoryCache();
+
 // CORS config
 
 ConfigurationManager configuration = builder.Configuration;

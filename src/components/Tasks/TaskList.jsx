@@ -146,7 +146,6 @@ export default function TaskList({ userTasks, currentPage, onTaskDeleteHandler, 
         setRequestIsCompleted(true);
         handleClose();
         // update task list
-        // feedback
         const newTasks = tasksList.map((task) => {
             if(task.id == id) task.status = "Completed";
             return task;
@@ -154,7 +153,8 @@ export default function TaskList({ userTasks, currentPage, onTaskDeleteHandler, 
         setTaskList(newTasks);
         // feedback
         feedbackHandler("success", "task marked as completed");
-        onTaskMarkAsCompletedHandler();
+        if(currentPage == "dashboard")
+            onTaskMarkAsCompletedHandler();
     })
     .catch(error => {
         setRequestIsCompleted(true);

@@ -3,7 +3,7 @@
 ## About Project
 
 Dynamic user task manager web application which allows users to schedule, track and manage their daily, weekly and monthly tasks in a easy and user-friendly interface.
-[explore application]("https://plan-it-task-scheduler-fox9.vercel.app/")
+[explore application]("https://planit-task-scheduler.herokuapp.com/")
 
 ## Prerequisites
 
@@ -60,6 +60,7 @@ This will create all necessary database tables using the initial migrations in t
   <img src="https://user-images.githubusercontent.com/25181517/186711335-a3729606-5a78-4496-9a36-06efcc74f800.png" width="50px" height="50px"/>
   <img src="https://user-images.githubusercontent.com/25181517/121405384-444d7300-c95d-11eb-959f-913020d3bf90.png" width="50px" height="50px"/>
   <img src="https://user-images.githubusercontent.com/25181517/121405754-b4f48f80-c95d-11eb-8893-fc325bde617f.png" width="50px" height="50px"/>
+  <img src="https://skillicons.dev/icons?i=heroku" />
   <img src="https://skillicons.dev/icons?i=vercel" />
 </div>
 
@@ -139,5 +140,5 @@ This project is licensed under [`MIT`](LICENSE)
 
 ### Site
 
-[Explore application](https://plan-it-task-scheduler-fox9.vercel.app/)
+[Explore application](https://planit-task-scheduler.herokuapp.com/)
 

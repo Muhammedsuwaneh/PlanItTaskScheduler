@@ -7,7 +7,7 @@ Dynamic user task manager web application which allows users to schedule, track 
 
 ## Prerequisites
 
-The client runs using npm and the api uses nuget packages. The api packages are already present in the
+The client runs using npm and the api uses nuget packages. Api packages are already present in the
 repository therefore no installation is required. However, some packages might be out-of-date and will need some update
 
 To run the project follow the instructions below

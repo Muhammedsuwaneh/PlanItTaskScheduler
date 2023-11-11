@@ -3,7 +3,7 @@
 ## About Project
 
 Dynamic user task manager web application which allows users to schedule, track and manage their daily, weekly and monthly tasks in a easy and user-friendly interface.
-[explore application]("https://planit-task-scheduler.herokuapp.com/")
+[explore application](https://plan-it-task-scheduler.vercel.app/)
 
 ## Prerequisites
 
@@ -140,5 +140,5 @@ This project is licensed under [`MIT`](LICENSE)
 
 ### Site
 
-[Explore application](https://planit-task-scheduler.herokuapp.com/)
+[Explore application](https://plan-it-task-scheduler.vercel.app/)
 

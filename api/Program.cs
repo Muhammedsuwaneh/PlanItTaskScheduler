@@ -12,7 +12,7 @@ string ApiCorsPolicy = "_apiCorsPolicy";
 
 builder.Services.AddCors(options => options.AddPolicy(ApiCorsPolicy, builder =>
 {
-    builder.WithOrigins("https://planit-task-scheduler.herokuapp.com")
+    builder.WithOrigins("https://plan-it-task-scheduler.vercel.app")
     .AllowAnyHeader()
     .AllowAnyMethod().AllowAnyOrigin();
 }));
